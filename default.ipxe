@@ -86,18 +86,18 @@ goto login-r
 colour --basic 9 7 && colour --basic 9 6
 console --x 1024 --y 768 --picture ${png}/main.png
 menu Welcome to Advanced Network Bootloader menu v1.0
-	item out			    Logout
-item --gap --            --- Network Boot ----------------------------------------------------------------------------------------
-	item winpe			  Windows/
-	item linux			  Linux/
-	item othos			  Other OS/
-	item tools			  Tools/
-	item info			    Information
-item --gap --            --- iPXE Tools: -----------------------------------------------------------------------------------------
-	item config			  Configure iPXE
-	item shell			  iPXE Shell
-	item reboot			  Reboot
-	item power			  Power Off
+	item out		Logout
+item --gap --			--- Network Boot ----------------------------------------------------------------------------------------
+	item winpe		Windows/
+	item linux		Linux/
+	item othos		Other OS/
+	item tools		Tools/
+	item info		Information
+item --gap --			--- iPXE Tools: -----------------------------------------------------------------------------------------
+	item config		Configure iPXE
+	item shell		iPXE Shell
+	item reboot		Reboot
+	item power		Power Off
 choose --default out --timeout 20000 target && goto ${target} ||
 :config config && goto main-menu
 :reboot reboot
@@ -110,15 +110,15 @@ goto main-menu
 console --x 1024 --y 768 --picture ${png}/win.png
 menu Windows boot menu
 	item main-menu		<...
-item --gap --            --- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
-	item winxp			  Windows XP
-	item winvista		  Windows Vista
-	item win7			    Windows 7
-	item win8.1			  Windows 8.1
-	item win10			  Windows 10
-	item win2008		  Windows Server 2008
-	item win2012		  Windows Server 2012
-	item win2016		  Windows Server 2016
+item --gap --			--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
+	item winxp		Windows XP
+	item winvista		Windows Vista
+	item win7		Windows 7
+	item win8.1		Windows 8.1
+	item win10		Windows 10
+	item win2008		Windows Server 2008
+	item win2012		Windows Server 2012
+	item win2016		Windows Server 2016
 choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ LINUX MENU ################################
@@ -126,24 +126,24 @@ goto main-menu
 console --x 1024 --y 768 --picture ${png}/linux.png
 menu Linux boot menu
 	item main-menu		<...
-item --gap --            --- Linux distribute ----------------------------------------------------------------------------------
-	item arch_os		  Arch Linux
-	item cent_os		  CentOS
-	item clear_os     ClearOS
-	item deb_os       Debian
-	item deep_os		  Deepin
-	item element_os	  ElementaryOS
-	item fedora_os	  Fedora
-	item gentoo_os	  Gentoo
-	item kali_os		  Kali Linux/
-	item manjaro_os	  Manjaro/
-	item mint_os		  Linux Mint/
-	item open_os		  OpenSUSE/
-	item parrot_os	  ParrotOS/
-	item react_os		  ReactOS
-	item solus_os		  Solus/
-	item slax_os		  Slax
-	item ubuntu_os 		Ubuntu/
+item --gap --			--- Linux distribute ----------------------------------------------------------------------------------
+	item arch_os		Arch Linux
+	item cent_os		CentOS
+	item clear_os		ClearOS
+	item deb_os		Debian
+	item deep_os		Deepin
+	item element_os		ElementaryOS
+	item fedora_os		Fedora
+	item gentoo_os		Gentoo
+	item kali_os		Kali Linux/
+	item manjaro_os		Manjaro/
+	item mint_os		Linux Mint/
+	item open_os		OpenSUSE/
+	item parrot_os		ParrotOS/
+	item react_os		ReactOS
+	item solus_os		Solus/
+	item slax_os		Slax
+	item ubuntu_os		Ubuntu/
 choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ OTHER-OS MENU ################################
@@ -151,10 +151,10 @@ goto main-menu
 console --x 1024 --y 768 --picture ${png}/ohter.png
 menu Boot menu Other OS
 	item main-menu		<...
-item --gap --            --- OtherOS ----------------------------------------------------------------------------------
-	item android	    Android-x86
-	item chrome		    ChromiumOS
-	item xcp			    Hypervisor XCP-ng
+item --gap --			--- OtherOS ----------------------------------------------------------------------------------
+	item android		Android-x86
+	item chrome		ChromiumOS
+	item xcp		Hypervisor XCP-ng
 choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ UTILITIES MENU ################################
@@ -162,44 +162,44 @@ goto main-menu
 console --x 1024 --y 768 --picture ${png}/utilits.png
 menu Boot menu Tools and Utilities
 	item main-menu		<...
-item --gap --            --- Tools & Utilities ----------------------------------------------------------------------------------
-	item avira		    Avira Rescue System
-	item drweb		    Dr.Web LiveDisk
-	item krd			    Kaspersky Rescue Disk	
-	item memt			    Memtest86
-	item mem86+		    Memtest86+
-	item vcr			    Victoriy
-	item mhdd			    MHDD
+item --gap --			--- Tools & Utilities ----------------------------------------------------------------------------------
+	item avira		Avira Rescue System
+	item drweb		Dr.Web LiveDisk
+	item krd		Kaspersky Rescue Disk	
+	item memt86		Memtest86
+	item mem86+		Memtest86+
+	item vcr		Victoriy
+	item mhdd		MHDD
 	item wintools		WinPE Tools (Iperf/CPU-Z/FurMark)
 choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ Windows 7 PE ################################
 :win7
 kernel ${winpe}/wimboot
-initrd ${winpe}/winpeshl.ini							          winpeshl.ini
-initrd ${winpe}/win7/startnet.cmd						        startnet.cmd
-initrd ${winpe}/${arch}/media/Boot/BCD					    BCD
-initrd ${winpe}/${arch}/media/Boot/boot.sdi				  boot.sdi
+initrd ${winpe}/winpeshl.ini					winpeshl.ini
+initrd ${winpe}/win7/startnet.cmd				startnet.cmd
+initrd ${winpe}/${arch}/media/Boot/BCD				BCD
+initrd ${winpe}/${arch}/media/Boot/boot.sdi			boot.sdi
 initrd ${winpe}/${arch}/media/sources/boot.wim			boot.wim
 boot
 goto main-menu
 ################################ Windows 8.1 PE ################################
 :win8.1
 kernel ${winpe}/wimboot
-initrd ${winpe}/winpeshl.ini							          winpeshl.ini
-initrd ${winpe}/win8.1/startnet.cmd						      startnet.cmd
-initrd ${winpe}/${arch}/media/Boot/BCD					    BCD
-initrd ${winpe}/${arch}/media/Boot/boot.sdi				  boot.sdi
+initrd ${winpe}/winpeshl.ini					winpeshl.ini
+initrd ${winpe}/win8.1/startnet.cmd				startnet.cmd
+initrd ${winpe}/${arch}/media/Boot/BCD				BCD
+initrd ${winpe}/${arch}/media/Boot/boot.sdi			boot.sdi
 initrd ${winpe}/${arch}/media/sources/boot.wim			boot.wim
 boot
 goto main-menu
 ################################ Windows 10 PE ################################
 :win10
 kernel ${winpe}/wimboot
-initrd ${winpe}/winpeshl.ini							          winpeshl.ini
-initrd ${winpe}/win10/startnet.cmd						      startnet.cmd
-initrd ${winpe}/${arch}/media/Boot/BCD					    BCD
-initrd ${winpe}/${arch}/media/Boot/boot.sdi				  boot.sdi
+initrd ${winpe}/winpeshl.ini					winpeshl.ini
+initrd ${winpe}/win10/startnet.cmd				startnet.cmd
+initrd ${winpe}/${arch}/media/Boot/BCD				BCD
+initrd ${winpe}/${arch}/media/Boot/boot.sdi			boot.sdi
 initrd ${winpe}/${arch}/media/sources/boot.wim			boot.wim
 boot
 goto main-menu
@@ -241,7 +241,7 @@ goto main-menu
 ################################ MHDD ################################
 :mhdd
 kernel ${mem} ||
-initrd ${tool}/mhdd_current.6.iso ||
+initrd ${tool}/mhdd_current.iso ||
 imgargs memdisk iso raw ||
 boot ||
 goto main-menu
