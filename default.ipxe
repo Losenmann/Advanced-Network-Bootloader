@@ -1,0 +1,289 @@
+#!ipxe
+
+echo Network Boot Menu v1.0
+
+##### Check if CPU supports 64-bit, PAE, VMX, SVM
+cpuid --ext 29 && set arch amd64 || set arch x86
+cpuid 6 && set pae yes ||
+cpuid --ecx 5 && set vmx yes ||
+cpuid --ext --ecx 2 && set svm yes ||
+isset ${vmx} || isset ${svm} && set hw_virt yes ||
+
+##### Wi-Fi Connection With WPA/WPA2
+echo Timeout 5 ces
+prompt --timeout 5000 --key y Connecting Wi-Fi?(y/n) && echo set SSID: && read ssid && echo set Key: && read key ||
+
+##### Getting Settings DHCP and Time
+ifconf -c dhcp || config ||
+set mtu 1500
+ntp 0.pool.ntp.org ||
+
+##### VARIABLES
+set auth 192.168.0.2:10532/boot
+set winpe /boot/winpe
+set mem /boot/src/memdisk
+set png /boot/src
+set tool /boot/tools
+set x64 Your`s CPU supports 64 commands, press 'y' to install 64bits...
+set err Error, your`s CPU not support 64-bit commands
+
+##### Links
+set url_iperf https://downloads.es.net/pub/iperf/iperf-3-current.tar.gz
+set url_vica http://hdd.by/Victoria/Victoria473b.zip
+set url_avira https://install.avira-update.com/package/rs_avira/unix/int/rescue-system.iso
+set url_krd https://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
+set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-900-cd.iso
+set url_arch http://mirrors.evowise.com/archlinux/iso/latest/arch/boot/x86_64/
+set url_cent http://mirror.centos.org/centos/7/os/x86_64/images/pxeboot/
+set url_clear http://clearos.uberglobalmirror.com/7/os/x86_64/images/pxeboot/
+set url_deb https://ftp.acc.umu.se/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/
+set url_deb64 https://ftp.acc.umu.se/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/
+set url_deep http://packages.deepin.com/deepin/dists/stable/main/source/
+set url_element 
+set url_fed https://mirror.linux-ia64.org/fedora/linux/releases/30/Workstation/x86_64/os/isolinux/
+set url_gent http://distfiles.gentoo.org/releases/x86/autobuilds/current-install-x86-minimal/install-x86-minimal-20190719T214502Z.iso
+set url_gent http://distfiles.gentoo.org/releases/amd64/autobuilds/current-install-amd64-minimal/install-amd64-minimal-20190721T214502Z.iso
+set url_kali https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-2019.2-i386.iso
+set url_kali64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-2019.2-amd64.iso
+set url_kali_kde64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-kde-2019.2-amd64.iso
+set url_kali_light https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-light-2019.2-i386.iso
+set url_kali_light64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-light-2019.2-amd64.iso
+set url_kali_lxde64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-lxde-2019.2-amd64.iso
+set url_kali_mate64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-mate-2019.2-amd64.iso
+set url_kali_xfce64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-xfce-2019.2-amd64.iso
+set url_manj_gnome https://dotsrc.dl.osdn.net/osdn/storage/g/m/ma/manjaro/gnome/18.0.4/manjaro-gnome-18.0.4-stable-x86_64.iso
+set url_manj_kde https://dotsrc.dl.osdn.net/osdn/storage/g/m/ma/manjaro/kde/18.0.4/manjaro-kde-18.0.4-stable-x86_64.iso
+set url_manj_xfce https://dotsrc.dl.osdn.net/osdn/storage/g/m/ma/manjaro/xfce/18.0.4/manjaro-xfce-18.0.4-stable-x86_64.iso
+set url_mint_cinn http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-cinnamon-32bit.iso
+set url_mint_cinn64 http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-cinnamon-64bit.iso
+set url_mint_mate http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-mate-32bit.iso
+set url_mint_mate64 http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-mate-64bit.iso
+set url_mint_xfce http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-xfce-32bit.iso
+set url_mint_xfce64 http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-xfce-64bit.iso
+set url_open http://download.opensuse.org/distribution/openSUSE-current/repo/oss/boot/x86_64/loader/
+set url_parr https://mirror.yandex.ru/mirrors/parrot/dists/parrot/main/installer-i386/current/images/cdrom/
+set url_parr64 https://mirror.yandex.ru/mirrors/parrot/dists/parrot/main/installer-amd64/current/images/cdrom/
+set url_solus_budgie http://us.justin.id.au:80/iso/images/4.0/Solus-4.0-Budgie.iso
+set url_solus_gnome http://us.justin.id.au:80/iso/images/4.0/Solus-4.0-GNOME.iso
+set url_solus_kde http://us.justin.id.au:80/iso/images/4.0/Solus-4.0-MATE.iso
+set url_ubun http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-i386/current/images/netboot/ubuntu-installer/i386/
+set url_ubun64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/
+set url_xcp http://xcp-ng.mirror.far.fi/netinstall/latest/
+
+##### AUTHORIZATION
+:login set username && set password
+colour --basic 0 7 && colour --basic 7 6
+console --picture ${png}/auth.png
+:login-r login ||
+chain ftp://${username}:${password}@${auth}/src_corp/corp && goto login-ok ||
+chain ftp://${username}:${password}@${auth}/src_dev/dev && goto login-ok ||
+iseq ${username} root && iseq ${password} kernel && goto login-ok ||
+goto login-r
+:login-ok set username && set password
+
+################################ MAIN MENU ################################
+:main-menu
+colour --basic 9 7 && colour --basic 9 6
+console --x 1024 --y 768 --picture ${png}/main.png
+menu Welcome to Advanced Network Bootloader menu v1.0
+	item out			    Logout
+item --gap --            --- Network Boot ----------------------------------------------------------------------------------------
+	item winpe			  Windows/
+	item linux			  Linux/
+	item othos			  Other OS/
+	item tools			  Tools/
+	item info			    Information
+item --gap --            --- iPXE Tools: -----------------------------------------------------------------------------------------
+	item config			  Configure iPXE
+	item shell			  iPXE Shell
+	item reboot			  Reboot
+	item power			  Power Off
+choose --default out --timeout 20000 target && goto ${target} ||
+:config config && goto main-menu
+:reboot reboot
+:power poweroff
+:out goto login
+:shell shell
+goto main-menu
+################################ WINDOWS MENU ################################
+:winpe
+console --x 1024 --y 768 --picture ${png}/win.png
+menu Windows boot menu
+	item main-menu		<...
+item --gap --            --- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
+	item winxp			  Windows XP
+	item winvista		  Windows Vista
+	item win7			    Windows 7
+	item win8.1			  Windows 8.1
+	item win10			  Windows 10
+	item win2008		  Windows Server 2008
+	item win2012		  Windows Server 2012
+	item win2016		  Windows Server 2016
+choose --default main-menu target && goto ${target} ||
+goto main-menu
+################################ LINUX MENU ################################
+:linux
+console --x 1024 --y 768 --picture ${png}/linux.png
+menu Linux boot menu
+	item main-menu		<...
+item --gap --            --- Linux distribute ----------------------------------------------------------------------------------
+	item arch_os		  Arch Linux
+	item cent_os		  CentOS
+	item clear_os     ClearOS
+	item deb_os       Debian
+	item deep_os		  Deepin
+	item element_os	  ElementaryOS
+	item fedora_os	  Fedora
+	item gentoo_os	  Gentoo
+	item kali_os		  Kali Linux/
+	item manjaro_os	  Manjaro/
+	item mint_os		  Linux Mint/
+	item open_os		  OpenSUSE/
+	item parrot_os	  ParrotOS/
+	item react_os		  ReactOS
+	item solus_os		  Solus/
+	item slax_os		  Slax
+	item ubuntu_os 		Ubuntu/
+choose --default main-menu target && goto ${target} ||
+goto main-menu
+################################ OTHER-OS MENU ################################
+:othos
+console --x 1024 --y 768 --picture ${png}/ohter.png
+menu Boot menu Other OS
+	item main-menu		<...
+item --gap --            --- OtherOS ----------------------------------------------------------------------------------
+	item android	    Android-x86
+	item chrome		    ChromiumOS
+	item xcp			    Hypervisor XCP-ng
+choose --default main-menu target && goto ${target} ||
+goto main-menu
+################################ UTILITIES MENU ################################
+:tools
+console --x 1024 --y 768 --picture ${png}/utilits.png
+menu Boot menu Tools and Utilities
+	item main-menu		<...
+item --gap --            --- Tools & Utilities ----------------------------------------------------------------------------------
+	item avira		    Avira Rescue System
+	item drweb		    Dr.Web LiveDisk
+	item krd			    Kaspersky Rescue Disk	
+	item memt			    Memtest86
+	item mem86+		    Memtest86+
+	item vcr			    Victoriy
+	item mhdd			    MHDD
+	item wintools		WinPE Tools (Iperf/CPU-Z/FurMark)
+choose --default main-menu target && goto ${target} ||
+goto main-menu
+################################ Windows 7 PE ################################
+:win7
+kernel ${winpe}/wimboot
+initrd ${winpe}/winpeshl.ini							          winpeshl.ini
+initrd ${winpe}/win7/startnet.cmd						        startnet.cmd
+initrd ${winpe}/${arch}/media/Boot/BCD					    BCD
+initrd ${winpe}/${arch}/media/Boot/boot.sdi				  boot.sdi
+initrd ${winpe}/${arch}/media/sources/boot.wim			boot.wim
+boot
+goto main-menu
+################################ Windows 8.1 PE ################################
+:win8.1
+kernel ${winpe}/wimboot
+initrd ${winpe}/winpeshl.ini							          winpeshl.ini
+initrd ${winpe}/win8.1/startnet.cmd						      startnet.cmd
+initrd ${winpe}/${arch}/media/Boot/BCD					    BCD
+initrd ${winpe}/${arch}/media/Boot/boot.sdi				  boot.sdi
+initrd ${winpe}/${arch}/media/sources/boot.wim			boot.wim
+boot
+goto main-menu
+################################ Windows 10 PE ################################
+:win10
+kernel ${winpe}/wimboot
+initrd ${winpe}/winpeshl.ini							          winpeshl.ini
+initrd ${winpe}/win10/startnet.cmd						      startnet.cmd
+initrd ${winpe}/${arch}/media/Boot/BCD					    BCD
+initrd ${winpe}/${arch}/media/Boot/boot.sdi				  boot.sdi
+initrd ${winpe}/${arch}/media/sources/boot.wim			boot.wim
+boot
+goto main-menu
+################################ Avira Rescue System ################################
+:avira
+kernel ${mem} ||
+initrd ${url_avira} ||
+imgargs memdisk iso raw ||
+boot ||
+goto main-menu
+################################ Dr.Web LiveDisk ################################
+:drweb
+kernel ${mem} ||
+initrd ${url_drweb} ||
+imgargs memdisk iso raw ||
+boot ||
+goto main-menu
+################################ Kaspersky Rescue Disk ################################
+:krd
+kernel ${mem} ||
+initrd ${url_krd} ||
+imgargs memdisk iso raw ||
+boot ||
+goto main-menu
+################################ Memtest86 ################################
+:mem86
+kernel ${mem} ||
+initrd ${tool}/memtest86_current.iso ||
+imgargs memdisk iso raw ||
+boot ||
+goto main-menu
+################################ Memtest86+ ################################
+:mem86+
+kernel ${mem} ||
+initrd ${tool}/memtest86+_current.iso ||
+imgargs memdisk iso raw ||
+boot ||
+goto main-menu
+################################ MHDD ################################
+:mhdd
+kernel ${mem} ||
+initrd ${tool}/mhdd_current.6.iso ||
+imgargs memdisk iso raw ||
+boot ||
+goto main-menu
+################################ Victoria ################################
+:vcr
+kernel ${mem} ||
+initrd ${tool}/vcr_current.iso ||
+imgargs memdisk iso raw ||
+boot ||
+goto main-menu
+################################################################################################
+:info
+menu Advanced Network Bootloader v1.0
+item --gap -- --------------------------------------------------------------------------------------------------
+item --gap -- + Added Wi-Fi connection at boot time
+item --gap -- + Added receiving network settings via DHCP or specifying statics
+item --gap -- + Added NTP connection (0.pool.ntp.org)
+item --gap -- + Added variables with links to distributions and not only to them
+item --gap -- + Added authorization support
+item --gap -- + Added public menu (based on authorization)
+item --gap -- + Added private menu (based on authorization)
+item --gap -- + Table of contents and subdirectories and layout added to the public menu
+item --gap -- + Added a table of contents and layout to the private menu
+item --gap -- + Added Windows 7/8.1/10 booting over the network
+item --gap -- + Added loading of utilities (Avira, Dr.Web, Kaspersky, Memtest86/+, MHDD, Victoria)
+item --gap -- + Added a tool with utilities - WinPE, for a private menu
+item --gap -- + Added ability to reboot and shutdown
+item --gap -- + Added ability to use ipxe command line
+item --gap -- + Added ability to change ipxe configuration
+item --gap -- --------------------------------------------------------------------------------------------------
+item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
+item --gap -- closed code, such as: "Windows" or "OSX", etc. must be loaded individually from non-public server.
+item --gap -- For Windows, bootloader settings are already prepared. You only need to unzip distribution to the
+item --gap -- server, as well as change the file "start.cmd" in the directory /boot/winpe/win*. File with the
+item --gap -- instruction ("readme") is at the root of /. Almost all utilities have an "ISO" image and load to 
+item --gap -- "RAM" via "memdisk". If desired, you can change the background image for each menu ("readme").
+item --gap -- The software used is open source!
+item --gap -- --------------------------------------------------------------------------------------------------
+item --gap -- This bootloader was created by 1 independent person. During development, much time and attention
+item --gap -- was paid to a convenient user experience. If you want to help the project, you can donate.
+item --gap -- Donations are accepted on Yandex Money 410015216730856, so you will help me :)
+item --gap -- --------------------------------------------------------------------------------------------------
+	item main-menu		<...
+choose --default main-menu target && goto ${target} ||
+goto main-menu
