@@ -1,0 +1,3 @@
+﻿kernel /ipxe.lkrn
+initrd /default.ipxe
+boot
