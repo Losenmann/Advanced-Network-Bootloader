@@ -3,3 +3,5 @@ The bootloader allows you to download and install a huge variety of operating sy
 
 This bootloader was compiled using the official documentation of the iPXE project http://ipxe.org/
 Some parts of the project are taken from third-party projects, from syslinux  https://syslinux.org and grub4dos. The deployment tool was also used: Windows Assessment and Deployment Kit (ADK) for Windows 10 https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install?ocid=tia-235208000. Any Microsoft operating system is not part of the project and is purchased separately. Unpacked and used individually. The tool itself includes the use of a family of Windows for easy deployment. All other OSs can be downloaded without any restrictions on the part of the project (except those established by the license agreement), and also have free distribution and open source code (or partially). This project is distributed as is, without any warranty, and is not responsible for any indirect or direct losses.
+
+Screenshot system https://github.com/Losenmann/Advanced-Network-Bootloader/blob/master/Screenshot.png
