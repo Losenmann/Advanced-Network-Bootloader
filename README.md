@@ -1,6 +1,11 @@
 # Advanced-Network-Bootloader
 The bootloader allows you to download and install a huge variety of operating systems, as well as run some of them as live СD.
 In addition to loading the OS, you can download and run various tools and utilities. Also, logging in settings or a shell, you can check the settings or for example, check the availability of the node.
+
+For authorization, enter:
+Username - root 
+Password - kernel
+
 Below you can see an example working of the system.
 ![Image alt](https://github.com/Losenmann/Advanced-Network-Bootloader/blob/master/Screenshot.png)
 
