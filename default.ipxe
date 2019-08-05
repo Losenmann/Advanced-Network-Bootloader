@@ -1,6 +1,6 @@
 #!ipxe
 
-echo Advanced Network Bootloader v1.11
+echo Advanced Network Bootloader v1.12
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
 cpuid --ext 29 && set arch amd64 || set arch x86
@@ -61,8 +61,8 @@ set url_kali64 ftp://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main
 #set url_mint_xfce http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-xfce-32bit.iso
 #set url_mint_xfce64 http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-xfce-64bit.iso
 #set url_opensuse http://download.opensuse.org/distribution/openSUSE-current/repo/oss/boot/x86_64/loader/
-#set url_parrot https://mirror.yandex.ru/mirrors/parrot/dists/parrot/main/installer-i386/current/images/cdrom/
-#set url_parrot64 https://mirror.yandex.ru/mirrors/parrot/dists/parrot/main/installer-amd64/current/images/cdrom/
+set url_parrot http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer-i386/current/images/netboot/debian-installer/i386/
+set url_parrot64 http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer-amd64/current/images/netboot/debian-installer/amd64/
 #set url_solus_budgie http://us.justin.id.au:80/iso/images/4.0/Solus-4.0-Budgie.iso
 #set url_solus_gnome http://us.justin.id.au:80/iso/images/4.0/Solus-4.0-GNOME.iso
 #set url_solus_kde http://us.justin.id.au:80/iso/images/4.0/Solus-4.0-MATE.iso
@@ -213,6 +213,16 @@ boot || goto main-menu
 kernel ${url_kali64}linux ||
 initrd ${url_kali64}initrd.gz ||
 boot || goto main-menu
+################################ ParrotOS ################################
+:parrot_os
+iseq ${arch} x86 || prompt --key y ${x64} && goto parrot64_os ||
+kernel ${url_parrot}linux ||
+initrd ${url_parrot}initrd.gz ||
+boot || goto main-menu
+:parrot64_os
+kernel ${url_parrot64}linux ||
+initrd ${url_parrot64}initrd.gz ||
+boot || goto main-menu
 ################################ Debian ################################
 :debian_os
 iseq ${arch} x86 || prompt --key y ${x64} && goto debian64_os ||
@@ -284,9 +294,9 @@ boot ||
 goto main-menu
 ################################################################################################
 :info
-menu Advanced Network Bootloader v1.11
+menu Advanced Network Bootloader v1.12
 item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- + Added support for Kali Linux
+item --gap -- + Added support for Parrot
 item --gap -- * Optimized some sections of code
 item --gap -- --------------------------------------------------------------------------------------------------
 item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
