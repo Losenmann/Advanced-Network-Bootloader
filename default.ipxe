@@ -1,6 +1,6 @@
 #!ipxe
 
-echo Advanced Network Bootloader v1.1
+echo Advanced Network Bootloader v1.11
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
 cpuid --ext 29 && set arch amd64 || set arch x86
@@ -41,6 +41,8 @@ set url_debian64 https://ftp.acc.umu.se/debian/dists/stable/main/installer-amd64
 #set url_fedora https://mirror.linux-ia64.org/fedora/linux/releases/30/Workstation/x86_64/os/isolinux/
 #set url_gentoo http://distfiles.gentoo.org/releases/x86/autobuilds/current-install-x86-minimal/install-x86-minimal-20190719T214502Z.iso
 #set url_gentoo64 http://distfiles.gentoo.org/releases/amd64/autobuilds/current-install-amd64-minimal/install-amd64-minimal-20190721T214502Z.iso
+set url_kali64 ftp://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/installer-amd64/current/images/netboot/debian-installer/amd64/
+set url_kali64 ftp://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/installer-i386/current/images/netboot/debian-installer/i386/
 #set url_kali https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-2019.2-i386.iso
 #set url_kali64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-2019.2-amd64.iso
 #set url_kali_kde64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-kde-2019.2-amd64.iso
@@ -133,7 +135,7 @@ item --gap --			--- Linux distribute -------------------------------------------
 #	item element_os		ElementaryOS
 #	item fedora_os		Fedora
 #	item gentoo_os		Gentoo
-#	item kali_os		Kali Linux/
+	item kali_os		Kali Linux
 #	item manjaro_os		Manjaro/
 #	item mint_os		Linux Mint/
 #	item opensuse_os	OpenSUSE/
@@ -141,7 +143,7 @@ item --gap --			--- Linux distribute -------------------------------------------
 #	item react_os		ReactOS
 #	item solus_os		Solus/
 #	item slax_os		Slax
-	item ubuntu_os		Ubuntu/
+	item ubuntu_os		Ubuntu
 choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ OTHER-OS MENU ################################
@@ -201,30 +203,36 @@ initrd ${winpe}/${arch}/media/Boot/boot.sdi ||			boot.sdi
 initrd ${winpe}/${arch}/media/sources/boot.wim ||		boot.wim
 boot ||
 goto main-menu
+################################ Kali ################################
+:kali_os
+iseq ${arch} x86 || prompt --key y ${x64} && goto kali64_os ||
+kernel ${url_kali}linux ||
+initrd ${url_kali}initrd.gz ||
+boot || goto main-menu
+:kali64_os
+kernel ${url_kali64}linux ||
+initrd ${url_kali64}initrd.gz ||
+boot || goto main-menu
 ################################ Debian ################################
-:deb_os
+:debian_os
 iseq ${arch} x86 || prompt --key y ${x64} && goto debian64_os ||
 kernel ${url_debian}linux ||
 initrd ${url_debian}initrd.gz ||
-boot ||
-goto main-menu
-:deb64_os
+boot || goto main-menu
+:debian64_os
 kernel ${url_debian64}linux ||
 initrd ${url_debian64}initrd.gz ||
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################ Ubuntu ################################
 :ubuntu_os
 iseq ${arch} x86 || prompt --key y ${x64} && goto ubuntu64_os ||
 kernel ${url_ubuntu}linux ||
 initrd ${url_ubuntu}initrd.gz ||
-boot ||
-goto main-menu
+boot || goto main-menu
 :ubuntu64_os
 kernel ${url_ubuntu64}linux ||
 initrd ${url_ubuntu64}initrd.gz ||
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################ Avira Rescue System ################################
 :avira
 kernel ${mem} ||
@@ -276,13 +284,10 @@ boot ||
 goto main-menu
 ################################################################################################
 :info
-menu Advanced Network Bootloader v1.1
+menu Advanced Network Bootloader v1.11
 item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- + Added support for Debian
-item --gap -- + Added support for Ubuntu
-item --gap -- * Fixed crash issue after Windows failed loading
+item --gap -- + Added support for Kali Linux
 item --gap -- * Optimized some sections of code
-item --gap -- - Disabled unused code sections are
 item --gap -- --------------------------------------------------------------------------------------------------
 item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
 item --gap -- closed code, such as: "Windows" or "OSX", etc. must be loaded individually from non-public server.
