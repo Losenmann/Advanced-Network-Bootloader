@@ -1,6 +1,6 @@
 #!ipxe
 
-echo Advanced Network Bootloader v1.12
+echo Advanced Network Bootloader v1.13
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
 cpuid --ext 29 && set arch amd64 || set arch x86
@@ -142,7 +142,7 @@ item --gap --			--- Linux distribute -------------------------------------------
 	item parrot_os		ParrotOS
 #	item react_os		ReactOS
 #	item solus_os		Solus/
-#	item slax_os		Slax
+	item slax_os		Slax
 	item ubuntu_os		Ubuntu
 choose --default main-menu target && goto ${target} ||
 goto main-menu
@@ -223,6 +223,13 @@ boot || goto main-menu
 kernel ${url_parrot64}linux ||
 initrd ${url_parrot64}initrd.gz ||
 boot || goto main-menu
+################################ Slax ################################
+:slax_os
+iseq ${arch} x86 || prompt --key y ${x64} && goto slax64_os ||
+chain http://slax.org/ipxe/?arch=32bit ||
+:slax64_os
+chain http://slax.org/ipxe/?arch=64bit ||
+goto main-menu
 ################################ Debian ################################
 :debian_os
 iseq ${arch} x86 || prompt --key y ${x64} && goto debian64_os ||
@@ -294,9 +301,9 @@ boot ||
 goto main-menu
 ################################################################################################
 :info
-menu Advanced Network Bootloader v1.12
+menu Advanced Network Bootloader v1.13
 item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- + Added support for Parrot
+item --gap -- + Added support for Slax
 item --gap -- * Optimized some sections of code
 item --gap -- --------------------------------------------------------------------------------------------------
 item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
