@@ -139,7 +139,7 @@ item --gap --			--- Linux distribute -------------------------------------------
 #	item manjaro_os		Manjaro/
 #	item mint_os		Linux Mint/
 #	item opensuse_os	OpenSUSE/
-#	item parrot_os		ParrotOS/
+	item parrot_os		ParrotOS
 #	item react_os		ReactOS
 #	item solus_os		Solus/
 #	item slax_os		Slax
