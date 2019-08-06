@@ -1,6 +1,6 @@
 #!ipxe
 
-echo Advanced Network Bootloader v1.13
+echo Advanced Network Bootloader v1.14
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
 cpuid --ext 29 && set arch amd64 || set arch x86
@@ -60,7 +60,7 @@ set url_kali64 ftp://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main
 #set url_mint_mate64 http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-mate-64bit.iso
 #set url_mint_xfce http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-xfce-32bit.iso
 #set url_mint_xfce64 http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-xfce-64bit.iso
-#set url_opensuse http://download.opensuse.org/distribution/openSUSE-current/repo/oss/boot/x86_64/loader/
+set url_opensuse http://download.opensuse.org/tumbleweed/repo/oss/
 set url_parrot http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer-i386/current/images/netboot/debian-installer/i386/
 set url_parrot64 http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer-amd64/current/images/netboot/debian-installer/amd64/
 #set url_solus_budgie http://us.justin.id.au:80/iso/images/4.0/Solus-4.0-Budgie.iso
@@ -90,7 +90,7 @@ menu Welcome to Advanced Network Bootloader menu
 item --gap --			--- Network Boot ----------------------------------------------------------------------------------------
 	item winpe		Windows/
 	item linux		Linux/
-	item othos		Other OS/
+	item othos		Other-OS/
 	item tools		Tools/
 	item info		Information
 item --gap --			--- iPXE Tools: -----------------------------------------------------------------------------------------
@@ -138,8 +138,8 @@ item --gap --			--- Linux distribute -------------------------------------------
 	item kali_os		Kali Linux
 #	item manjaro_os		Manjaro/
 #	item mint_os		Linux Mint/
-#	item opensuse_os	OpenSUSE/
-	item parrot_os		ParrotOS
+	item opensuse_os	OpenSUSE - Tumbleweed
+	item parrot_os		ParrotOS - Home
 #	item react_os		ReactOS
 #	item solus_os		Solus/
 	item slax_os		Slax
@@ -212,6 +212,12 @@ boot || goto main-menu
 :kali64_os
 kernel ${url_kali64}linux ||
 initrd ${url_kali64}initrd.gz ||
+boot || goto main-menu
+################################ OpenSUSE ################################
+:opensuse_os
+kernel ${url_opensuse}boot/x86_64/loader/linux
+initrd ${url_opensuse}boot/x86_64/loader/initrd
+imgargs linux netsetup=dhcp install=${url_opensuse} initrd=initrd splash=silent showopts
 boot || goto main-menu
 ################################ ParrotOS ################################
 :parrot_os
@@ -301,9 +307,9 @@ boot ||
 goto main-menu
 ################################################################################################
 :info
-menu Advanced Network Bootloader v1.13
+menu Advanced Network Bootloader v1.14
 item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- + Added support for Slax
+item --gap -- + Added support for OpenSUSE
 item --gap -- * Optimized some sections of code
 item --gap -- --------------------------------------------------------------------------------------------------
 item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
