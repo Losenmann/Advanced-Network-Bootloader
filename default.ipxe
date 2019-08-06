@@ -1,6 +1,6 @@
 #!ipxe
 
-echo Advanced Network Bootloader v1.14
+echo Advanced Network Bootloader v1.15
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
 cpuid --ext 29 && set arch amd64 || set arch x86
@@ -32,7 +32,7 @@ set url_avira https://install.avira-update.com/package/rs_avira/unix/int/rescue-
 set url_krd https://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
 set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-900-cd.iso
 #set url_arch http://mirrors.evowise.com/archlinux/iso/latest/arch/boot/x86_64/
-#set url_centos http://mirror.centos.org/centos/7/os/x86_64/images/pxeboot/
+set url_centos http://mirror.centos.org/centos/7/os/x86_64/
 #set url_clearos http://clearos.uberglobalmirror.com/7/os/x86_64/images/pxeboot/
 set url_debian https://ftp.acc.umu.se/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/
 set url_debian64 https://ftp.acc.umu.se/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/
@@ -128,7 +128,7 @@ menu Linux boot menu
 	item main-menu		<...
 item --gap --			--- Linux distribute ----------------------------------------------------------------------------------
 #	item arch_os		Arch Linux
-#	item centos_os		CentOS
+	item centos_os		CentOS
 #	item clear_os		ClearOS
 	item debian_os		Debian
 #	item deepin_os		Deepin
@@ -181,8 +181,7 @@ initrd ${winpe}/win7/startnet.cmd ||				startnet.cmd
 initrd ${winpe}/${arch}/media/Boot/BCD ||			BCD
 initrd ${winpe}/${arch}/media/Boot/boot.sdi ||			boot.sdi
 initrd ${winpe}/${arch}/media/sources/boot.wim ||		boot.wim
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################ Windows 8.1 PE ################################
 :win8.1
 kernel ${winpe}/wimboot ||
@@ -191,8 +190,7 @@ initrd ${winpe}/win8.1/startnet.cmd ||				startnet.cmd
 initrd ${winpe}/${arch}/media/Boot/BCD ||			BCD
 initrd ${winpe}/${arch}/media/Boot/boot.sdi ||			boot.sdi
 initrd ${winpe}/${arch}/media/sources/boot.wim ||		boot.wim
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################ Windows 10 PE ################################
 :win10
 kernel ${winpe}/wimboot ||
@@ -201,8 +199,12 @@ initrd ${winpe}/win10/startnet.cmd ||				startnet.cmd
 initrd ${winpe}/${arch}/media/Boot/BCD ||			BCD
 initrd ${winpe}/${arch}/media/Boot/boot.sdi ||			boot.sdi
 initrd ${winpe}/${arch}/media/sources/boot.wim ||		boot.wim
-boot ||
-goto main-menu
+boot || goto main-menu
+################################ CentOS ################################
+:cent_os
+kernel ${url_centos}images/pxeboot/vmlinuz repo=${url_centos} initrd=initrd.img ||
+initrd ${url_centos}images/pxeboot/initrd.img ||
+boot || goto main-menu
 ################################ Kali ################################
 :kali_os
 iseq ${arch} x86 || prompt --key y ${x64} && goto kali64_os ||
@@ -307,10 +309,9 @@ boot ||
 goto main-menu
 ################################################################################################
 :info
-menu Advanced Network Bootloader v1.14
+menu Advanced Network Bootloader v1.15
 item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- + Added support for OpenSUSE
-item --gap -- * Optimized some sections of code
+item --gap -- + Added support for CentOS
 item --gap -- --------------------------------------------------------------------------------------------------
 item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
 item --gap -- closed code, such as: "Windows" or "OSX", etc. must be loaded individually from non-public server.
