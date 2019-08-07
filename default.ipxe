@@ -35,13 +35,14 @@ set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
-console --picture ${src}/auth.png
+console --picture ${src}auth.png
 :login-r login ||
 chain ftp://${username}:${password}@${auth}/src_corp/corp && goto login-ok ||
 chain ftp://${username}:${password}@${auth}/src_dev/dev && goto login-ok ||
 iseq ${username} root && iseq ${password} kernel && goto login-ok ||
 goto login-r
 :login-ok set username && set password
+
 ################################ MAIN MENU ################################
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
@@ -52,8 +53,8 @@ item --gap --			--- System Boot ------------------------------------------------
 	item winpe		Windows/
 	item linux		Linux/
 	item othos		Other-OS/
-#	item live		LiveCD/
-#	item offline		Offline Boot/
+	item live		LiveCD/
+	item offline		Offline Boot/
 	item tools		Tools/
 	item info		Information
 item --gap --			--- iPXE Tools: -----------------------------------------------------------------------------------------
