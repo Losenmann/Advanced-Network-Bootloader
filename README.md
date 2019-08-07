@@ -1,4 +1,4 @@
-# Advanced-Network-Bootloader
+# SmartBoot
 The bootloader allows you to download and install a huge variety of operating systems, as well as run some of them as live СD.
 In addition to loading the OS, you can download and run various tools and utilities. Also, logging in settings or a shell, you can check the settings or for example, check the availability of the node.
 #
