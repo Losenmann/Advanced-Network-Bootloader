@@ -60,6 +60,7 @@ item --gap --			--- System Boot ------------------------------------------------
 item --gap --			--- iPXE Tools: -----------------------------------------------------------------------------------------
 	item config		Configure iPXE
 	item shell		iPXE Shell
+	item exit		Exit
 	item reboot		Reboot
 	item power		Power Off
 choose --default out --timeout 20000 target && goto ${target} ||
@@ -160,7 +161,7 @@ boot || goto main-menu
 ################################ Windows 10 PE ################################
 :win10
 echo Protocol && read protocol && echo Server && read server && echo Username && read username && echo Password && read password ||
-set winpe ${protocol}://${username}:${password}@${server}
+set server ${protocol}://${username}:${password}@${server}
 kernel ${server}/wimboot ||
 initrd ${server}/winpeshl.ini ||
 initrd ${server}/win10/startnet.cmd ||
