@@ -161,13 +161,13 @@ boot || goto main-menu
 ################################ Windows 10 PE ################################
 :win10
 echo Protocol && read protocol && echo Server && read server && echo Username && read username && echo Password && read password ||
-set server ${protocol}://${username}:${password}@${server}
+set server ${protocol}://${username}${password}${server}
 kernel ${server}/wimboot ||
-initrd ${server}/${arch}/media/boot.wim ||
 initrd ${server}/winpeshl.ini ||
 initrd ${server}/win_10/startnet.cmd ||
 initrd ${server}/${arch}/media/Boot/BCD ||
 initrd ${server}/${arch}/media/Boot/boot.sdi ||
+initrd ${server}/${arch}/media/sources/boot.wim ||
 prompt --key y Enter && echo ${arch}
 boot || goto main-menu
 ################################ Arch Linux ################################
