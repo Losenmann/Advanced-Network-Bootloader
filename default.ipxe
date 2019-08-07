@@ -1,9 +1,8 @@
 #!ipxe
-set ver 1.18.1
-echo SmartBoot ${ver}
+set ver 1.18.2
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
-cpuid --ext 29 && set arch amd64 || set arch x86
+cpuid --ext 29 && set arch amd64 || set arch i386
 cpuid 6 && set pae yes ||
 cpuid --ecx 5 && set vmx yes ||
 cpuid --ext --ecx 2 && set svm yes ||
@@ -13,14 +12,12 @@ ntp 0.pool.ntp.org ||
 set mtu 1500
 ##### VARIABLES
 set auth 192.168.0.2:10532/boot
-set winpe /boot/winpe/
-set mem /boot/src/memdisk
-set png /boot/src/
-set tool /boot/tools/
-set x64 Your`s CPU supports 64 commands, press 'y' to install 64bits...
+set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/boot/
+set winpe ${src}winpe/
+set tool ${src}tools/
+set x64 Your`s CPU supports 64 commands, press 'Y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
 ##### Links
-set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/boot/src/
 set url_avira https://install.avira-update.com/package/rs_avira/unix/int/rescue-system.iso
 set url_krd https://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
 set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-900-cd.iso
@@ -55,8 +52,8 @@ item --gap --			--- System Boot ------------------------------------------------
 	item winpe		Windows/
 	item linux		Linux/
 	item othos		Other-OS/
-	item live		LiveCD/
-	item offline		Offline Boot/
+#	item live		LiveCD/
+#	item offline		Offline Boot/
 	item tools		Tools/
 	item info		Information
 item --gap --			--- iPXE Tools: -----------------------------------------------------------------------------------------
@@ -114,7 +111,7 @@ choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ OTHER-OS MENU ################################
 :othos
-console --x 1024 --y 768 --picture http://boot.ipxe.org/ipxe.png #${src}ohter.png
+console --x 1024 --y 768 --picture ${src}ohter.png
 menu Boot menu Other OS
 	item main-menu		<...
 item --gap --			--- OtherOS ----------------------------------------------------------------------------------
@@ -125,7 +122,7 @@ choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ UTILITIES MENU ################################
 :tools
-console --x 1024 --y 768 --picture http://boot.ipxe.org/ipxe.png #${src}utilits.png
+console --x 1024 --y 768 --picture ${src}utilits.png
 menu Boot menu Tools and Utilities
 	item main-menu		<...
 item --gap --			--- Tools & Utilities ----------------------------------------------------------------------------------
@@ -182,7 +179,7 @@ initrd ${url_clearos}images/pxeboot/initrd.img ||
 boot || goto main-menu
 ################################ Kali ################################
 :kali_os
-iseq ${arch} x86 || prompt --key y ${x64} && goto kali64_os ||
+iseq ${arch} i386 || prompt --key y ${x64} && goto kali64_os ||
 kernel ${url_kali}linux ||
 initrd ${url_kali}initrd.gz ||
 boot || goto main-menu
@@ -198,7 +195,7 @@ imgargs linux netsetup=dhcp install=${url_opensuse} initrd=initrd splash=silent 
 boot || goto main-menu
 ################################ ParrotOS ################################
 :parrot_os
-iseq ${arch} x86 || prompt --key y ${x64} && goto parrot64_os ||
+iseq ${arch} i386 || prompt --key y ${x64} && goto parrot64_os ||
 kernel ${url_parrot}linux ||
 initrd ${url_parrot}initrd.gz ||
 boot || goto main-menu
@@ -208,14 +205,13 @@ initrd ${url_parrot64}initrd.gz ||
 boot || goto main-menu
 ################################ Slax ################################
 :slax_os
-iseq ${arch} x86 || prompt --key y ${x64} && goto slax64_os ||
-chain http://slax.org/ipxe/?arch=32bit ||
+iseq ${arch} i386 || prompt --key y ${x64} && goto slax64_os ||
+chain http://slax.org/ipxe/?arch=32bit || goto main-menu
 :slax64_os
-chain http://slax.org/ipxe/?arch=64bit ||
-goto main-menu
+chain http://slax.org/ipxe/?arch=64bit || goto main-menu
 ################################ Debian ################################
 :debian_os
-iseq ${arch} x86 || prompt --key y ${x64} && goto debian64_os ||
+iseq ${arch} i386 || prompt --key y ${x64} && goto debian64_os ||
 kernel ${url_debian}linux ||
 initrd ${url_debian}initrd.gz ||
 boot || goto main-menu
@@ -225,7 +221,7 @@ initrd ${url_debian64}initrd.gz ||
 boot || goto main-menu
 ################################ Ubuntu ################################
 :ubuntu_os
-iseq ${arch} x86 || prompt --key y ${x64} && goto ubuntu64_os ||
+iseq ${arch} i386 || prompt --key y ${x64} && goto ubuntu64_os ||
 kernel ${url_ubuntu}linux ||
 initrd ${url_ubuntu}initrd.gz ||
 boot || goto main-menu
@@ -235,58 +231,51 @@ initrd ${url_ubuntu64}initrd.gz ||
 boot || goto main-menu
 ################################ Avira Rescue System ################################
 :avira
-kernel ${mem} ||
+kernel ${src}memdisk ||
 initrd ${url_avira} ||
 imgargs memdisk iso raw ||
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################ Dr.Web LiveDisk ################################
 :drweb
-kernel ${mem} ||
+kernel ${src}memdisk ||
 initrd ${url_drweb} ||
 imgargs memdisk iso raw ||
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################ Kaspersky Rescue Disk ################################
 :krd
-kernel ${mem} ||
+kernel ${src}memdisk ||
 initrd ${url_krd} ||
 imgargs memdisk iso raw ||
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################ Memtest86 ################################
 :mem86
-kernel ${mem} ||
+kernel ${src}memdisk ||
 initrd ${tool}memtest86_current.iso ||
 imgargs memdisk iso raw ||
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################ Memtest86+ ################################
 :mem86+
-kernel ${mem} ||
+kernel ${src}memdisk ||
 initrd ${tool}memtest86+_current.iso ||
 imgargs memdisk iso raw ||
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################ MHDD ################################
 :mhdd
-kernel ${mem} ||
+kernel ${src}memdisk ||
 initrd ${tool}mhdd_current.iso ||
 imgargs memdisk iso raw ||
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################ Victoria ################################
 :vcr
-kernel ${mem} ||
+kernel ${src}memdisk ||
 initrd ${tool}vcr_current.iso ||
 imgargs memdisk iso raw ||
-boot ||
-goto main-menu
+boot || goto main-menu
 ################################################################################################
 :info
 menu SmartBoot ${ver}
 item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- * Fixed background loading
+item --gap -- * Fixed minor bugs
 item --gap -- --------------------------------------------------------------------------------------------------
 item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
 item --gap -- closed code, such as: "Windows" or "OSX", etc. must be loaded individually from non-public server.
