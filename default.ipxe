@@ -1,6 +1,6 @@
 #!ipxe
 
-echo Advanced Network Bootloader v1.16
+echo Advanced Network Bootloader v1.17
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
 cpuid --ext 29 && set arch amd64 || set arch x86
@@ -127,7 +127,7 @@ console --x 1024 --y 768 --picture ${png}linux.png
 menu Linux boot menu
 	item main-menu		<...
 item --gap --			--- Linux distribute ----------------------------------------------------------------------------------
-#	item arch_os		Arch Linux
+	item arch_os		Arch Linux
 	item centos_os		CentOS
 	item clear_os		ClearOS
 	item debian_os		Debian
@@ -136,12 +136,12 @@ item --gap --			--- Linux distribute -------------------------------------------
 #	item fedora_os		Fedora
 #	item gentoo_os		Gentoo
 	item kali_os		Kali Linux
-#	item manjaro_os		Manjaro/
-#	item mint_os		Linux Mint/
+#	item manjaro_os		Manjaro
+#	item mint_os		Linux Mint
 	item opensuse_os	OpenSUSE - Tumbleweed
 	item parrot_os		ParrotOS - Home
 #	item react_os		ReactOS
-#	item solus_os		Solus/
+#	item solus_os		Solus
 	item slax_os		Slax
 	item ubuntu_os		Ubuntu
 choose --default main-menu target && goto ${target} ||
@@ -200,6 +200,10 @@ initrd ${winpe}/${arch}/media/Boot/BCD ||			BCD
 initrd ${winpe}/${arch}/media/Boot/boot.sdi ||			boot.sdi
 initrd ${winpe}/${arch}/media/sources/boot.wim ||		boot.wim
 boot || goto main-menu
+################################ Arch Linux ################################
+:arch_os
+chain https://www.archlinux.org/releng/netboot/archlinux.ipxe ||
+goto main-meni
 ################################ CentOS ################################
 :cent_os
 kernel ${url_centos}images/pxeboot/vmlinuz repo=${url_centos} initrd=initrd.img ||
@@ -314,9 +318,9 @@ boot ||
 goto main-menu
 ################################################################################################
 :info
-menu Advanced Network Bootloader v1.16
+menu Advanced Network Bootloader v1.17
 item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- + Added support for ClearOS
+item --gap -- + Added support for Arch Linux
 item --gap -- --------------------------------------------------------------------------------------------------
 item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
 item --gap -- closed code, such as: "Windows" or "OSX", etc. must be loaded individually from non-public server.
