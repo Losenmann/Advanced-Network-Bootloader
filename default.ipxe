@@ -163,12 +163,13 @@ boot || goto main-menu
 echo Protocol && read protocol && echo Server && read server && echo Username && read username && echo Password && read password ||
 set server ${protocol}://${username}:${password}@${server}
 kernel ${server}/wimboot ||
-initrd ${server}/${arch}/media/sources/boot.wim ||
+initrd ${server}/${arch}/media/boot.wim ||
 initrd ${server}/winpeshl.ini ||
 initrd ${server}/win_10/startnet.cmd ||
 initrd ${server}/${arch}/media/Boot/BCD ||
 initrd ${server}/${arch}/media/Boot/boot.sdi ||
-prompt --key y ${x64} && boot || goto main-menu
+prompt --key y Enter && echo ${arch}
+boot || goto main-menu
 ################################ Arch Linux ################################
 :arch_os
 chain https://www.archlinux.org/releng/netboot/archlinux.ipxe ||
