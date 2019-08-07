@@ -164,7 +164,7 @@ echo Protocol && read protocol && echo Server && read server && echo Username &&
 set server ${protocol}://${username}:${password}@${server}
 kernel ${server}/wimboot ||
 initrd ${server}/winpeshl.ini ||
-initrd ${server}/win10/startnet.cmd ||
+initrd ${server}/win_10/startnet.cmd ||
 initrd ${server}/${arch}/media/Boot/BCD ||
 initrd ${server}/${arch}/media/Boot/boot.sdi ||
 initrd ${server}/${arch}/media/sources/boot.wim ||
