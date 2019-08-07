@@ -13,7 +13,6 @@ set mtu 1500
 ##### VARIABLES
 set auth 192.168.0.2:10532/boot
 set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/boot/
-set winpe ${src}winpe/
 set tool ${src}tools/
 set x64 Your`s CPU supports 64 commands, press 'Y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
@@ -60,6 +59,7 @@ item --gap --			--- System Boot ------------------------------------------------
 item --gap --			--- iPXE Tools: -----------------------------------------------------------------------------------------
 	item config		Configure iPXE
 	item shell		iPXE Shell
+	item exit		Exit
 	item reboot		Reboot
 	item power		Power Off
 choose --default out --timeout 20000 target && goto ${target} ||
