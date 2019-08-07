@@ -1,6 +1,6 @@
 #!ipxe
-
-echo Advanced Network Bootloader v1.17
+set ver 1.18
+echo SmartBoot ${ver}
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
 cpuid --ext 29 && set arch amd64 || set arch x86
@@ -8,16 +8,9 @@ cpuid 6 && set pae yes ||
 cpuid --ecx 5 && set vmx yes ||
 cpuid --ext --ecx 2 && set svm yes ||
 isset ${vmx} || isset ${svm} && set hw_virt yes ||
-
-##### Wi-Fi Connection With WPA/WPA2
-echo Timeout 5 ces
-prompt --timeout 5000 --key y Connecting Wi-Fi?(y/n) && echo set SSID: && read ssid && echo set Key: && read key ||
-
-##### Getting Settings DHCP and Time
-ifconf -c dhcp || config ||
-set mtu 1500
+##### Set NTP and MTU
 ntp 0.pool.ntp.org ||
-
+set mtu 1500
 ##### VARIABLES
 set auth 192.168.0.2:10532/boot
 set winpe /boot/winpe/
@@ -26,50 +19,21 @@ set png /boot/src/
 set tool /boot/tools/
 set x64 Your`s CPU supports 64 commands, press 'y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
-
 ##### Links
 set url_avira https://install.avira-update.com/package/rs_avira/unix/int/rescue-system.iso
 set url_krd https://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
 set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-900-cd.iso
-#set url_arch http://mirrors.evowise.com/archlinux/iso/latest/arch/boot/x86_64/
 set url_centos http://mirror.centos.org/centos/7/os/x86_64/
 set url_clearos http://clearos.uberglobalmirror.com/7/os/x86_64/
+set url_opensuse http://download.opensuse.org/tumbleweed/repo/oss/
 set url_debian https://ftp.acc.umu.se/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/
 set url_debian64 https://ftp.acc.umu.se/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/
-#set url_deepin http://packages.deepin.com/deepin/dists/stable/main/source/
-#set url_element
-#set url_fedora https://mirror.linux-ia64.org/fedora/linux/releases/30/Workstation/x86_64/os/isolinux/
-#set url_gentoo http://distfiles.gentoo.org/releases/x86/autobuilds/current-install-x86-minimal/install-x86-minimal-20190719T214502Z.iso
-#set url_gentoo64 http://distfiles.gentoo.org/releases/amd64/autobuilds/current-install-amd64-minimal/install-amd64-minimal-20190721T214502Z.iso
 set url_kali64 ftp://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/installer-amd64/current/images/netboot/debian-installer/amd64/
 set url_kali64 ftp://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/installer-i386/current/images/netboot/debian-installer/i386/
-#set url_kali https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-2019.2-i386.iso
-#set url_kali64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-2019.2-amd64.iso
-#set url_kali_kde64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-kde-2019.2-amd64.iso
-#set url_kali_light https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-light-2019.2-i386.iso
-#set url_kali_light64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-light-2019.2-amd64.iso
-#set url_kali_lxde64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-lxde-2019.2-amd64.iso
-#set url_kali_mate64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-mate-2019.2-amd64.iso
-#set url_kali_xfce64 https://gemmei.ftp.acc.umu.se/mirror/kali.org/kali-images/current/kali-linux-xfce-2019.2-amd64.iso
-#set url_manjaro_gnome https://dotsrc.dl.osdn.net/osdn/storage/g/m/ma/manjaro/gnome/18.0.4/manjaro-gnome-18.0.4-stable-x86_64.iso
-#set url_manjaro_kde https://dotsrc.dl.osdn.net/osdn/storage/g/m/ma/manjaro/kde/18.0.4/manjaro-kde-18.0.4-stable-x86_64.iso
-#set url_manjaro_xfce https://dotsrc.dl.osdn.net/osdn/storage/g/m/ma/manjaro/xfce/18.0.4/manjaro-xfce-18.0.4-stable-x86_64.iso
-#set url_mint_cinn http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-cinnamon-32bit.iso
-#set url_mint_cinn64 http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-cinnamon-64bit.iso
-#set url_mint_mate http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-mate-32bit.iso
-#set url_mint_mate64 http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-mate-64bit.iso
-#set url_mint_xfce http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-xfce-32bit.iso
-#set url_mint_xfce64 http://mirrors.evowise.com/linuxmint/stable/19.1/linuxmint-19.1-xfce-64bit.iso
-set url_opensuse http://download.opensuse.org/tumbleweed/repo/oss/
 set url_parrot http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer-i386/current/images/netboot/debian-installer/i386/
 set url_parrot64 http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer-amd64/current/images/netboot/debian-installer/amd64/
-#set url_solus_budgie http://us.justin.id.au:80/iso/images/4.0/Solus-4.0-Budgie.iso
-#set url_solus_gnome http://us.justin.id.au:80/iso/images/4.0/Solus-4.0-GNOME.iso
-#set url_solus_kde http://us.justin.id.au:80/iso/images/4.0/Solus-4.0-MATE.iso
 set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-i386/current/images/netboot/ubuntu-installer/i386/
 set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/
-#set url_xcp http://xcp-ng.mirror.far.fi/netinstall/latest/
-
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
@@ -80,17 +44,18 @@ chain ftp://${username}:${password}@${auth}/src_dev/dev && goto login-ok ||
 iseq ${username} root && iseq ${password} kernel && goto login-ok ||
 goto login-r
 :login-ok set username && set password
-
 ################################ MAIN MENU ################################
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
 console --x 1024 --y 768 --picture ${png}main.png
-menu Welcome to Advanced Network Bootloader menu
+menu Welcome to SmartBoot menu
 	item out		Logout
-item --gap --			--- Network Boot ----------------------------------------------------------------------------------------
+item --gap --			--- System Boot ----------------------------------------------------------------------------------------
 	item winpe		Windows/
 	item linux		Linux/
 	item othos		Other-OS/
+	item live		LiveCD/
+	item offline		Offline Boot/
 	item tools		Tools/
 	item info		Information
 item --gap --			--- iPXE Tools: -----------------------------------------------------------------------------------------
@@ -203,7 +168,7 @@ boot || goto main-menu
 ################################ Arch Linux ################################
 :arch_os
 chain https://www.archlinux.org/releng/netboot/archlinux.ipxe ||
-goto main-meni
+goto main-menu
 ################################ CentOS ################################
 :cent_os
 kernel ${url_centos}images/pxeboot/vmlinuz repo=${url_centos} initrd=initrd.img ||
@@ -318,9 +283,10 @@ boot ||
 goto main-menu
 ################################################################################################
 :info
-menu Advanced Network Bootloader v1.17
+menu SmartBoot ${ver}
 item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- + Added support for Arch Linux
+item --gap -- - Deleted Some OS
+item --gap -- + Added the ability to auto-update the menu
 item --gap -- --------------------------------------------------------------------------------------------------
 item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
 item --gap -- closed code, such as: "Windows" or "OSX", etc. must be loaded individually from non-public server.
