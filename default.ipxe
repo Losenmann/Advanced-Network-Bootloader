@@ -38,7 +38,7 @@ set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
-console --picture ${src}/auth.png
+console --picture --keep ${src}/auth.png
 :login-r login ||
 chain ftp://${username}:${password}@${auth}/src_corp/corp && goto login-ok ||
 chain ftp://${username}:${password}@${auth}/src_dev/dev && goto login-ok ||
