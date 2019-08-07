@@ -1,5 +1,5 @@
 #!ipxe
-set ver 1.18
+set ver 1.18.1
 echo SmartBoot ${ver}
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
@@ -20,6 +20,7 @@ set tool /boot/tools/
 set x64 Your`s CPU supports 64 commands, press 'y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
 ##### Links
+set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/boot/src/
 set url_avira https://install.avira-update.com/package/rs_avira/unix/int/rescue-system.iso
 set url_krd https://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
 set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-900-cd.iso
@@ -37,7 +38,7 @@ set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
-console --picture ${png}/auth.png
+console --picture ${src}/auth.png
 :login-r login ||
 chain ftp://${username}:${password}@${auth}/src_corp/corp && goto login-ok ||
 chain ftp://${username}:${password}@${auth}/src_dev/dev && goto login-ok ||
@@ -47,7 +48,7 @@ goto login-r
 ################################ MAIN MENU ################################
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
-console --x 1024 --y 768 --picture ${png}main.png
+console --x 1024 --y 768 --picture ${src}main.png
 menu Welcome to SmartBoot menu
 	item out		Logout
 item --gap --			--- System Boot ----------------------------------------------------------------------------------------
@@ -72,7 +73,7 @@ choose --default out --timeout 20000 target && goto ${target} ||
 goto main-menu
 ################################ WINDOWS MENU ################################
 :winpe
-console --x 1024 --y 768 --picture ${png}win.png
+console --x 1024 --y 768 --picture ${src}win.png
 menu Windows boot menu
 	item main-menu		<...
 item --gap --			--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
@@ -88,7 +89,7 @@ choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ LINUX MENU ################################
 :linux
-console --x 1024 --y 768 --picture ${png}linux.png
+console --x 1024 --y 768 --picture ${src}linux.png
 menu Linux boot menu
 	item main-menu		<...
 item --gap --			--- Linux distribute ----------------------------------------------------------------------------------
@@ -113,7 +114,7 @@ choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ OTHER-OS MENU ################################
 :othos
-console --x 1024 --y 768 --picture http://boot.ipxe.org/ipxe.png #${png}ohter.png
+console --x 1024 --y 768 --picture http://boot.ipxe.org/ipxe.png #${src}ohter.png
 menu Boot menu Other OS
 	item main-menu		<...
 item --gap --			--- OtherOS ----------------------------------------------------------------------------------
@@ -124,7 +125,7 @@ choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ UTILITIES MENU ################################
 :tools
-console --x 1024 --y 768 --picture http://boot.ipxe.org/ipxe.png #${png}utilits.png
+console --x 1024 --y 768 --picture http://boot.ipxe.org/ipxe.png #${src}utilits.png
 menu Boot menu Tools and Utilities
 	item main-menu		<...
 item --gap --			--- Tools & Utilities ----------------------------------------------------------------------------------
@@ -285,8 +286,7 @@ goto main-menu
 :info
 menu SmartBoot ${ver}
 item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- - Deleted Some OS
-item --gap -- + Added the ability to auto-update the menu
+item --gap -- * Fixed background loading
 item --gap -- --------------------------------------------------------------------------------------------------
 item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
 item --gap -- closed code, such as: "Windows" or "OSX", etc. must be loaded individually from non-public server.
