@@ -11,7 +11,7 @@ isset ${vmx} || isset ${svm} && set hw_virt yes ||
 ntp 0.pool.ntp.org ||
 set mtu 1500
 ##### VARIABLES
-set auth 192.168.0.2:10532/boot
+set auth 176.197.115.250:10532/boot
 set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/boot/
 set winpe ${src}winpe/
 set tool ${src}tools/
