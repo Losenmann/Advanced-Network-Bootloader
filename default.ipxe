@@ -11,7 +11,6 @@ isset ${vmx} || isset ${svm} && set hw_virt yes ||
 ntp 0.pool.ntp.org ||
 set mtu 1500
 ##### VARIABLES
-set auth 176.197.115.250:10532/boot
 set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/boot/
 set winpe ${src}winpe/
 set tool ${src}tools/
@@ -45,7 +44,7 @@ goto login-r
 ################################ MAIN MENU ################################
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
-console --x 1024 --y 768 --picture #${src}main.png
+console --x 1024 --y 768 --picture ${src}main.png
 menu Welcome to SmartBoot menu
 	item out		Logout
 item --gap --			--- System Boot ----------------------------------------------------------------------------------------
