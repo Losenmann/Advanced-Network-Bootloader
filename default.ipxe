@@ -48,7 +48,7 @@ goto login-r
 ################################ MAIN MENU ################################
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
-console --x 1024 --y 768 --picture --keep #${src}main.png
+console --x 1024 --y 768 --keep #${src}main.png
 menu Welcome to SmartBoot menu
 	item out		Logout
 item --gap --			--- System Boot ----------------------------------------------------------------------------------------
