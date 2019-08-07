@@ -159,13 +159,14 @@ initrd ${winpe}/${arch}/media/sources/boot.wim ||
 boot || goto main-menu
 ################################ Windows 10 PE ################################
 :win10
-echo Specify the address of the PXE server && read winpe ||
-kernel ${winpe}/wimboot ||
-initrd ${winpe}/winpeshl.ini ||
-initrd ${winpe}/win10/startnet.cmd ||
-initrd ${winpe}/${arch}/media/Boot/BCD ||
-initrd ${winpe}/${arch}/media/Boot/boot.sdi ||
-initrd ${winpe}/${arch}/media/sources/boot.wim ||
+echo Protocol && read protocol && echo Server && read server && echo Username && read username && echo Password && read password ||
+set winpe ${protocol}://${username}:${password}@${server}
+kernel ${server}/wimboot ||
+initrd ${server}/winpeshl.ini ||
+initrd ${server}/win10/startnet.cmd ||
+initrd ${server}/${arch}/media/Boot/BCD ||
+initrd ${server}/${arch}/media/Boot/boot.sdi ||
+initrd ${server}/${arch}/media/sources/boot.wim ||
 boot || goto main-menu
 ################################ Arch Linux ################################
 :arch_os
