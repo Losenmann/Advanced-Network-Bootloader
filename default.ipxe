@@ -139,6 +139,7 @@ choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ Windows 7 PE ################################
 :win7
+echo Specify Authorization Server && read winpe ||
 kernel ${winpe}/wimboot ||
 initrd ${winpe}/winpeshl.ini ||					winpeshl.ini
 initrd ${winpe}/win7/startnet.cmd ||				startnet.cmd
