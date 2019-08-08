@@ -13,7 +13,6 @@ set mtu 1500
 ##### VARIABLES
 set auth 192.168.0.2:10532/boot
 set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/boot/
-set winpe ${src}winpe/
 set tool ${src}tools/
 set x64 Your`s CPU supports 64 commands, press 'Y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
@@ -141,35 +140,30 @@ choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ Windows 7 PE ################################
 :win7
-echo Specify the address of the PXE server && read winpe ||
-kernel ${winpe}/wimboot || goto main-menu
-initrd ${winpe}/winpeshl.ini || goto main-menu
-initrd ${winpe}/win7/startnet.cmd || goto main-menu
-initrd ${winpe}/${arch}/media/Boot/BCD || goto main-menu
-initrd ${winpe}/${arch}/media/Boot/boot.sdi || goto main-menu
-initrd ${winpe}/${arch}/media/sources/boot.wim || goto main-menu
+kernel ${url_winpe}wimboot
+initrd ${url_winpe}winpeshl.ini					winpeshl.ini
+initrd ${url_winpe}win7/startnet.cmd				startnet.cmd
+initrd ${url_winpe}${arch}/media/Boot/BCD			BCD
+initrd ${url_winpe}${arch}/media/Boot/boot.sdi			boot.sdi
+initrd ${url_winpe}${arch}/media/sources/boot.wim		boot.wim
 boot || goto main-menu
 ################################ Windows 8.1 PE ################################
 :win8.1
-echo Specify the address of the PXE server && read winpe ||
-kernel ${winpe}/wimboot ||
-initrd ${winpe}/winpeshl.ini ||
-initrd ${winpe}/win8.1/startnet.cmd ||
-initrd ${winpe}/${arch}/media/Boot/BCD ||
-initrd ${winpe}/${arch}/media/Boot/boot.sdi ||
-initrd ${winpe}/${arch}/media/sources/boot.wim ||
+kernel ${url_winpe}wimboot
+initrd ${url_winpe}winpeshl.ini					winpeshl.ini
+initrd ${url_winpe}win8.1/startnet.cmd				startnet.cmd
+initrd ${url_winpe}${arch}/media/Boot/BCD			BCD
+initrd ${url_winpe}${arch}/media/Boot/boot.sdi			boot.sdi
+initrd ${url_winpe}${arch}/media/sources/boot.wim		boot.wim
 boot || goto main-menu
 ################################ Windows 10 PE ################################
 :win10
-echo Protocol && read protocol && echo Server && read server && echo Username && read username && echo Password && read password ||
-set server ${protocol}://${username}${password}${server}
-kernel ${server}/wimboot ||
-initrd ${server}/winpeshl.ini ||
-initrd ${server}/win_10/startnet.cmd ||
-initrd ${server}/${arch}/media/Boot/BCD ||
-initrd ${server}/${arch}/media/Boot/boot.sdi ||
-initrd ${server}/${arch}/media/sources/boot.wim ||
-prompt --key y Enter && echo ${arch}
+kernel ${url_winpe}wimboot
+initrd ${url_winpe}winpeshl.ini					winpeshl.ini
+initrd ${url_winpe}win10/startnet.cmd				startnet.cmd
+initrd ${url_winpe}${arch}/media/Boot/BCD			BCD
+initrd ${url_winpe}${arch}/media/Boot/boot.sdi			boot.sdi
+initrd ${url_winpe}${arch}/media/sources/boot.wim		boot.wim
 boot || goto main-menu
 ################################ Arch Linux ################################
 :arch_os
