@@ -102,10 +102,9 @@ set protocol ${selected}
 :http echo Server address* && read url_winpe && goto winpe_a || goto winpe
 :ftp echo Server address* && read url_winpe && goto winpe_a || goto winpe
 :winpe_a
-set username && set password
-echo Enter username && read username && isset ${username} && set username ${username}: ||
-echo Enter password && read password && isset ${password} && set password ${password}@ ||
-set url_winpe ${protocol}${username}${password}${url_winpe}
+echo Enter username && read user && isset ${user} && set username ${user}: ||
+echo Enter password && read pass && isset ${pass} && set password ${pass}@ ||
+set url_winpe ${protocol}${user}${pass}${url_winpe}
 goto winpe
 ################################ LINUX MENU ################################
 :linux
