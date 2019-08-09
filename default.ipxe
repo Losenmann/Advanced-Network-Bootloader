@@ -36,8 +36,8 @@ set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd
 colour --basic 0 7 && colour --basic 7 6
 console --picture ${src}auth.png
 :login-r login ||
-boot ftp://${username}:${password}@${auth}/cust  sync && goto login-ok || console
-boot ftp://${username}:${password}@${auth}/dev  sync && goto login-ok || console
+boot ftp://${username}:${password}@${auth}/cust && goto login-ok || console
+boot ftp://${username}:${password}@${auth}/dev && goto login-ok || console
 iseq ${username} root && iseq ${password} kernel && console && goto login-ok || console
 goto login-r
 :login-ok
@@ -103,8 +103,9 @@ set protocol ${selected}
 :http echo Server address* && read url_winpe && goto winpe_a || goto winpe
 :ftp echo Server address* && read url_winpe && goto winpe_a || goto winpe
 :winpe_a
-echo Enter username && read user && isset ${user} && set username ${user}: ||
-echo Enter password && read pass && isset ${pass} && set password ${pass}@ ||
+set username && set password
+echo Enter username && read user && isset ${username} && set username ${username}: ||
+echo Enter password && read pass && isset ${password} && set password ${password}@ ||
 set url_winpe ${protocol}${user}${pass}${url_winpe}
 goto winpe
 ################################ LINUX MENU ################################
