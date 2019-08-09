@@ -42,6 +42,7 @@ iseq ${username} root && iseq ${password} kernel && console && goto login-ok || 
 goto login-r
 :login-ok
 set username && set password && set auth
+imgfree
 ################################ MAIN MENU ################################
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
