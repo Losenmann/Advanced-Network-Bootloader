@@ -160,30 +160,30 @@ choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ Windows 7 PE ################################
 :win7
-kernel ${url_winpe}wimboot
-initrd ${url_winpe}winpeshl.ini winpeshl.ini
-initrd ${url_winpe}win7/startnet.cmd startnet.cmd
-initrd ${url_winpe}${arch}/media/Boot/BCD BCD
-initrd ${url_winpe}${arch}/media/Boot/boot.sdi boot.sdi
-initrd ${url_winpe}${arch}/media/sources/boot.wim boot.wim
+kernel ${url_winpe}/wimboot
+initrd ${url_winpe}/winpeshl.ini winpeshl.ini
+initrd ${url_winpe}/win7/startnet.cmd startnet.cmd
+initrd ${url_winpe}/${arch}/media/Boot/BCD BCD
+initrd ${url_winpe}/${arch}/media/Boot/boot.sdi boot.sdi
+initrd ${url_winpe}/${arch}/media/sources/boot.wim boot.wim
 boot || goto main-menu
 ################################ Windows 8.1 PE ################################
 :win8.1
-kernel ${url_winpe}wimboot
-initrd ${url_winpe}winpeshl.ini winpeshl.ini
-initrd ${url_winpe}win8.1/startnet.cmd startnet.cmd
-initrd ${url_winpe}${arch}/media/Boot/BCD BCD
-initrd ${url_winpe}${arch}/media/Boot/boot.sdi boot.sdi
-initrd ${url_winpe}${arch}/media/sources/boot.wim boot.wim
+kernel ${url_winpe}/wimboot
+initrd ${url_winpe}/winpeshl.ini winpeshl.ini
+initrd ${url_winpe}/win8.1/startnet.cmd startnet.cmd
+initrd ${url_winpe}/${arch}/media/Boot/BCD BCD
+initrd ${url_winpe}/${arch}/media/Boot/boot.sdi boot.sdi
+initrd ${url_winpe}/${arch}/media/sources/boot.wim boot.wim
 boot || goto main-menu
 ################################ Windows 10 PE ################################
 :win10
-kernel ${url_winpe}wimboot
-initrd ${url_winpe}winpeshl.ini winpeshl.ini
-initrd ${url_winpe}win10/startnet.cmd startnet.cmd
-initrd ${url_winpe}${arch}/media/Boot/BCD BCD
-initrd ${url_winpe}${arch}/media/Boot/boot.sdi boot.sdi
-initrd ${url_winpe}${arch}/media/sources/boot.wim boot.wim
+kernel ${url_winpe}/wimboot
+initrd ${url_winpe}/winpeshl.ini winpeshl.ini
+initrd ${url_winpe}/win10/startnet.cmd startnet.cmd
+initrd ${url_winpe}/${arch}/media/Boot/BCD BCD
+initrd ${url_winpe}/${arch}/media/Boot/boot.sdi boot.sdi
+initrd ${url_winpe}/${arch}/media/sources/boot.wim boot.wim
 boot || goto main-menu
 ################################ Arch Linux ################################
 :archos
