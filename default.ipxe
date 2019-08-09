@@ -42,9 +42,9 @@ iseq ${username} root && iseq ${password} kernel && console && goto login-ok || 
 goto login-r
 :login-ok
 set username && set password && set auth
-imgfree
 ################################ MAIN MENU ################################
 :main-menu
+imgfree
 colour --basic 9 7 && colour --basic 9 6
 console --x 1024 --y 768 --picture ${src}main.png
 menu Welcome to SmartBoot menu
