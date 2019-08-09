@@ -184,7 +184,8 @@ initrd ${url_winpe}/win10/startnet.cmd startnet.cmd
 initrd ${url_winpe}/${arch}/media/Boot/BCD BCD
 initrd ${url_winpe}/${arch}/media/Boot/boot.sdi boot.sdi
 initrd ${url_winpe}/${arch}/media/sources/boot.wim boot.wim
-boot || goto main-menu
+chain
+goto main-menu
 ################################ Arch Linux ################################
 :archos
 chain https://www.archlinux.org/releng/netboot/archlinux.ipxe ||
