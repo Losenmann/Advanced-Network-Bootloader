@@ -105,8 +105,8 @@ set protocol ${selected}
 :winpe_a
 set username && set password
 echo Enter username && read username && isset ${username} && set username ${username}: ||
-echo Enter password && read passname && isset ${password} && set password ${password}@ ||
-set url_winpe ${protocol}${user}${pass}${url_winpe}
+echo Enter password && read password && isset ${password} && set password ${password}@ ||
+set url_winpe ${protocol}${username}${password}${url_winpe}
 goto winpe
 ################################ LINUX MENU ################################
 :linux
