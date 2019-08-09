@@ -11,7 +11,7 @@ isset ${vmx} || isset ${svm} && set hw_virt yes ||
 ntp 0.pool.ntp.org ||
 set mtu 1500
 ##### VARIABLES
-set auth 192.168.0.2:10532/boot
+#set auth <...>
 set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/boot/
 set tool ${src}tools/
 set x64 Your`s CPU supports 64 commands, press 'Y' to install 64bits...
@@ -36,12 +36,11 @@ set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd
 colour --basic 0 7 && colour --basic 7 6
 console --picture ${src}auth.png
 :login-r login ||
-chain ftp://${username}:${password}@${auth}/src_corp/corp && goto login-ok ||
-chain ftp://${username}:${password}@${auth}/src_dev/dev && goto login-ok ||
-iseq ${username} root && iseq ${password} kernel && console && goto login-ok ||
+chain ftp://${username}:${password}@${auth}/src_corp/corp && goto login-ok || console
+chain ftp://${username}:${password}@${auth}/src_dev/dev && goto login-ok || console
+iseq ${username} root && iseq ${password} kernel && console && goto login-ok || console
 goto login-r
 :login-ok set username && set password
-
 ################################ MAIN MENU ################################
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
@@ -93,7 +92,8 @@ menu WinPE boot server
 item --gap --		--- Server protocol
 	item http://	HTTP
 	item ftp://	FTP
-	item tftp	TFTP
+#	item tftp	TFTP
+#	item nfs	NFS
 choose selected || goto winpe
 iseq ${selected} winpe && set selected && goto winpe ||
 set protocol ${selected}
