@@ -38,7 +38,7 @@ console --picture ${src}auth.png
 :login-r login ||
 chain ftp://${username}:${password}@${auth}/src_corp/corp && goto login-ok ||
 chain ftp://${username}:${password}@${auth}/src_dev/dev && goto login-ok ||
-iseq ${username} root && iseq ${password} kernel && goto login-ok ||
+iseq ${username} root && iseq ${password} kernel && console && goto login-ok ||
 goto login-r
 :login-ok set username && set password
 
@@ -47,21 +47,21 @@ goto login-r
 colour --basic 9 7 && colour --basic 9 6
 console --x 1024 --y 768 --picture ${src}main.png
 menu Welcome to SmartBoot menu
-	item out		Logout
+	item out	Logout
 item --gap --			--- System Boot ----------------------------------------------------------------------------------------
-	item winpe		Windows/
-	item linux		Linux/
-	item othos		Other-OS/
-	item live		LiveCD/
-	item offline		Offline Boot/
-	item tools		Tools/
-	item info		Information
-item --gap --			--- iPXE Tools: -----------------------------------------------------------------------------------------
-	item config		Configure iPXE
-	item shell		iPXE Shell
-	item exit		Exit
-	item reboot		Reboot
-	item power		Power Off
+	item winpe	Windows/
+	item linux	Linux/
+	item othos	Other-OS/
+	item tools	Tools/
+	item live	LiveCD/
+	item offline	Offline Boot/
+	item info	Information
+item --gap --		--- iPXE Tools: -----------------------------------------------------------------------------------------
+	item config	Configure iPXE
+	item shell	iPXE Shell
+	item exit	Exit
+	item reboot	Reboot
+	item power	Power Off
 choose --default out --timeout 20000 target && goto ${target} ||
 :config config && goto main-menu
 :out goto login
@@ -74,160 +74,179 @@ goto main-menu
 :winpe
 console --x 1024 --y 768 --picture ${src}win.png
 menu Windows boot menu
-	item main-menu		<...
-item --gap --			--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
-#	item winxp		Windows XP
-#	item winvista		Windows Vista
-	item win7		Windows 7
-	item win8.1		Windows 8.1
-	item win10		Windows 10
-#	item win2008		Windows Server 2008
-#	item win2012		Windows Server 2012
-#	item win2016		Windows Server 2016
+	item main-menu	<...
+item --gap --		--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
+#	item winxp	Windows XP
+#	item winvista	Windows Vista
+	item win7	Windows 7
+	item win8.1	Windows 8.1
+	item win10	Windows 10
+#	item win2008	Windows Server 2008
+#	item win2012	Windows Server 2012
+#	item win2016	Windows Server 2016
 choose --default main-menu target && goto ${target} ||
 goto main-menu
+################################ Server WinPE ################################
+:winpe_s
+menu WinPE boot server
+	item winpe	<...
+item --gap --		--- Server protocol
+	item http://	HTTP
+	item ftp://	FTP
+	item tftp	TFTP
+choose selected || goto winpe
+iseq ${selected} winpe && set selected && goto winpe ||
+set protocol ${selected}
+:http echo Server address* && read url_winpe && goto winpe_a || goto winpe
+:ftp echo Server address* && read url_winpe && goto winpe_a || goto winpe
+:winpe_a
+set username && set password
+echo Enter username && read username && isset ${username} && set username ${username}: ||
+echo Enter password && read password && isset ${password} && set password ${password}@ ||
+set url_winpe ${protocol}${username}${password}${url_winpe}
+goto winpe
 ################################ LINUX MENU ################################
 :linux
 console --x 1024 --y 768 --picture ${src}linux.png
 menu Linux boot menu
-	item main-menu		<...
-item --gap --			--- Linux distribute ----------------------------------------------------------------------------------
-	item arch_os		Arch Linux
-	item centos_os		CentOS
-	item clear_os		ClearOS
-	item debian_os		Debian
-#	item deepin_os		Deepin
-#	item element_os		ElementaryOS
-#	item fedora_os		Fedora
-#	item gentoo_os		Gentoo
-	item kali_os		Kali Linux
-#	item manjaro_os		Manjaro
-#	item mint_os		Linux Mint
-	item opensuse_os	OpenSUSE - Tumbleweed
-	item parrot_os		ParrotOS - Home
-#	item react_os		ReactOS
-#	item solus_os		Solus
-	item slax_os		Slax
-	item ubuntu_os		Ubuntu
+	item main-menu	<...
+item --gap --		--- Linux distribute ----------------------------------------------------------------------------------
+	item archos	Arch Linux
+	item centos	CentOS
+	item clearos	ClearOS
+	item debian	Debian
+#	item deepin	Deepin
+#	item element	ElementaryOS
+#	item fedora	Fedora
+#	item gentoo	Gentoo
+	item kali	Kali Linux
+#	item manjaro	Manjaro
+#	item mint	Linux Mint
+	item opensuse	OpenSUSE - Tumbleweed
+	item parrot	ParrotOS - Home
+#	item react	ReactOS
+#	item solus	Solus
+	item slax	Slax
+	item ubuntu	Ubuntu
 choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ OTHER-OS MENU ################################
 :othos
 console --x 1024 --y 768 --picture ${src}ohter.png
 menu Boot menu Other OS
-	item main-menu		<...
-item --gap --			--- OtherOS ----------------------------------------------------------------------------------
-#	item android_os		Android-x86
-#	item chrome_os		ChromiumOS
-#	item xcp_os		Hypervisor XCP-ng
+	item main-menu	<...
+item --gap --		--- OtherOS ----------------------------------------------------------------------------------
+#	item android_os	Android-x86
+#	item chrome_os	ChromiumOS
+#	item xcp_os	Hypervisor XCP-ng
 choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ UTILITIES MENU ################################
 :tools
 console --x 1024 --y 768 --picture ${src}utilits.png
 menu Boot menu Tools and Utilities
-	item main-menu		<...
-item --gap --			--- Tools & Utilities ----------------------------------------------------------------------------------
-	item avira		Avira Rescue System
-	item drweb		Dr.Web LiveDisk
-	item krd		Kaspersky Rescue Disk	
-	item mem86		Memtest86
-	item mem86+		Memtest86+
-	item vcr		Victoria
-	item mhdd		MHDD
-#	item wint		WinPE Tools (Iperf/CPU-Z/FurMark)
+	item main-menu	<...
+item --gap --		--- Tools & Utilities ----------------------------------------------------------------------------------
+	item avira	Avira Rescue System
+	item drweb	Dr.Web LiveDisk
+	item krd	Kaspersky Rescue Disk	
+	item mem86	Memtest86
+	item mem86+	Memtest86+
+	item vcr	Victoria
+	item mhdd	MHDD
+#	item wint	WinPE Tools (Iperf/CPU-Z/FurMark)
 choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ Windows 7 PE ################################
 :win7
 kernel ${url_winpe}wimboot
-initrd ${url_winpe}winpeshl.ini					winpeshl.ini
-initrd ${url_winpe}win7/startnet.cmd				startnet.cmd
-initrd ${url_winpe}${arch}/media/Boot/BCD			BCD
-initrd ${url_winpe}${arch}/media/Boot/boot.sdi			boot.sdi
-initrd ${url_winpe}${arch}/media/sources/boot.wim		boot.wim
+initrd ${url_winpe}winpeshl.ini winpeshl.ini
+initrd ${url_winpe}win7/startnet.cmd startnet.cmd
+initrd ${url_winpe}${arch}/media/Boot/BCD BCD
+initrd ${url_winpe}${arch}/media/Boot/boot.sdi boot.sdi
+initrd ${url_winpe}${arch}/media/sources/boot.wim boot.wim
 boot || goto main-menu
 ################################ Windows 8.1 PE ################################
 :win8.1
 kernel ${url_winpe}wimboot
-initrd ${url_winpe}winpeshl.ini					winpeshl.ini
-initrd ${url_winpe}win8.1/startnet.cmd				startnet.cmd
-initrd ${url_winpe}${arch}/media/Boot/BCD			BCD
-initrd ${url_winpe}${arch}/media/Boot/boot.sdi			boot.sdi
-initrd ${url_winpe}${arch}/media/sources/boot.wim		boot.wim
+initrd ${url_winpe}winpeshl.ini winpeshl.ini
+initrd ${url_winpe}win8.1/startnet.cmd startnet.cmd
+initrd ${url_winpe}${arch}/media/Boot/BCD BCD
+initrd ${url_winpe}${arch}/media/Boot/boot.sdi boot.sdi
+initrd ${url_winpe}${arch}/media/sources/boot.wim boot.wim
 boot || goto main-menu
 ################################ Windows 10 PE ################################
 :win10
 kernel ${url_winpe}wimboot
-initrd ${url_winpe}winpeshl.ini					winpeshl.ini
-initrd ${url_winpe}win10/startnet.cmd				startnet.cmd
-initrd ${url_winpe}${arch}/media/Boot/BCD			BCD
-initrd ${url_winpe}${arch}/media/Boot/boot.sdi			boot.sdi
-initrd ${url_winpe}${arch}/media/sources/boot.wim		boot.wim
+initrd ${url_winpe}winpeshl.ini winpeshl.ini
+initrd ${url_winpe}win10/startnet.cmd startnet.cmd
+initrd ${url_winpe}${arch}/media/Boot/BCD BCD
+initrd ${url_winpe}${arch}/media/Boot/boot.sdi boot.sdi
+initrd ${url_winpe}${arch}/media/sources/boot.wim boot.wim
 boot || goto main-menu
 ################################ Arch Linux ################################
-:arch_os
+:archos
 chain https://www.archlinux.org/releng/netboot/archlinux.ipxe ||
 goto main-menu
 ################################ CentOS ################################
-:cent_os
+:centos
 kernel ${url_centos}images/pxeboot/vmlinuz repo=${url_centos} initrd=initrd.img ||
 initrd ${url_centos}images/pxeboot/initrd.img ||
 boot || goto main-menu
 ################################ ClearOS ################################
-:clear_os
+:clearos
 kernel ${url_clearos}images/pxeboot/vmlinuz repo=${url_clearos} initrd=initrd.img ||
 initrd ${url_clearos}images/pxeboot/initrd.img ||
 boot || goto main-menu
 ################################ Kali ################################
-:kali_os
-iseq ${arch} x86 || prompt --key y ${x64} && goto kali64_os ||
+:kali
+iseq ${arch} x86 || prompt --key y ${x64} && goto kali64 ||
 kernel ${url_kali}linux ||
 initrd ${url_kali}initrd.gz ||
 boot || goto main-menu
-:kali64_os
+:kali64
 kernel ${url_kali64}linux ||
 initrd ${url_kali64}initrd.gz ||
 boot || goto main-menu
 ################################ OpenSUSE ################################
-:opensuse_os
+:opensuse
 kernel ${url_opensuse}boot/x86_64/loader/linux
 initrd ${url_opensuse}boot/x86_64/loader/initrd
 imgargs linux netsetup=dhcp install=${url_opensuse} initrd=initrd splash=silent showopts
 boot || goto main-menu
 ################################ ParrotOS ################################
-:parrot_os
-iseq ${arch} x86 || prompt --key y ${x64} && goto parrot64_os ||
+:parrot
+iseq ${arch} x86 || prompt --key y ${x64} && goto parrot64 ||
 kernel ${url_parrot}linux ||
 initrd ${url_parrot}initrd.gz ||
 boot || goto main-menu
-:parrot64_os
+:parrot64
 kernel ${url_parrot64}linux ||
 initrd ${url_parrot64}initrd.gz ||
 boot || goto main-menu
 ################################ Slax ################################
-:slax_os
-iseq ${arch} x86 || prompt --key y ${x64} && goto slax64_os ||
+:slax
+iseq ${arch} x86 || prompt --key y ${x64} && goto slax64 ||
 chain http://slax.org/ipxe/?arch=32bit || goto main-menu
-:slax64_os
+:slax64
 chain http://slax.org/ipxe/?arch=64bit || goto main-menu
 ################################ Debian ################################
-:debian_os
-iseq ${arch} x86 || prompt --key y ${x64} && goto debian64_os ||
+:debian
+iseq ${arch} x86 || prompt --key y ${x64} && goto debian64 ||
 kernel ${url_debian}linux ||
 initrd ${url_debian}initrd.gz ||
 boot || goto main-menu
-:debian64_os
+:debian64
 kernel ${url_debian64}linux ||
 initrd ${url_debian64}initrd.gz ||
 boot || goto main-menu
 ################################ Ubuntu ################################
-:ubuntu_os
-iseq ${arch} x86 || prompt --key y ${x64} && goto ubuntu64_os ||
+:ubuntu
+iseq ${arch} x86 || prompt --key y ${x64} && goto ubuntu64 ||
 kernel ${url_ubuntu}linux ||
 initrd ${url_ubuntu}initrd.gz ||
 boot || goto main-menu
-:ubuntu64_os
+:ubuntu64
 kernel ${url_ubuntu64}linux ||
 initrd ${url_ubuntu64}initrd.gz ||
 boot || goto main-menu
