@@ -19,7 +19,6 @@ set err Error, your`s CPU not support 64-bit commands
 ##### Delete data from variables
 set url_winpe && set protocol && selected
 set username && set password
-set 
 ##### Links
 set url_avira https://install.avira-update.com/package/rs_avira/unix/int/rescue-system.iso
 set url_krd https://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
