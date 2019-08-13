@@ -60,7 +60,7 @@ item --gap --			--- System Boot ------------------------------------------------
 item --gap --		--- iPXE Tools: -----------------------------------------------------------------------------------------
 	item config	Configure iPXE
 	item shell	iPXE Shell
-	item exit	Exit
+	item exit	Exit & Refresh Menu
 	item reboot	Reboot
 	item power	Power Off
 choose --default out --timeout 20000 target && goto ${target} ||
@@ -69,7 +69,7 @@ choose --default out --timeout 20000 target && goto ${target} ||
 :reboot reboot
 :power poweroff
 :exit exit
-:shell shell
+:reload 
 goto main-menu
 ################################ WINDOWS MENU ################################
 :winpe
@@ -95,13 +95,14 @@ menu WinPE boot server
 item --gap --		--- Server protocol
 	item http://	HTTP
 	item ftp://	FTP
-#	item tftp	TFTP
+	item tftp	TFTP
 #	item nfs	NFS
 choose selected || goto winpe
 iseq ${selected} winpe && set selected && goto winpe ||
 set protocol ${selected}
 :http echo Server address* && read url_winpe && goto winpe_a || goto winpe
 :ftp echo Server address* && read url_winpe && goto winpe_a || goto winpe
+:tftp set protocol && goto winpe
 :winpe_a
 echo Enter Username && read username ||
 echo Enter Password && read password ||
