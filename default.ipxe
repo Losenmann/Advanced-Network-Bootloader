@@ -51,7 +51,7 @@ console --x 1024 --y 768 --picture ${src}main.png --keep
 :main-menu_a imgfree
 menu Welcome to SmartBoot menu
 	item out	Logout
-item --gap --			--- System Boot ----------------------------------------------------------------------------------------
+item --gap --		--- System Boot ----------------------------------------------------------------------------------------
 	item winpe	Windows/
 	item linux	Linux/
 	item othos	Other-OS/
@@ -81,7 +81,8 @@ menu Windows boot menu
 	item main-menu	<...
 item --gap --		--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
 item --gap Selected server: ${url_winpe}
-	item winpe_s		Add Server WinPE
+	item winpe_s	Add Server WinPE
+	item winpe_clr	Clear Server WinPE
 #	isset ${url_winpe} && item winxp Windows XP || item --gap Windows XP
 #	isset ${url_winpe} && item winvista Windows Vist || item --gap Windows Vista
 	isset ${url_winpe} && item win7 Windows 7 || item --gap Windows 7
@@ -91,6 +92,7 @@ item --gap Selected server: ${url_winpe}
 #	isset ${url_winpe} && item win2012 Windows Server 2012 || item --gap Windows Server 2012
 #	isset ${url_winpe} && item win2016 Windows Server 2016 || item --gap Windows Server 2016
 choose --default main-menu target && goto ${target} ||
+:winpe_clr set username && set password && set url_winpe && set protocol
 goto main-menu
 ################################ Server WinPE ################################
 :winpe_s
@@ -116,7 +118,7 @@ echo Enter Password && read password ||
 isset ${username} && set username ${username}: ||
 isset ${password} && set password ${password}@ ||
 set url_winpe ${protocol}${username}${password}${url_winpe}
-goto winpe
+goto winpe_c
 ################################ LINUX MENU ################################
 :linux
 console --x 1024 --y 768 --picture ${src}linux.png
