@@ -17,7 +17,9 @@ set tool ${src}tools/
 set x64 Your`s CPU supports 64 commands, press 'Y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
 ##### Delete data from variables
-set url_winpe && set protocol
+set url_winpe && set protocol && selected
+set username && set password
+set 
 ##### Links
 set url_avira https://install.avira-update.com/package/rs_avira/unix/int/rescue-system.iso
 set url_krd https://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
@@ -91,24 +93,24 @@ item --gap Selected server: ${url_winpe}
 #	isset ${url_winpe} && item win2008 Windows Server 2008 || item --gap Windows Server 2008
 #	isset ${url_winpe} && item win2012 Windows Server 2012 || item --gap Windows Server 2012
 #	isset ${url_winpe} && item win2016 Windows Server 2016 || item --gap Windows Server 2016
-choose --default main-menu target && goto ${target} ||
+choose --default main-menu target && goto ${target} || goto main-menu_c
 :winpe_clr set username && set password && set url_winpe && set protocol
-goto main-menu
+goto winpe_c
 ################################ Server WinPE ################################
 :winpe_s
 menu WinPE boot server
 	item winpe	<...
 item --gap --		--- Server protocol
-	item http://	HTTP
 	item https://	HTTPS
+	item http://	HTTP
 	item ftp://	FTP
 	item tftp	TFTP
 	item nfs	NFS
 choose selected || goto winpe
 iseq ${selected} winpe && set selected && goto winpe ||
 set protocol ${selected}
-iseq ${selected} http:// && echo Server address* && read url_winpe && goto winpe_a ||
 iseq ${selected} https:// && echo Server address* && read url_winpe && goto winpe_a ||
+iseq ${selected} http:// && echo Server address* && read url_winpe && goto winpe_a ||
 iseq ${selected} ftp:// && echo Server address* && read url_winpe && goto winpe_a ||
 iseq ${selected} tftp && set url_winpe ${next-server} && goto winpe_c ||
 iseq ${selected} nfs && set url_winpe ${next-server} && goto winpe_c ||
@@ -122,6 +124,7 @@ goto winpe_c
 ################################ LINUX MENU ################################
 :linux
 console --x 1024 --y 768 --picture ${src}linux.png
+:linux_c
 menu Linux boot menu
 	item main-menu	<...
 item --gap --		--- Linux distribute ----------------------------------------------------------------------------------
@@ -143,10 +146,11 @@ item --gap --		--- Linux distribute --------------------------------------------
 	item slax	Slax
 	item ubuntu	Ubuntu
 choose --default main-menu target && goto ${target} ||
-goto main-menu
+goto linux_c
 ################################ OTHER-OS MENU ################################
 :othos
 console --x 1024 --y 768 --picture ${src}ohter.png
+:othos_c
 menu Boot menu Other OS
 	item main-menu	<...
 item --gap --		--- OtherOS ----------------------------------------------------------------------------------
@@ -154,10 +158,11 @@ item --gap --		--- OtherOS -----------------------------------------------------
 #	item chrome_os	ChromiumOS
 #	item xcp_os	Hypervisor XCP-ng
 choose --default main-menu target && goto ${target} ||
-goto main-menu
+goto othos_c
 ################################ UTILITIES MENU ################################
 :tools
 console --x 1024 --y 768 --picture ${src}tools.png
+:tools_c
 menu Boot menu Tools and Utilities
 	item main-menu	<...
 item --gap --		--- Tools & Utilities ----------------------------------------------------------------------------------
@@ -170,7 +175,7 @@ item --gap --		--- Tools & Utilities -------------------------------------------
 	item mhdd	MHDD
 #	item wint	WinPE Tools (Iperf/CPU-Z/FurMark)
 choose --default main-menu target && goto ${target} ||
-goto main-menu
+goto tools_c
 ################################ Windows 7 PE ################################
 :win7
 kernel ${url_winpe}/wimboot
