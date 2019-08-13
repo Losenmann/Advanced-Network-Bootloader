@@ -149,7 +149,7 @@ choose --default main-menu target && goto ${target} ||
 goto main-menu
 ################################ UTILITIES MENU ################################
 :tools
-console --x 1024 --y 768 --picture ${src}utilits.png
+console --x 1024 --y 768 --picture ${src}tools.png
 menu Boot menu Tools and Utilities
 	item main-menu	<...
 item --gap --		--- Tools & Utilities ----------------------------------------------------------------------------------
