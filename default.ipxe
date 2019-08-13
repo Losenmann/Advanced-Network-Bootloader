@@ -98,14 +98,18 @@ menu WinPE boot server
 	item winpe	<...
 item --gap --		--- Server protocol
 	item http://	HTTP
+	item https://	HTTPS
 	item ftp://	FTP
-#	item tftp	TFTP
-#	item nfs	NFS
+	item tftp	TFTP
+	item nfs	NFS
 choose selected || goto winpe
 iseq ${selected} winpe && set selected && goto winpe ||
 set protocol ${selected}
-:http echo Server address* && read url_winpe && goto winpe_a || goto winpe
-:ftp echo Server address* && read url_winpe && goto winpe_a || goto winpe
+iseq ${selected} http:// && echo Server address* && read url_winpe && goto winpe_a || goto winpe
+iseq ${selected} https:// && echo Server address* && read url_winpe && goto winpe_a || goto winpe
+iseq ${selected} ftp:// && echo Server address* && read url_winpe && goto winpe_a || goto winpe
+iseq ${selected} tftp && set url_winpe ${next-server} && goto winpe_c || goto winpe
+iseq ${selected} nfs && set url_winpe ${next-server} && goto winpe_c || goto winpe
 :winpe_a
 echo Enter Username && read username ||
 echo Enter Password && read password ||
