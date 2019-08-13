@@ -77,7 +77,7 @@ console --x 1024 --y 768 --picture ${src}win.png
 menu Windows boot menu
 	item main-menu	<...
 item --gap --		--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
-item --gap Selected server: ${selected} adds - ${url_winpe}
+item --gap Selected server: ${url_winpe}
 	item winpe_s		Add Server WinPE
 #	isset ${url_winpe} && item winxp Windows XP || item --gap Windows XP
 #	isset ${url_winpe} && item winvista Windows Vist || item --gap Windows Vista
@@ -94,10 +94,10 @@ goto main-menu
 menu WinPE boot server
 	item winpe	<...
 item --gap --		--- Server protocol
-	item HTTP	HTTP
-	item FTP	FTP
-	item TFTP	TFTP
-#	item NFS	NFS
+	item http	HTTP
+	item ftp	FTP
+	item tftp	TFTP
+#	item nfs	NFS
 choose selected || goto winpe
 iseq ${selected} winpe && set selected && goto winpe ||
 set protocol ${selected}
