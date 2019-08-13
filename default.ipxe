@@ -105,11 +105,11 @@ item --gap --		--- Server protocol
 choose selected || goto winpe
 iseq ${selected} winpe && set selected && goto winpe ||
 set protocol ${selected}
-iseq ${selected} http:// && echo Server address* && read url_winpe && goto winpe_a || goto winpe
-iseq ${selected} https:// && echo Server address* && read url_winpe && goto winpe_a || goto winpe
-iseq ${selected} ftp:// && echo Server address* && read url_winpe && goto winpe_a || goto winpe
-iseq ${selected} tftp && set url_winpe ${next-server} && goto winpe_c || goto winpe
-iseq ${selected} nfs && set url_winpe ${next-server} && goto winpe_c || goto winpe
+iseq ${selected} http:// && echo Server address* && read url_winpe && goto winpe_a ||
+iseq ${selected} https:// && echo Server address* && read url_winpe && goto winpe_a ||
+iseq ${selected} ftp:// && echo Server address* && read url_winpe && goto winpe_a ||
+iseq ${selected} tftp && set url_winpe ${next-server} && goto winpe_c ||
+iseq ${selected} nfs && set url_winpe ${next-server} && goto winpe_c ||
 :winpe_a
 echo Enter Username && read username ||
 echo Enter Password && read password ||
