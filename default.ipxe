@@ -34,20 +34,19 @@ set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
-console --keep --picture ${src}auth.png
+console --picture ${src}auth.png --keep
 :login-r login ||
 boot ftp://${username}:${password}@${auth}/cust && goto login-ok || console
 boot ftp://${username}:${password}@${auth}/dev && goto login-ok || console
 iseq ${username} root && iseq ${password} kernel && console && goto login-ok || console
 goto login-r
 :login-ok
-set username && set password && set auth
 ################################ MAIN MENU ################################
 :main-menu
-imgfree
 colour --basic 9 7 && colour --basic 9 6
 colour --rgb 0xffffff 7
 console --x 1024 --y 768 --picture ${src}main.png --keep
+:main-menu_a imgfree
 menu Welcome to SmartBoot menu
 	item out	Logout
 item --gap --			--- System Boot ----------------------------------------------------------------------------------------
@@ -64,20 +63,21 @@ item --gap --		--- iPXE Tools: -------------------------------------------------
 	item exit	Exit
 	item reboot	Reboot
 	item power	Power Off
-choose --default out --timeout 20000 target && goto ${target} ||
-:config config && goto main-menu
+choose --default out --timeout 20000 target && goto ${target} || goto main-menu_a
+:config config && goto main-menu_a
 :out goto login
 :reboot reboot
 :power poweroff
 :exit exit
 :shell shell
-goto main-menu
+goto main-menu_a
 ################################ WINDOWS MENU ################################
 :winpe
 console --x 1024 --y 768 --picture ${src}win.png
 menu Windows boot menu
 	item main-menu	<...
 item --gap --		--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
+item --gap Selected server: ${selected} adds - ${url_winpe}
 	item winpe_s		Add Server WinPE
 #	isset ${url_winpe} && item winxp Windows XP || item --gap Windows XP
 #	isset ${url_winpe} && item winvista Windows Vist || item --gap Windows Vista
@@ -94,17 +94,17 @@ goto main-menu
 menu WinPE boot server
 	item winpe	<...
 item --gap --		--- Server protocol
-	item http://	HTTP
-	item ftp://	FTP
-	item tftp	TFTP
-#	item nfs	NFS
+	item HTTP	HTTP
+	item FTP	FTP
+	item TFTP	TFTP
+#	item NFS	NFS
 choose selected || goto winpe
 iseq ${selected} winpe && set selected && goto winpe ||
 set protocol ${selected}
-:http echo Server address* && read url_winpe && goto winpe_a || goto winpe
-:ftp echo Server address* && read url_winpe && goto winpe_a || goto winpe
-:tftp set protocol && goto winpe
-:winpe_a
+:HTTP echo Server address* && read url_winpe && set protocol ${protocol}:// && goto winpe_set || goto winpe
+:FTP echo Server address* && read url_winpe && set protocol ${protocol}:// && goto winpe_set || goto winpe
+:TFTP set protocol && goto winpe set url_winpe ${next-server} && goto winpe
+:winpe_set set username && set password ||
 echo Enter Username && read username ||
 echo Enter Password && read password ||
 isset ${username} && set username ${username}: ||
@@ -317,6 +317,6 @@ item --gap -- This bootloader was created by 1 independent person. During develo
 item --gap -- was paid to a convenient user experience. If you want to help the project, you can donate.
 item --gap -- Donations are accepted on Yandex Money 410015216730856, so you will help me :)
 item --gap -- --------------------------------------------------------------------------------------------------
-	item main-menu		<...
-choose --default main-menu target && goto ${target} ||
-goto main-menu
+	item main-menu_a	<...
+choose --default main-menu_a target && goto ${target} ||
+goto main-menu_a
