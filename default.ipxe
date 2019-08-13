@@ -61,7 +61,7 @@ item --gap --			--- System Boot ------------------------------------------------
 item --gap --		--- iPXE Tools: -----------------------------------------------------------------------------------------
 	item config	Configure iPXE
 	item shell	iPXE Shell
-	item exit	Exit & Refresh Menu
+	item exit	Exit
 	item reboot	Reboot
 	item power	Power Off
 choose --default out --timeout 20000 target && goto ${target} ||
@@ -70,7 +70,7 @@ choose --default out --timeout 20000 target && goto ${target} ||
 :reboot reboot
 :power poweroff
 :exit exit
-:reload 
+:shell shell
 goto main-menu
 ################################ WINDOWS MENU ################################
 :winpe
