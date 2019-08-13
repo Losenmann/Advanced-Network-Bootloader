@@ -106,8 +106,8 @@ iseq ${selected} winpe && set selected && goto winpe ||
 set protocol ${selected}
 :http echo Server address* && read url_winpe && set protocol ${protocol}:// && goto winpe_set || goto winpe_c
 :ftp echo Server address* && read url_winpe && set protocol ${protocol}:// && goto winpe_set || goto winpe_c
-:tftp set url_winpe ${next-server} && goto winpe_c
-:winpe_set set username && set password ||
+:tftp set url_winpe ${next-server} & goto winpe_c
+:winpe_set
 echo Enter Username && read username ||
 echo Enter Password && read password ||
 isset ${username} && set username ${username}: ||
