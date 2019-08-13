@@ -1,5 +1,7 @@
 #!ipxe
 prompt --timeout 5000 --key y Connect to Wi-Fi? (Y/N)... && echo set SSID: && read ssid && echo set Key: && read key ||
 :dhcp ifconf -c dhcp || config || goto dhcp
-:menu chain https://raw.githubusercontent.com/Losenmann/SmartBoot/master/default.ipxe ||
-console && prompt --key y Error loading menu, try again? (Y/N)... && goto menu || shell
+:menu
+chain https://raw.githubusercontent.com/Losenmann/SmartBoot/master/default.ipxe ||
+console && prompt --key y You left the main menu or an error occurred in it, load the menu again? (Y/N)... && goto menu ||
+:shell || imgfree && goto shell
