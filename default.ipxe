@@ -104,8 +104,8 @@ item --gap --		--- Server protocol
 choose selected || goto winpe
 iseq ${selected} winpe && set selected && goto winpe ||
 set protocol ${selected}
-:http echo Server address HTTP:  && read url_winpe && goto winpe_set || goto winpe_c
-:ftp echo Server address FTP:  && read url_winpe && goto winpe_set || goto winpe_c
+:http echo Server address HTTP...  && read url_winpe && goto winpe_set || goto winpe_c
+:ftp echo Server address FTP...  && read url_winpe && goto winpe_set || goto winpe_c
 :tftp set url_winpe ${next-server} & goto winpe_c
 :winpe_set
 echo Enter Username && read username ||
