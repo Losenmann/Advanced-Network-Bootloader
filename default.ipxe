@@ -46,6 +46,7 @@ set username && set password && set auth
 :main-menu
 imgfree
 colour --basic 9 7 && colour --basic 9 6
+colour --rgb 0xffffff 7
 console --x 1024 --y 768 --picture ${src}main.png
 menu Welcome to SmartBoot menu
 	item out	Logout
@@ -77,8 +78,7 @@ console --x 1024 --y 768 --picture ${src}win.png
 menu Windows boot menu
 	item main-menu	<...
 item --gap --		--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
-colour --rgb 0xffffff 7 &&	item winpe_s		Add Server WinPE
-colour --basic 9 7 && colour --basic 9 6
+	item winpe_s		Add Server WinPE
 #	isset ${url_winpe} && item winxp Windows XP || item --gap Windows XP
 #	isset ${url_winpe} && item winvista Windows Vist || item --gap Windows Vista
 	isset ${url_winpe} && item win7 Windows 7 || item --gap Windows 7
