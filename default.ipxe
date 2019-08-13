@@ -76,6 +76,7 @@ goto main-menu_a
 ################################ WINDOWS MENU ################################
 :winpe
 console --x 1024 --y 768 --picture ${src}win.png
+:winpe_c
 menu Windows boot menu
 	item main-menu	<...
 item --gap --		--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
@@ -103,16 +104,16 @@ item --gap --		--- Server protocol
 choose selected || goto winpe
 iseq ${selected} winpe && set selected && goto winpe ||
 set protocol ${selected}
-:HTTP echo Server address* && read url_winpe && set protocol ${protocol}:// && goto winpe_set || goto winpe
-:FTP echo Server address* && read url_winpe && set protocol ${protocol}:// && goto winpe_set || goto winpe
-:TFTP set protocol && goto winpe set url_winpe ${next-server} && goto winpe
+:http echo Server address* && read url_winpe && set protocol ${protocol}:// && goto winpe_set || goto winpe_c
+:ftp echo Server address* && read url_winpe && set protocol ${protocol}:// && goto winpe_set || goto winpe_c
+:tftp set protocol && goto winpe set url_winpe ${next-server} && goto winpe_c
 :winpe_set set username && set password ||
 echo Enter Username && read username ||
 echo Enter Password && read password ||
 isset ${username} && set username ${username}: ||
 isset ${password} && set password ${password}@ ||
 set url_winpe ${protocol}${username}${password}${url_winpe}
-goto winpe
+goto winpe_c
 ################################ LINUX MENU ################################
 :linux
 console --x 1024 --y 768 --picture ${src}linux.png
