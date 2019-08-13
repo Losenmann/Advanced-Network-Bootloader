@@ -105,7 +105,7 @@ item --gap --		--- Server protocol
 	item tftp	TFTP
 	item nfs	NFS
 choose selected || goto winpe
-iseq ${selected} winpe && set selected && goto winpe ||
+iseq ${selected} winpe && set selected && goto winpe_c ||
 set protocol ${selected}
 iseq ${selected} https:// && echo Server address* && read url_winpe && goto winpe_a ||
 iseq ${selected} http:// && echo Server address* && read url_winpe && goto winpe_a ||
