@@ -47,7 +47,7 @@ set username && set password && set auth
 imgfree
 colour --basic 9 7 && colour --basic 9 6
 colour --rgb 0xffffff 7
-console --x 1024 --y 768 --picture ${src}main.png
+console --keep --x 1024 --y 768 --picture ${src}main.png
 menu Welcome to SmartBoot menu
 	item out	Logout
 item --gap --			--- System Boot ----------------------------------------------------------------------------------------
