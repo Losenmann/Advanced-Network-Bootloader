@@ -34,12 +34,15 @@ set url_parrot64 http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer
 set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-i386/current/images/netboot/ubuntu-installer/i386/
 set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/
 
-console --x 1024 --y 768
+
 
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
-console --x 1024 --y 768 --picture ${src}auth.png
+
+console --x 1024 --y 768
+
+#console --x 1024 --y 768 --picture ${src}auth.png
 :login-r login || goto login-r
 iseq ${username} root && iseq ${password} kernel && goto login-ok ||
 boot ftp://${username}:${password}@${auth}/cust && goto login-ok ||
