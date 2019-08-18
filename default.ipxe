@@ -47,7 +47,7 @@ goto login-r
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
 colour --rgb 0xffffff 7
-console --picture ${src}auth.png --keep
+console --picture --keep
 #console --x 2560 --y 1440 && set cons 1440
 #console --x 1920 --y 1080 && set cons 1080
 #console --x 1280 --y 720 && set cons 720
