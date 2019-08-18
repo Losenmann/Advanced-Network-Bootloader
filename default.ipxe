@@ -36,7 +36,7 @@ set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
-console --picture ${src}auth.png
+console --x 1024 --y 768 --picture ${src}auth.png
 :login-r login || goto login-r
 iseq ${username} root && iseq ${password} kernel && goto login-ok ||
 boot ftp://${username}:${password}@${auth}/cust && goto login-ok ||
@@ -47,14 +47,7 @@ goto login-r
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
 colour --rgb 0xffffff 7
-console --x 1024 --y 768 --keep
-#console --x 2560 --y 1440 && set cons 1440
-#console --x 1920 --y 1080 && set cons 1080
-#console --x 1280 --y 720 && set cons 720
-#console --x 2560 --y 1440 --picture ${src}main2.png --keep
-#console --x 1920 --y 1080 --picture ${src}main2.png --keep
-#console --x 1280 --y 720 --picture ${src}main2.png --keep
-#console --x 1280 --y 720 --picture ${src}main2.png --keep
+console --x 1024 --y 768 --picture ${src}auth.png --keep
 :main-menu_a imgfree
 menu Welcome to SmartBoot menu
 	item out	Logout
