@@ -40,7 +40,7 @@ set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
 
-console --x 1366 --y 768 --picture ${src}main3.png
+console --x 1920 --y 1080 --picture ${src}main3.png
 #console --x 1366 --y 768
 
 #console --x 1024 --y 768 --picture ${src}auth.png
