@@ -54,7 +54,7 @@ goto login-r
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
 colour --rgb 0xffffff 7
-console --x 1024 --y 768 --keep
+console --x 1600 --y 1200 --keep
 :main-menu_a imgfree
 menu Welcome to SmartBoot menu
 	item out	Logout
