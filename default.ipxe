@@ -33,17 +33,10 @@ set url_parrot http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer-i
 set url_parrot64 http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer-amd64/current/images/netboot/debian-installer/amd64/
 set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-i386/current/images/netboot/ubuntu-installer/i386/
 set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/
-
-
-
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
-
 console --x 1600 --y 1200 --picture ${src}main6.png
-#console --x 1366 --y 768
-
-#console --x 1024 --y 768 --picture ${src}auth.png
 :login-r login || goto login-r
 iseq ${username} root && iseq ${password} kernel && goto login-ok ||
 boot ftp://${username}:${password}@${auth}/cust && goto login-ok ||
@@ -54,8 +47,7 @@ goto login-r
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
 colour --rgb 0xffffff 7
-console --x 1600 --y 1200 --picture ${src}main6.png
-#console --keep
+console --x 1600 --y 1200 --keep
 :main-menu_a imgfree
 menu Welcome to SmartBoot menu
 	item out	Logout
