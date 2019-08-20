@@ -74,9 +74,7 @@ choose --default out --timeout 20000 target && goto ${target} || goto main-menu_
 :shell shell
 goto main-menu_a
 ################################ WINDOWS MENU ################################
-:winpe
-console --x 1024 --y 768 --picture ${src}win.png
-:winpe_c
+:winpe console --x 1024 --y 768 --picture ${src}win.png & :winpe_c
 menu Windows boot menu
 	item main-menu	<...
 item --gap --		--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
