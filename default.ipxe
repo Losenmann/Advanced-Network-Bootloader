@@ -38,12 +38,11 @@ set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd
 colour --basic 0 7 && colour --basic 7 6
 console --x 1600 --y 1200 --picture ${src}main8.png
 :login-r login || goto login-r
-iseq ${username} root && iseq ${password} kernel && goto login-ok ||
-boot ftp://${username}:${password}@${auth}/cust && goto login-ok ||
-boot ftp://${username}:${password}@${auth}/dev && goto login-ok ||
+iseq ${username} root && iseq ${password} kernel && goto login-ok || console --keep
+boot ftp://${username}:${password}@${auth}/cust && goto login-ok || console --keep
+boot ftp://${username}:${password}@${auth}/dev && goto login-ok || console --keep
 goto login-r
 :login-ok
-console
 ################################ MAIN MENU ################################
 :main-menu
 colour --basic 9 7 && colour --basic 9 6
