@@ -5,4 +5,4 @@ prompt -t 5000 -k y Connect to Wi-Fi? (Y/N)... && echo set SSID: && read ssid &&
 chain http://boot.bo0ot.ru/default.ipxe ||
 console && imgfree
 prompt -k y You left the main menu or an error occurred in it, load the menu again? (Y/N)... && goto menu ||
-shell || goto menu
+shell && goto menu || goto menu
