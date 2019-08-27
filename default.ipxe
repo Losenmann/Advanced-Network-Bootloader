@@ -24,6 +24,7 @@ set url_krd https://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
 set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-900-cd.iso
 set url_centos http://mirror.centos.org/centos/7/os/x86_64/
 set url_clearos http://clearos.uberglobalmirror.com/7/os/x86_64/
+set url_fedora http://mirrors.kernel.org/fedora/releases/30/Workstation/x86_64/os/images/pxeboot/
 set url_opensuse http://download.opensuse.org/tumbleweed/repo/oss/
 set url_debian https://ftp.acc.umu.se/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/
 set url_debian64 https://ftp.acc.umu.se/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/
@@ -216,6 +217,12 @@ boot || goto main-menu
 kernel ${url_clearos}images/pxeboot/vmlinuz repo=${url_clearos} initrd=initrd.img ||
 initrd ${url_clearos}images/pxeboot/initrd.img ||
 boot || goto main-menu
+################################ Fedora ################################
+:fedora
+#isset ${dhcp-server} && set ipparam ip=dhcp || set ipparam ip=${ip}::${gateway}:${netmask}:::none:${dns}
+set ipparam BOOTIF=${netX/mac} ${ipparam}
+kernel ${url_fedora}vmlinuz repo=${url_fedora} ${params} ${console} ${ipparam} initrd=initrd.img
+initrd ${url_fedora}initrd.img
 ################################ Kali ################################
 :kali
 iseq ${arch} x86 || prompt --key y ${x64} && goto kali64 ||
