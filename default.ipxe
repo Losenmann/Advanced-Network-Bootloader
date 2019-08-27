@@ -12,7 +12,7 @@ ntp 0.pool.ntp.org ||
 set mtu 1500
 ##### VARIABLES
 #set auth <...>
-set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/boot/
+set src http://boot.bo0ot.ru/
 set tool ${src}tools/
 set x64 Your`s CPU supports 64 commands, press 'Y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
