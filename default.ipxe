@@ -26,6 +26,7 @@ set url_clearos 7
 set vers_solus 4.0
 set url_slax 9 && set v 9.1
 set url_tinycore 10
+set url_freenas 11.2-U5
 set vres_fedora && set version ${version}/ && inc version && goto Fedora ||
 ##### Links
 set url_mem86 ${src}tools/memtest86_current.iso
@@ -57,6 +58,7 @@ set url_xcp_ng http://mirror.iextreme.org/xcp-ng/netinstall/latest/
 set url_steamos http://repo.steampowered.com/download/
 set url_slackware http://mirrors.slackware.com/slackware/slackware64-current/
 set url_coreos http://stable.release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso
+set url_freenas http://download.freenas.org/latest/x64/FreeNAS-${url_freenas}.iso/
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
@@ -160,6 +162,7 @@ item --gap --		--- ONLINE Boot -------------------------------------------------
 	item debian		Debian
 	item fedora		Fedora
 	item freebsd		FreeBSD
+	item freenas		FreeNAS
 	item kali		Kali Linux
 	item kolibri		KolibriOS
 	item nixos		NixOS
@@ -176,6 +179,7 @@ iseq ${setos} kolibri && goto version || iseq ${setos} centos && goto ${setos} |
 iseq ${setos} debian && goto version || iseq ${setos} archos && goto ${setos} ||
 iseq ${setos} clearos && goto ${setos} || iseq ${setos} nixos && goto ${setos} ||
 iseq ${setos} freebsd && goto version || iseq ${setos} parrot && goto ${setos} ||
+iseq ${setos} freenas && goto ${setos} ||
 ################################
 :desktop
 menu Desktop Environment or Edition
@@ -341,6 +345,14 @@ kernel ${memdisk} ||
 initrd ${url_freebsd}${dir} ||
 imgargs memdisk iso raw ||
 boot || clear dir && clear version && imgfree && goto main
+################################
+##### FreeNAS
+################################
+:freenas
+kernel ${memdisk} || 
+initrd ${url_freenas} ||
+imgargs memdisk iso raw ||
+boot || imgfree && goto main
 ################################
 ##### Gentoo
 ################################
