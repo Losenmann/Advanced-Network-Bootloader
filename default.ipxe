@@ -1,8 +1,9 @@
 #!ipxe
-set ver 1.18.2
+set ver 1.2.0
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
-cpuid --ext 29 && set arch amd64 || set arch x86
+cpuid --ext 29 && set arch amd64 || set arch i386
+cpuid --ext 29 && set arch-x 64 || set arch-x 32
 cpuid 6 && set pae yes ||
 cpuid --ecx 5 && set vmx yes ||
 cpuid --ext --ecx 2 && set svm yes ||
@@ -12,28 +13,50 @@ ntp 0.pool.ntp.org ||
 set mtu 1500
 ##### VARIABLES
 #set auth <...>
-set src http://boot.bo0ot.ru/
-set tool ${src}tools/
+set src http://boot.bo0ot.ru/boot/
+set memdisk ${src}memdisk
+set images ${src}images/
 set x64 Your`s CPU supports 64 commands, press 'Y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
 ##### Delete data from variables
 set url_winpe && set protocol
+##### Variables Links
+set url_centos 7
+set url_clearos 7
+set vers_solus 4.0
+set url_slax 9 && set v 9.1
+set url_tinycore 10
+set vres_fedora && set version ${version}/ && inc version && goto Fedora ||
 ##### Links
-set url_avira https://install.avira-update.com/package/rs_avira/unix/int/rescue-system.iso
-set url_krd https://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
+set url_mem86 ${src}tools/memtest86_current.iso
+set url_mem86+ ${src}tools/memtest86+_current.iso
+set url_vcr ${src}tools/vcr.current.iso
+set url_mhdd ${src}tools/mhdd.current.iso
+set url_avira http://install.avira-update.com/package/rs_avira/unix/int/rescue-system.iso
+set url_krd http://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
 set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-900-cd.iso
-set url_centos http://mirror.centos.org/centos/7/os/x86_64/
-set url_clearos http://clearos.uberglobalmirror.com/7/os/x86_64/
-set url_fedora http://mirrors.kernel.org/fedora/releases/30/Workstation/x86_64/os/images/pxeboot/
-set url_opensuse http://download.opensuse.org/tumbleweed/repo/oss/
-set url_debian https://ftp.acc.umu.se/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/
-set url_debian64 https://ftp.acc.umu.se/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/
-set url_kali64 ftp://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/installer-amd64/current/images/netboot/debian-installer/amd64/
-set url_kali64 ftp://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/installer-i386/current/images/netboot/debian-installer/i386/
-set url_parrot http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer-i386/current/images/netboot/debian-installer/i386/
-set url_parrot64 http://mirror.truenetwork.ru/parrot/dists/parrot/main/installer-amd64/current/images/netboot/debian-installer/amd64/
-set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-i386/current/images/netboot/ubuntu-installer/i386/
-set url_ubuntu64 http://archive.ubuntu.com/ubuntu/dists/disco/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/
+set url_centos http://mirror.centos.org/centos/${url_centos}/
+set url_clearos http://clearos.uberglobalmirror.com/${url_clearos}/
+set url_kolibri http://builds.kolibrios.org/eng/kolibri.iso
+set url_arch https://www.archlinux.org/releng/netboot/archlinux.ipxe
+set url_fedora http://mirrors.kernel.org/fedora/releases/
+set url_solus http://solus.fin.veatnet.de/iso/images/
+set url_opensuse http://download.opensuse.org/
+set url_slax http://ftp.sh.cvut.cz/slax/Slax-${url_slax}.x/slax-${arch-x}bit-${url_slax}.${v}.iso
+set url_parrot http://cdimage.parrotsec.org/parrot/dists/stable/main/
+set url_kali http://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/
+set url_debian http://ftp.acc.umu.se/debian/dists/
+set url_tinycore http://www.tinycorelinux.net/${url_tinycore}.x/x86/release/
+set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/
+set url_freebsd http://ftp.freebsd.org/pub/FreeBSD/releases/ISO-IMAGES/
+set url_puppy http://distro.ibiblio.org/puppylinux/
+set url_alpine http://dl-cdn.alpinelinux.org/alpine/latest-stable/
+set url_nixos https://hydra.nixos.org/job/nixos/release-19.03/nixos.netboot.x86_64-linux/latest-finished/download/netboot.ipxe
+set url_android https://osdn.net/dl/android-x86/
+set url_xcp_ng http://mirror.iextreme.org/xcp-ng/netinstall/latest/
+set url_steamos http://repo.steampowered.com/download/
+set url_slackware http://mirrors.slackware.com/slackware/slackware64-current/
+set url_coreos http://stable.release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
@@ -44,67 +67,68 @@ boot ftp://${username}:${password}@${auth}/cust && goto login-ok || console --ke
 boot ftp://${username}:${password}@${auth}/dev && goto login-ok || console --keep
 goto login-r
 :login-ok
+clear username && clear password
 ################################ MAIN MENU ################################
-:main-menu
+:main
 colour --basic 9 7 && colour --basic 9 6
 colour --rgb 0xffffff 7
 console --x 1024 --y 768 -p ${src}main9.png
 #console --x 1600 --y 1200 --picture ${src}main9.png
-:main-menu_a imgfree
+:main_a imgfree
 menu Welcome to SmartBoot menu
 	item out	Logout
 item --gap --		--- System Boot ----------------------------------------------------------------------------------------
 	item winpe	Windows/
-	item linux	Linux/
+	item linux		Linux/
 	item othos	Other-OS/
-	item tools	Tools/
-	item live	LiveCD/
-	item offline	Offline Boot/
-	item info	Information
+	item tools		Tools/
+	item info		Information
 item --gap --		--- iPXE Tools: -----------------------------------------------------------------------------------------
 	item config	Configure iPXE
-	item shell	iPXE Shell
-	item exit	Exit
+	item shell		iPXE Shell
+	item exit		Exit
 	item reboot	Reboot
 	item power	Power Off
-choose --default out --timeout 20000 target && goto ${target} || goto main-menu_a
-:config config && goto main-menu_a
+choose --default out --timeout 20000 target && goto ${target} || goto main_a
+:config config && goto main_a
 :out goto login
 :reboot reboot
 :power poweroff
 :exit exit
 :shell shell
-goto main-menu_a
+goto main_a
 ################################ WINDOWS MENU ################################
 :winpe console --x 1024 --y 768 --picture ${src}win.png
 :winpe_c
 menu Windows boot menu
-	item main-menu	<...
+	item main	<...
 item --gap --		--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
 item --gap Selected server: ${url_winpe}
-	item winpe_s	Add Server WinPE
-	item winpe_clr	Clear Server WinPE
-#	isset ${url_winpe} && item winxp Windows XP || item --gap Windows XP
-#	isset ${url_winpe} && item winvista Windows Vist || item --gap Windows Vista
-	isset ${url_winpe} && item win7 Windows 7 || item --gap Windows 7
-	isset ${url_winpe} && item win8.1 Windows 8.1 || item --gap Windows 8.1
-	isset ${url_winpe} && item win10 Windows 10 || item --gap Windows 10
-#	isset ${url_winpe} && item win2008 Windows Server 2008 || item --gap Windows Server 2008
-#	isset ${url_winpe} && item win2012 Windows Server 2012 || item --gap Windows Server 2012
-#	isset ${url_winpe} && item win2016 Windows Server 2016 || item --gap Windows Server 2016
-choose --default main-menu target && goto ${target} || goto main-menu_c
-:winpe_clr set username && set password && set url_winpe && set protocol
+	item winpe_s										Add Server WinPE
+	item winpe_clr									Clear Server WinPE
+	isset ${url_winpe} && item winxp			Windows XP || item --gap Windows XP
+	isset ${url_winpe} && item winvista		Windows Vist || item --gap Windows Vista
+	isset ${url_winpe} && item win7			Windows 7 || item --gap Windows 7
+	isset ${url_winpe} && item win8.1		Windows 8.1 || item --gap Windows 8.1
+	isset ${url_winpe} && item win10			Windows 10 || item --gap Windows 10
+	isset ${url_winpe} && item win2008		Windows Server 2008 || item --gap Windows Server 2008
+	isset ${url_winpe} && item win2012		Windows Server 2012 || item --gap Windows Server 2012
+	isset ${url_winpe} && item win2016		Windows Server 2016 || item --gap Windows Server 2016
+choose --default main target && goto ${target} || goto main_c
+:winpe_clr clear username & clear password && set url_winpe && set protocol
 goto winpe_c
-################################ Server WinPE ################################
+################################
+########## Server WinPE ##########
+################################
 :winpe_s
 menu WinPE boot server
 	item winpe	<...
 item --gap --		--- Server protocol
 	item https://	HTTPS
 	item http://	HTTP
-	item ftp://	FTP
-	item tftp	TFTP
-	item nfs	NFS
+	item ftp://		FTP
+	item tftp		TFTP
+	item nfs		NFS
 choose selected || goto winpe
 iseq ${selected} winpe && goto winpe_c ||
 set protocol ${selected}
@@ -124,57 +148,117 @@ goto winpe_c
 :linux
 console --x 1024 --y 768 --picture ${src}linux.png
 :linux_c
-menu Linux boot menu
-	item main-menu	<...
-item --gap --		--- Linux distribute ----------------------------------------------------------------------------------
-	item archos	Arch Linux
-	item centos	CentOS
-	item clearos	ClearOS
-	item debian	Debian
-#	item deepin	Deepin
-#	item element	ElementaryOS
-#	item fedora	Fedora
-#	item gentoo	Gentoo
-	item kali	Kali Linux
-#	item manjaro	Manjaro
-#	item mint	Linux Mint
-	item opensuse	OpenSUSE - Tumbleweed
-	item parrot	ParrotOS - Home
-#	item react	ReactOS
-#	item solus	Solus
-	item slax	Slax
-	item ubuntu	Ubuntu
-choose --default main-menu target && goto ${target} ||
-goto linux_c
+menu Linux Distribute Boot Menu
+	item main	<...
+item --gap --		--- OFFLINE Boot
+	item slax			Slax
+item --gap --		--- ONLINE Boot ----------------------------------------------------------------------------------
+	item alpine		Alpine
+	item archos		Arch Linux
+	item centos		CentOS
+	item clearos		ClearOS
+#	item coreos		CoreOS
+	item debian		Debian
+	item fedora		Fedora
+	item freebsd		FreeBSD
+	item kali			Kali Linux
+	item kolibri		KolibriOS
+	item nixos			NixOS
+	item opensuse	OpenSUSE
+	item parrot		Parrot
+	item slackware	Slackware
+	item tinycore		Tiny Core Linux
+	item ubuntu		Ubuntu
+choose selected || goto linux_c
+iseq ${selected} main && goto main ||
+set setos ${selected}
+################################ LINUX DESKTOP ################################
+:desktop
+iseq ${setos} slax && goto ${setos} ||
+iseq ${setos} kali && goto ${setos} ||
+iseq ${setos} kolibri && goto version ||
+iseq ${setos} centos && goto ${setos} ||
+iseq ${setos} debian && goto version ||
+iseq ${setos} archos && goto ${setos} ||
+iseq ${setos} clearos && goto ${setos} ||
+iseq ${setos} nixos && goto ${setos} ||
+iseq ${setos} freebsd && goto version ||
+iseq ${setos} parrot && goto ${setos} ||
+menu Desktop Environment or Edition
+	item back	<...
+item --gap --		--- Edition 
+	iseq ${setos} fedora && item Everything			Fedora Everything ||
+	iseq ${setos} fedora && item Server				Fedora Server ||
+	iseq ${setos} fedora && item Workstation		Fedora Workstation ||
+	iseq ${setos} opensuse && item	distribution	OpenSUSE Leap ||
+	iseq ${setos} opensuse && item	tumbleweed	OpenSUSE Tumbleweed ||
+	iseq ${setos} tinycore && item Core				Core ||
+	iseq ${setos} tinycore && item CorePlus			CorePlus ||
+	iseq ${setos} tinycore && item TinyCore			TinyCore ||
+	iseq ${setos} ubuntu && item Desktop			Ubuntu Desktop ||
+choose selected || goto desktop
+iseq ${selected} back && goto linux_c || set desktop ${selected}
+goto version
+
+:version
+iseq ${setos} tinycore && goto ${setos} ||
+iseq ${setos} opensuse && goto ${setos} ||
+menu Version ${setos}
+	item back	<...
+item --gap --		${setos}
+	iseq ${setos} android && item 8.1					Android-x86 8.1 ||
+	iseq ${setos} android && item 7.1					Android-x86 7.1 ||
+	iseq ${setos} android && item 6.0					Android-x86 6.0 ||
+	iseq ${setos} android && item 5.1					Android-x86 5.1 ||
+	iseq ${setos} android && item 4.4					Android-x86 4.4 ||
+	iseq ${setos} debian && item stable				Debian latest ||
+	iseq ${setos} debian && item Debian9.9			Debian 9 ||
+	iseq ${setos} debian && item Debian8.11		Debian 8 ||
+	iseq ${setos} fedora && item 30						Fedora 30 ||
+	iseq ${setos} fedora && item 29						Fedora 29 ||
+	iseq ${setos} fedora && item 28						Fedora 28 ||
+	iseq ${setos} freebsd && item 12.0					FreeBSD 12.0 ||
+	iseq ${setos} freebsd && item 11.3					FreeBSD 11.3 ||
+	iseq ${setos} freebsd && item 11.2					FreeBSD 11.2 ||
+	iseq ${setos} kolibri && item ${url_kolibri}		KolibriOS latest unstable ||
+	iseq ${setos} kolibri && item kolibri_en.iso		KolibriOS 0.7.7.0 en ||
+	iseq ${setos} kolibri && item kolibri_ru.iso		KolibriOS 0.7.7.0 ru ||
+	iseq ${setos} ubuntu && item disco				Ubuntu 19.04 LTS ||
+	iseq ${setos} ubuntu && item bionic				Ubuntu 18.04 LTS ||
+	iseq ${setos} ubuntu && item xenial				Ubuntu 16.04 LTS ||
+	iseq ${setos} ubuntu && item trusty				Ubuntu 14.04 LTS ||
+	iseq ${setos} ubuntu && item precise 				Ubuntu 12.04 LTS ||
+choose selected || goto version
+iseq ${selected} back && goto linux_c || set version ${selected}
+goto ${setos}
 ################################ OTHER-OS MENU ################################
 :othos
 console --x 1024 --y 768 --picture ${src}ohter.png
-:othos_c
 menu Boot menu Other OS
-	item main-menu	<...
+	item main	<...
 item --gap --		--- OtherOS ----------------------------------------------------------------------------------
-#	item android_os	Android-x86
-#	item chrome_os	ChromiumOS
-#	item xcp_os	Hypervisor XCP-ng
-choose --default main-menu target && goto ${target} ||
-goto othos_c
+	item android			Android-x86
+#	item chrome			ChromiumOS
+	item xcp_ng			Hypervisor XCP-ng
+	item steam			SteamOS
+choose --default main target && goto ${target} ||
+goto othos
 ################################ UTILITIES MENU ################################
 :tools
 console --x 1024 --y 768 --picture ${src}tools.png
-:tools_c
 menu Boot menu Tools and Utilities
-	item main-menu	<...
-item --gap --		--- Tools & Utilities ----------------------------------------------------------------------------------
-	item avira	Avira Rescue System
-	item drweb	Dr.Web LiveDisk
-	item krd	Kaspersky Rescue Disk	
-	item mem86	Memtest86
-	item mem86+	Memtest86+
-	item vcr	Victoria
-	item mhdd	MHDD
-#	item wint	WinPE Tools (Iperf/CPU-Z/FurMark)
-choose --default main-menu target && goto ${target} ||
-goto tools_c
+	item back			<...
+item --gap --			--- Tools & Utilities ----------------------------------------------------------------------------------
+	item url_avira			Avira Rescue System
+	item url_drweb		Dr.Web LiveDisk
+	item url_krd			Kaspersky Rescue Disk	
+	item url_mem86		Memtest86
+	item url_mem86+	Memtest86+
+	item url_vcr			Victoria
+	item url_mhdd		MHDD
+choose selected || goto main
+iseq ${selected} back && goto main || set {tool} ${selected}
+goto tool
 ################################ Windows 7 PE ################################
 :win7
 kernel ${url_winpe}/wimboot
@@ -183,7 +267,7 @@ initrd ${url_winpe}/win7/startnet.cmd startnet.cmd
 initrd ${url_winpe}/${arch}/media/Boot/BCD BCD
 initrd ${url_winpe}/${arch}/media/Boot/boot.sdi boot.sdi
 initrd ${url_winpe}/${arch}/media/sources/boot.wim boot.wim
-boot || goto main-menu
+boot || goto main
 ################################ Windows 8.1 PE ################################
 :win8.1
 kernel ${url_winpe}/wimboot
@@ -192,7 +276,7 @@ initrd ${url_winpe}/win8.1/startnet.cmd startnet.cmd
 initrd ${url_winpe}/${arch}/media/Boot/BCD BCD
 initrd ${url_winpe}/${arch}/media/Boot/boot.sdi boot.sdi
 initrd ${url_winpe}/${arch}/media/sources/boot.wim boot.wim
-boot || goto main-menu
+boot || goto main
 ################################ Windows 10 PE ################################
 :win10
 kernel ${url_winpe}/wimboot
@@ -202,138 +286,194 @@ initrd ${url_winpe}/${arch}/media/Boot/BCD BCD
 initrd ${url_winpe}/${arch}/media/Boot/boot.sdi boot.sdi
 initrd ${url_winpe}/${arch}/media/sources/boot.wim boot.wim
 chain
-goto main-menu
-################################ Arch Linux ################################
+goto main
+################################
+############# Alpine #############
+################################
+:alpine
+iseq ${arch} i386 && set dir releases/x86/netboot/ ||
+iseq ${arch} amd64 && set dir releases/x86_64/netboot/ ||
+kernel ${url_alpine}${dir}vmlinuz-vanilla ||
+initrd ${url_alpine}${dir}initramfs-vanilla ||
+imgargs vmlinuz-vanilla alpine_repo=${url_alpine}main modules=loop,squashfs modloop=${url_alpine}${dir}/modloop-vanilla quiet nomodeset
+boot || clear dir && imgfree && goto main
+################################
+########### Android-x86 ###########
+################################
+:android
+iseq ${arch} i386 && set dir android-x86-${version}-r2.iso ||
+iseq ${arch} amd64 && set dir android-x86_64-${version}-r2.iso ||
+kernel ${memdisk} ||
+initrd ${url_android}${dir} ||
+imgargs memdisk iso raw ||
+boot || clear dir && clear version && imgfree && goto main
+################################
+############ Arch Linux ###########
+################################
 :archos
-chain https://www.archlinux.org/releng/netboot/archlinux.ipxe ||
-goto main-menu
-################################ CentOS ################################
+boot ${url_arch} ||
+imgfree && goto main
+################################
+############# CentOS ############
+################################
 :centos
-kernel ${url_centos}images/pxeboot/vmlinuz repo=${url_centos} initrd=initrd.img ||
-initrd ${url_centos}images/pxeboot/initrd.img ||
-boot || goto main-menu
-################################ ClearOS ################################
+set dir os/x86_64/
+kernel ${url_centos}${dir}images/pxeboot/vmlinuz ||
+initrd ${url_centos}${dir}images/pxeboot/initrd.img ||
+imgargs vmlinuz repo=${url_centos}${dir} initrd=initrd.img ||
+boot || clear dir && imgfree && goto main
+################################
+############ ClearOS #############
+################################
 :clearos
-kernel ${url_clearos}images/pxeboot/vmlinuz repo=${url_clearos} initrd=initrd.img ||
-initrd ${url_clearos}images/pxeboot/initrd.img ||
-boot || goto main-menu
-################################ Fedora ################################
-:fedora
-set ipparam BOOTIF=${netX/mac} ip=dhcp
-kernel ${url_fedora}vmlinuz repo=${url_fedora} ${ipparam} initrd=initrd.img
-initrd ${url_fedora}initrd.img
-################################ Kali ################################
-:kali
-iseq ${arch} x86 || prompt --key y ${x64} && goto kali64 ||
-kernel ${url_kali}linux ||
-initrd ${url_kali}initrd.gz ||
-boot || goto main-menu
-:kali64
-kernel ${url_kali64}linux ||
-initrd ${url_kali64}initrd.gz ||
-boot || goto main-menu
-################################ OpenSUSE ################################
-:opensuse
-kernel ${url_opensuse}boot/x86_64/loader/linux
-initrd ${url_opensuse}boot/x86_64/loader/initrd
-imgargs linux netsetup=dhcp install=${url_opensuse} initrd=initrd splash=silent showopts
-boot || goto main-menu
-################################ ParrotOS ################################
-:parrot
-iseq ${arch} x86 || prompt --key y ${x64} && goto parrot64 ||
-kernel ${url_parrot}linux ||
-initrd ${url_parrot}initrd.gz ||
-boot || goto main-menu
-:parrot64
-kernel ${url_parrot64}linux ||
-initrd ${url_parrot64}initrd.gz ||
-boot || goto main-menu
-################################ Slax ################################
-:slax
-iseq ${arch} x86 || prompt --key y ${x64} && goto slax64 ||
-chain http://slax.org/ipxe/?arch=32bit || goto main-menu
-:slax64
-chain http://slax.org/ipxe/?arch=64bit || goto main-menu
-################################ Debian ################################
+set dhcp ip=${ip} gateway=${gateway} mask=${netmask} dns=${dns} && set dir os/x86_64/
+kernel ${url_clearos}${dir}images/pxeboot/vmlinuz ||
+initrd ${url_clearos}${dir}images/pxeboot/initrd.img ||
+imgargs vmlinuz BOOTIF=${netX/mac} ip={dhcp} repo=${url_clearos}${dir} initrd=initrd.img ||
+boot || clear dir && imgfree && goto main
+################################
+############ CoreOS #############
+################################
+:coreos
+iseq ${arch} amd64 || goto main
+kernel ${memdisk} ||
+initrd ${url_coreos} ||
+imgargs memdisk iso raw ||
+boot || imgfree && goto main
+################################1
+############# Debian #############
+################################
 :debian
-iseq ${arch} x86 || prompt --key y ${x64} && goto debian64 ||
-kernel ${url_debian}linux ||
-initrd ${url_debian}initrd.gz ||
-boot || goto main-menu
-:debian64
-kernel ${url_debian64}linux ||
-initrd ${url_debian64}initrd.gz ||
-boot || goto main-menu
-################################ Ubuntu ################################
+set dir /main/installer-${arch}/current/images/netboot/gtk/debian-installer/${arch}/
+kernel ${url_debian}${version}${dir}linux ||
+initrd ${url_debian}${version}${dir}initrd.gz ||
+imgargs linux vga=788 initrd=initrd.gz ||
+boot || clear dir && clear version && imgfree && goto main
+################################
+############# Fedora #############
+################################
+:fedora
+set dir /x86_64/os/
+kernel ${url_fedora}${version}/${desktop}${dir}images/pxeboot/vmlinuz ||
+initrd ${url_fedora}${version}/${desktop}${dir}images/pxeboot/initrd.img ||
+imgargs vmlinuz repo=${url_fedora}${version}/${desktop}${dir} initrd=initrd.img ||
+boot || clear dir && clear desktop && clear version && imgfree && goto main
+################################
+############ FreeBSD #############
+################################
+:freebsd
+set dir ${version}/FreeBSD-${version}-RELEASE-${arch}-memstick.img
+kernel ${memdisk} || 
+initrd ${url_freebsd}${dir} ||
+imgargs memdisk iso raw ||
+boot || clear dir && clear version && imgfree && goto main
+################################
+############ Gentoo #############
+################################
+:gentoo
+iseq ${arch-x} 86 && set dir gentoo/install-x86-minimal.iso ||
+iseq ${arch} amd64 && set dir gentoo/install-amd64-minimal.iso ||
+kernel ${memdisk} ||
+initrd ${images}${dir} ||
+imgargs memdisk iso raw ||
+boot || clear dir && imgfree && goto main
+################################
+############## Kali ##############
+################################
+:kali
+set dir installer-${arch}/current/images/netboot/gtk/debian-installer/${arch}/
+kernel ${url_kali}${dir}linux ||
+initrd ${url_kali}${dir}initrd.gz ||
+imgargs linux  vga=788 initrd=initrd.gz ||
+boot || clear dir && imgfree && goto main
+################################
+############ KolibriOS ############
+################################
+:kolibri
+kernel ${memdisk} ||
+iseq ${url_kolibri} ${version} && initrd ${url_kolibri} ||
+iseq ${url_kolibri} ${version} || initrd ${images}kolibri_0.7.7.0/${version} ||
+imgargs memdisk iso raw ||
+boot || clear version && imgfree && goto main
+################################
+############# NixOS #############
+################################
+:nixos
+boot {url_nixos}
+################################
+########### OpenSUSE ############
+################################
+:opensuse
+iseq ${desktop} distribution && set dir /openSUSE-current/repo/oss/ || set dir /repo/oss/
+kernel ${url_opensuse}${desktop}${dir}boot/x86_64/loader/linux
+initrd ${url_opensuse}${desktop}${dir}boot/x86_64/loader/initrd ||
+imgargs linux vga=788 install=${url_opensuse}${desktop}${dir} initrd=initrd ||
+boot || clear dir && clear desktop && imgfree && goto main
+################################
+############# Parrot #############
+################################
+:parrot
+set dir installer-${arch}/current/images/netboot/gtk/debian-installer/${arch}/
+kernel ${url_parrot}${dir}linux ||
+initrd ${url_parrot}${dir}initrd.gz ||
+imgargs linux vga=788 repo=http://cdimage.parrotsec.org/parrot/ initrd=initrd.gz ||
+boot || clear dir && imgfree && goto main
+################################
+############ Slackware ############
+################################
+:slackware
+kernel ${url_slackware}kernel/huge.s/bzImage ||
+initrd ${url_slackware}isolinux/initrd.img ||
+imgargs bzImage initrd=initrd.img load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 nomodeset SLACK_KERNEL=huge.s ||
+boot || imgfree && goto main
+################################
+############## Slax ##############
+################################
+:slax menu
+console --picture ${src}bootlogo.png
+item perch,automount		Run Slax (Persistent changes)
+item automount					Run Slax (Fresh start)
+item toram						Run Slax (Copy to RAM)
+choose selected || goto main
+iseq ${selected} main && goto main || set run ${selected}
+kernel ${images}slax/${arch}/boot/vmlinuz ||
+initrd ${images}slax/${arch}/boot/initrfs.img ||
+imgargs vmlinuz vga=normal initrd=/slax/boot/initrfs.img load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 slax.flags=${run} ||
+boot || clear run && imgfree && goto main
+################################
+############ Tiny Core ############
+################################
+:tinycore
+kernel ${memdisk} ||
+initrd ${url_tinycore}${desktop}-current.iso ||
+imgargs memdisk iso raw ||
+boot || clear desktop && imgfree && goto main
+################################
+############# Ubuntu #############
+################################
 :ubuntu
-iseq ${arch} x86 || prompt --key y ${x64} && goto ubuntu64 ||
-kernel ${url_ubuntu}linux ||
-initrd ${url_ubuntu}initrd.gz ||
-boot || goto main-menu
-:ubuntu64
-kernel ${url_ubuntu64}linux ||
-initrd ${url_ubuntu64}initrd.gz ||
-boot || goto main-menu
-################################ Avira Rescue System ################################
-:avira
-kernel ${src}memdisk ||
-initrd ${url_avira} ||
+set dir ${version}/main/installer-${arch}/current/images/netboot/
+kernel ${url_ubuntu}${dir}ubuntu-installer/${arch}/linux ||
+initrd ${url_ubuntu}${dir}ubuntu-installer/${arch}/initrd.gz ||
+imgargs vga=788 linux initrd=initrd.gz ||
+boot || clear dir && clear version && imgfree && goto main
+################################
+############# XCP-ng ############
+################################
+:xcp_ng
+kernel ${url_xcp_ng}boot/vmlinuz ||
+initrd ${url_clearos}boot/xen.gz ||
+imgargs repo=${url_xcp_ng} vga=788 initrd=initrd.img ||
+boot || imgfree && goto main
+################################
+############ Run Tool ###########
+################################ 
+:tool
+kernel ${memdisk} ||
+initrd $${tool} ||
 imgargs memdisk iso raw ||
-boot || goto main-menu
-################################ Dr.Web LiveDisk ################################
-:drweb
-kernel ${src}memdisk ||
-initrd ${url_drweb} ||
-imgargs memdisk iso raw ||
-boot || goto main-menu
-################################ Kaspersky Rescue Disk ################################
-:krd
-kernel ${src}memdisk ||
-initrd ${url_krd} ||
-imgargs memdisk iso raw ||
-boot || goto main-menu
-################################ Memtest86 ################################
-:mem86
-kernel ${src}memdisk ||
-initrd ${tool}memtest86_current.iso ||
-imgargs memdisk iso raw ||
-boot || goto main-menu
-################################ Memtest86+ ################################
-:mem86+
-kernel ${src}memdisk ||
-initrd ${tool}memtest86+_current.iso ||
-imgargs memdisk iso raw ||
-boot || goto main-menu
-################################ MHDD ################################
-:mhdd
-kernel ${src}memdisk ||
-initrd ${tool}mhdd_current.iso ||
-imgargs memdisk iso raw ||
-boot || goto main-menu
-################################ Victoria ################################
-:vcr
-kernel ${src}memdisk ||
-initrd ${tool}vcr_current.iso ||
-imgargs memdisk iso raw ||
-boot || goto main-menu
+boot || clear tool && imgfree && goto main
 ################################################################################################
-:info
-menu SmartBoot ${ver}
-item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- * Fixed minor bugs
-item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- This bootloader allows you to boot the OS over the network from public servers. Those OS which is
-item --gap -- closed code, such as: "Windows" or "OSX", etc. must be loaded individually from non-public server.
-item --gap -- For Windows, bootloader settings are already prepared. You only need to unzip distribution to the
-item --gap -- server, as well as change the file "start.cmd" in the directory /boot/winpe/win*. File with the
-item --gap -- instruction ("readme") is at the root of /. Almost all utilities have an "ISO" image and load to 
-item --gap -- "RAM" via "memdisk". If desired, you can change the background image for each menu ("readme").
-item --gap -- The software used is open source!
-item --gap -- --------------------------------------------------------------------------------------------------
-item --gap -- This bootloader was created by 1 independent person. During development, much time and attention
-item --gap -- was paid to a convenient user experience. If you want to help the project, you can donate.
-item --gap -- Donations are accepted on Yandex Money 410015216730856, so you will help me :)
-item --gap -- --------------------------------------------------------------------------------------------------
-	item main-menu_a	<...
-choose --default main-menu_a target && goto ${target} ||
-goto main-menu_a
+################################################################################################
+################################################################################################
+goto main
