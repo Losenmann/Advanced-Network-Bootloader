@@ -1,5 +1,5 @@
 #!ipxe
-set ver 1.2.0
+set ver 1.3.0
 
 ##### Check if CPU supports 64-bit, PAE, VMX, SVM
 cpuid --ext 29 && set arch amd64 || set arch i386
@@ -62,27 +62,24 @@ set url_freenas http://download.freenas.org/latest/x64/FreeNAS-${url_freenas}.is
 ##### AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
-console --x 1024 --y 768 -p ${src}main8.png
+console --x 1024 --y 768 -p ${src}auth.png
 :login-r login || goto login-r
 iseq ${username} root && iseq ${password} kernel && goto login-ok || console --keep
 boot ftp://${username}:${password}@${auth}/cust && goto login-ok || console --keep
 boot ftp://${username}:${password}@${auth}/dev && goto login-ok || console --keep
 goto login-r
 :login-ok
-clear username && clear password
+clear username ; clear password ; set gfx 1
 ################################ MAIN MENU ################################
-:main
-colour --basic 9 7 && colour --basic 9 6
-colour --rgb 0xffffff 7
-console --x 1024 --y 768 -p ${src}main9.png
-#console --x 1600 --y 1200 --picture ${src}main9.png
-:main_a imgfree
+:main imgfree
+iseq ${gfx} 1 && set gfx 0 && console --x 1024 --y 768 -p ${src}main.png ||
+colour --basic 9 7 && colour --basic 9 6 && colour --rgb 0xffffff 7
 menu Welcome to SmartBoot menu
 	item out	Logout
 item --gap --		--- System Boot ----------------------------------------------------------------------------------------
 	item winpe	Windows/
 	item linux	Linux/
-	item othos	Other-OS/
+	item othos	Other OS/
 	item tools	Tools/
 	item info	Information
 item --gap --		--- iPXE Tools: -----------------------------------------------------------------------------------------
@@ -91,61 +88,55 @@ item --gap --		--- iPXE Tools: -------------------------------------------------
 	item exit	Exit
 	item reboot	Reboot
 	item power	Power Off
-choose --default out --timeout 20000 target && goto ${target} || goto main_a
-:config config && goto main_a
+choose --default out --timeout 20000 target && goto ${target} || goto main
+:config config && goto main
 :out goto login
 :reboot reboot
 :power poweroff
 :exit exit
 :shell shell
-goto main_a
+goto main
 ################################ WINDOWS MENU ################################
-:win console --x 1024 --y 768 --picture ${src}win.png
-:win_c
+:winpe 
+iseq ${gfx} 0 && set gfx 1 && console --x 1024 --y 768 --picture ${src}win.png ||
 menu Windows boot menu
 	item main	<...
-item --gap		-------- Microsoft Windows(WinPE) --------
-item --gap 		Selected server: ${url_winpe}
-item winpe_srv		Add Server WinPE
-item winpe_clr		Clear Server WinPE
-isset ${url_winpe} && item winxp	Windows XP || item --gap Windows XP
-isset ${url_winpe} && item winvista	Windows Vist || item --gap Windows Vista
-isset ${url_winpe} && item win7		Windows 7 || item --gap Windows 7
-isset ${url_winpe} && item win8.1	Windows 8.1 || item --gap Windows 8.1
-isset ${url_winpe} && item win10	Windows 10 || item --gap Windows 10
-isset ${url_winpe} && item win2008	Windows Server 2008 || item --gap Windows Server 2008
-isset ${url_winpe} && item win2012	Windows Server 2012 || item --gap Windows Server 2012
-isset ${url_winpe} && item win2016	Windows Server 2016 || item --gap Windows Server 2016
-choose selected || goto main
-iseq ${selected} main && goto main ||
-iseq ${selected} winpe_srv && goto winpe_prt ||
-iseq ${selected} winpe_clr && clear url_winpe && goto winpe_c ||
-set setos ${selected} && goto winpe
-################################
-########## Server WinPE ##########
-################################
-:winpe_prt
+item --gap Selected server: ${protocol}${url_winpe}
+item --gap --		--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
+	item winpe_link				Add Server WinPE
+	item winpe_clr				Clear Server WinPE
+	isset ${url_winpe} && item winxp	Windows XP || item --gap Windows XP
+	isset ${url_winpe} && item winvista	Windows Vist || item --gap Windows Vista
+	isset ${url_winpe} && item win7		Windows 7 || item --gap Windows 7
+	isset ${url_winpe} && item win8.1	Windows 8.1 || item --gap Windows 8.1
+	isset ${url_winpe} && item win10	Windows 10 || item --gap Windows 10
+	isset ${url_winpe} && item win2008	Windows Server 2008 || item --gap Windows Server 2008
+	isset ${url_winpe} && item win2012	Windows Server 2012 || item --gap Windows Server 2012
+	isset ${url_winpe} && item win2016	Windows Server 2016 || item --gap Windows Server 2016
+choose selected || goto winpe
+iseq ${selected} main && goto main || iseq ${selected} winpe_link && goto winpe_link ||
+iseq ${selected} winpe_clr && clear username && clear password && clear url_winpe && clear protocol && goto winpe ||
+set win_vers ${selected} && set url_winpe ${protocol}${secure}${url_winpe} && goto win
+goto winpe
+##### Server WinPE
+:winpe_link
 menu WinPE boot server
 	item winpe	<...
 item --gap --		--- Server protocol
-	item https	HTTPS
-	item http	HTTP
-	item ftp	FTP
+	item https://	HTTPS
+	item http://	HTTP
 	item tftp	TFTP
-	item nfs	NFS
-choose selected || goto winpe
-iseq ${selected} winpe && goto winpe_c ||
-set protocol ${selected}
-iseq ${selected} https && echo Server address* && read url_winpe ||
-iseq ${selected} http && echo Server address* && read url_winpe ||
-iseq ${selected} ftp && echo Server address* && read url_winpe ||
-iseq ${selected} tftp && set url_winpe ${next-server} && goto winpe_c ||
-iseq ${selected} nfs && set url_winpe ${next-server} && goto winpe_c ||
-echo Enter Username && read username && isset ${username} && set username ${username}: ||
-echo Enter Password && read password && isset ${password} && set password ${password}@ ||
-set url_winpe ${protocol}://${username}${password}${url_winpe}
-clear username && clear password && clear protocol
-goto winpe_c
+	item ftp://	FTP
+choose selected && set protocol ${selected} || goto winpe
+iseq ${selected} winpe && goto winpe ||
+iseq ${selected} https:// && echo HTTPS server address: && read url_winpe && goto winpe ||
+iseq ${selected} http:// && echo HTTP server address: && read url_winpe && goto winpe ||
+iseq ${selected} tftp && set url_winpe ${next-server} && goto winpe ||
+iseq ${selected} ftp:// && echo FTP server address: && read url_winpe && || goto winpe
+echo Username: && read username && echo Password: && read password ||
+isset ${username} && set username ${username}: ; isset ${password} && set password ${password}@ ||
+set secure ${username}${password}
+goto winpe
 ################################ LINUX MENU ################################
 :linux console --x 1024 --y 768 --picture ${src}linux.png
 :linux_c
