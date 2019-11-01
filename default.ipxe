@@ -183,11 +183,11 @@ menu Desktop Environment or Edition
 	item back	<...
 item --gap --		--- Edition ---
 	iseq ${setos} fedora && item Everything			Fedora Everything ||
-	iseq ${setos} fedora && item Server				Fedora Server ||
+	iseq ${setos} fedora && item Server			Fedora Server ||
 	iseq ${setos} fedora && item Workstation		Fedora Workstation ||
-	iseq ${setos} opensuse && item	distribution	OpenSUSE Leap ||
+	iseq ${setos} opensuse && item	distribution		OpenSUSE Leap ||
 	iseq ${setos} opensuse && item	tumbleweed		OpenSUSE Tumbleweed ||
-	iseq ${setos} tinycore && item Core				Core ||
+	iseq ${setos} tinycore && item Core			Core ||
 	iseq ${setos} tinycore && item CorePlus			CorePlus ||
 	iseq ${setos} tinycore && item TinyCore			TinyCore ||
 	iseq ${setos} ubuntu && item Desktop			Ubuntu Desktop ||
@@ -199,27 +199,27 @@ iseq ${setos} tinycore && goto ${setos} ; iseq ${setos} opensuse && goto ${setos
 menu Version ${setos}
 	item back	<...
 item --gap --		${setos}
-	iseq ${setos} android && item 8.1				Android-x86 8.1 ||
-	iseq ${setos} android && item 7.1				Android-x86 7.1 ||
-	iseq ${setos} android && item 6.0				Android-x86 6.0 ||
-	iseq ${setos} android && item 5.1				Android-x86 5.1 ||
-	iseq ${setos} android && item 4.4				Android-x86 4.4 ||
-	iseq ${setos} debian && item stable				Debian latest ||
+	iseq ${setos} android && item 8.1			Android-x86 8.1 ||
+	iseq ${setos} android && item 7.1			Android-x86 7.1 ||
+	iseq ${setos} android && item 6.0			Android-x86 6.0 ||
+	iseq ${setos} android && item 5.1			Android-x86 5.1 ||
+	iseq ${setos} android && item 4.4			Android-x86 4.4 ||
+	iseq ${setos} debian && item stable			Debian latest ||
 	iseq ${setos} debian && item Debian9.9			Debian 9 ||
 	iseq ${setos} debian && item Debian8.11			Debian 8 ||
-	iseq ${setos} fedora && item 30					Fedora 30 ||
-	iseq ${setos} fedora && item 29					Fedora 29 ||
-	iseq ${setos} fedora && item 28					Fedora 28 ||
-	iseq ${setos} freebsd && item 12.0				FreeBSD 12.0 ||
-	iseq ${setos} freebsd && item 11.3				FreeBSD 11.3 ||
-	iseq ${setos} freebsd && item 11.2				FreeBSD 11.2 ||
-	iseq ${setos} kolibri && item ${url_kolibri}	KolibriOS latest unstable ||
-	iseq ${setos} kolibri && item kolibri_en.iso	KolibriOS 0.7.7.0 en ||
-	iseq ${setos} kolibri && item kolibri_ru.iso	KolibriOS 0.7.7.0 ru ||
-	iseq ${setos} ubuntu && item disco				Ubuntu 19.04 LTS ||
-	iseq ${setos} ubuntu && item bionic				Ubuntu 18.04 LTS ||
-	iseq ${setos} ubuntu && item xenial				Ubuntu 16.04 LTS ||
-	iseq ${setos} ubuntu && item trusty				Ubuntu 14.04 LTS ||
+	iseq ${setos} fedora && item 30				Fedora 30 ||
+	iseq ${setos} fedora && item 29				Fedora 29 ||
+	iseq ${setos} fedora && item 28				Fedora 28 ||
+	iseq ${setos} freebsd && item 12.0			FreeBSD 12.0 ||
+	iseq ${setos} freebsd && item 11.3			FreeBSD 11.3 ||
+	iseq ${setos} freebsd && item 11.2			FreeBSD 11.2 ||
+	iseq ${setos} kolibri && item ${url_kolibri}		KolibriOS latest unstable ||
+	iseq ${setos} kolibri && item kolibri_en.iso		KolibriOS 0.7.7.0 en ||
+	iseq ${setos} kolibri && item kolibri_ru.iso		KolibriOS 0.7.7.0 ru ||
+	iseq ${setos} ubuntu && item disco			Ubuntu 19.04 LTS ||
+	iseq ${setos} ubuntu && item bionic			Ubuntu 18.04 LTS ||
+	iseq ${setos} ubuntu && item xenial			Ubuntu 16.04 LTS ||
+	iseq ${setos} ubuntu && item trusty			Ubuntu 14.04 LTS ||
 	iseq ${setos} ubuntu && item precise 			Ubuntu 12.04 LTS ||
 choose selected || goto version
 iseq ${selected} back && goto linux || set version ${selected}
