@@ -81,13 +81,13 @@ iseq ${pict} 1 && set pict 0 && console --x 1024 --y 768 -p ${gfx}main.png ||
 colour --basic 9 7 && colour --basic 9 6 && colour --rgb 0xffffff 7
 menu Welcome to SmartBoot menu
 	item out		Logout
-item --gap --		--- System Boot ----------------------------------------------------------------------------------------
+item --gap --			--- System Boot ---
 	item winpe		Windows/
 	item linux		Linux/
 	item othos		Other-OS/
 	item tools		Tools/
 	item info		Information
-item --gap --		--- iPXE Tools: -----------------------------------------------------------------------------------------
+item --gap --			--- iPXE Tools ---
 	item config		Configure iPXE
 	item shell		iPXE Shell
 	item exit		Exit
@@ -106,11 +106,11 @@ goto main
 isset ${target} && prompt -k y Press 'Y' is next && set startnet start_tool.cmd && goto win ||
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}win.png ||
 menu Windows boot menu
-	item main	<...
+	item main		<...
 item --gap Selected server: ${protocol}${url_winpe}
-item --gap --		--- Microsoft Windows(WinPE)  ----------------------------------------------------------------------------------
-	item winpe_link							Add Server WinPE
-	item winpe_clr							Clear Server WinPE
+item --gap --			--- Microsoft Windows(WinPE) ---
+	item winpe_link		Add Server WinPE
+	item winpe_clr		Clear Server WinPE
 	isset ${url_winpe} && item winxp		Windows XP || item --gap Windows XP
 	isset ${url_winpe} && item winvista		Windows Vista || item --gap Windows Vista
 	isset ${url_winpe} && item win7			Windows 7 || item --gap Windows 7
@@ -127,10 +127,10 @@ goto winpe
 ######## Server WinPE
 :winpe_link
 menu WinPE boot server
-	item winpe	<...
-item --gap --		--- Server protocol
-	item htts://	HTTPS
-	item http://	HTTP
+	item winpe		<...
+item --gap --			--- Server protocol
+	item htts://		HTTPS
+	item http://		HTTP
 	item tftp		TFTP
 	item ftp://		FTP
 choose selected && set protocol ${selected} || goto winpe
@@ -147,28 +147,28 @@ goto winpe
 :linux
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}linux.png ||
 menu Linux Distribute Boot Menu
-	item main	<...
-item --gap --		--- OFFLINE Boot
-	item slax			Slax
-item --gap --		--- ONLINE Boot ----------------------------------------------------------------------------------
-	item alpine			Alpine
-#	item archos			Arch Linux
-	item centos			CentOS
+	item main		<...
+item --gap --			--- OFFLINE Boot ---
+	item slax		Slax
+item --gap --			--- ONLINE Boot ---
+	item alpine		Alpine
+#	item archos		Arch Linux
+	item centos		CentOS
 #	item clearos		ClearOS
-#	item coreos			CoreOS
-	item debian			Debian
-	item fedora			Fedora
+#	item coreos		CoreOS
+	item debian		Debian
+	item fedora		Fedora
 	item freebsd		FreeBSD
 	item freenas		FreeNAS
-	item kali			Kali Linux
+	item kali		Kali Linux
 	item kolibri		KolibriOS
-	item nixos			NixOS
-	item openmv			OpenMediaVault
+	item nixos		NixOS
+	item openmv		OpenMediaVault
 	item opensuse		OpenSUSE
-	item parrot			Parrot
+	item parrot		Parrot
 	item slackware		Slackware
 	item tinycore		Tiny Core Linux
-	item ubuntu			Ubuntu
+	item ubuntu		Ubuntu
 choose selected || goto linux
 iseq ${selected} main && goto main ||
 set setos ${selected}
@@ -181,7 +181,7 @@ iseq ${setos} nixos && goto ${setos} ; iseq ${setos} parrot && goto ${setos} ; i
 ######## Linux environment
 menu Desktop Environment or Edition
 	item back	<...
-item --gap --		--- Edition 
+item --gap --		--- Edition ---
 	iseq ${setos} fedora && item Everything			Fedora Everything ||
 	iseq ${setos} fedora && item Server				Fedora Server ||
 	iseq ${setos} fedora && item Workstation		Fedora Workstation ||
@@ -228,23 +228,23 @@ goto ${setos}
 :othos
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}other.png ||
 menu Boot menu Other OS
-	item main	<...
-item --gap --		--- OtherOS ----------------------------------------------------------------------------------
+	item main		<...
+item --gap --			--- OtherOS ---
 	item android		Android-x86
-	item chrome			ChromiumOS
-#	item mac			OS X
-#	item kodi			Kodi TV-Box
-	item steam			SteamOS
-	item xcp_ng			Hypervisor XCP-ng
-	item xen			Hypervisor Xen Server
+	item chrome		ChromiumOS
+#	item mac		OS X
+#	item kodi		Kodi TV-Box
+	item steam		SteamOS
+	item xcp_ng		Hypervisor XCP-ng
+	item xen		Hypervisor Xen Server
 choose --default main selected && goto ${selected} ||
 goto othos
 ################################ UTILITIES MENU ################################
 :tools
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}tools.png ||
 menu Boot menu Tools and Utilities
-	item back			<...
-item --gap --			--- Tools & Utilities ----------------------------------------------------------------------------------
+	item back		<...
+item --gap --			--- Tools & Utilities ---
 	item ${url_avira}	Avira Rescue System
 	item ${url_drweb}	Dr.Web LiveDisk
 	item ${url_krd}		Kaspersky Rescue Disk	
