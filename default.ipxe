@@ -13,10 +13,10 @@ isset ${vmx} || isset ${svm} && set hw_virt yes ||
 ntp 0.pool.ntp.org ||
 set mtu 1500
 ######## VARIABLES
-set src http://boot.bo0ot.ru/boot/
+set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/
 set gfx ${src}gfx/
 set images ${src}images/
-set memdisk ${src}memdisk
+set memdisk ${src}/boot/memdisk
 set x64 Your`s CPU supports 64 commands, press 'Y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
 ######## Delete data from variables
