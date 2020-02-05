@@ -256,7 +256,7 @@ item --gap --			--- Tools & Utilities ---
 choose selected || goto tools
 iseq ${selected} back && goto main || set tool ${selected}
 iseq ${selected} winpetool && set target ${selected} && set pict 1 && goto winpe_link ||
-goto tool
+goto tools
 ################################
 # Windows PE
 ################################
