@@ -67,6 +67,8 @@ set url_coreos http://stable.release.core-os.net/amd64-usr/current/coreos_produc
 set url_freenas http://download.freenas.org/latest/x64/FreeNAS-${url_freenas}.iso
 set url_openmv https://vorboss.dl.sourceforge.net/project/openmediavault/${url_openmv}/openmediavault_${url_openmv}-amd64.iso
 set url_ros https://download.mikrotik.com/routeros/6.46.2/mikrotik-6.46.2.iso
+set url_pclinuxos http://ftp.fau.de/pclinuxos/pclinuxos/live-cd/64bit/
+set url_zorin http://netcologne.dl.sourceforge.net/project/zorin-os/15/Zorin-OS-15.1-Core-64-bit-r2.iso
 ######## AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
@@ -153,7 +155,7 @@ menu Linux Distribute Boot Menu
 	item main		<...
 item --gap --			--- OFFLINE Boot ---
 	item slax		Slax
-item --gap --			--- ONLINE Boot ---
+item --gap --			--- ONLINE Boot (RAM <1Gb) ---
 	item alpine		Alpine
 #	item archos		Arch Linux
 	item centos		CentOS
@@ -172,6 +174,10 @@ item --gap --			--- ONLINE Boot ---
 	item slackware		Slackware
 	item tinycore		Tiny Core Linux
 	item ubuntu		Ubuntu
+item --gap --			--- RAM >4Gb ---
+#	item zorin		ZorinOS
+#	item pclinuxos		PCLinuxOS
+	
 choose selected || goto linux
 iseq ${selected} main && goto main ||
 set setos ${selected}
@@ -234,12 +240,12 @@ menu Boot menu Other OS
 	item main		<...
 item --gap --			--- OtherOS ---
 	item android		Android-x86
-	item chrome		ChromiumOS
+#	item chrome		ChromiumOS
 #	item mac		OS X
 #	item kodi		Kodi TV-Box
 	item steam		SteamOS
 	item xcp_ng		Hypervisor XCP-ng
-	item xen		Hypervisor Xen Server
+#	item xen		Hypervisor Xen Server
 	item ros		MikroTik RouterOS x86
 	item chr		MikroTik Cloud Hosted Router
 	item pfs		pfSence
