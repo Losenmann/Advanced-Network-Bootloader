@@ -261,7 +261,7 @@ item --gap --			--- Tools & Utilities ---
 	item ${url_mhdd}	MHDD
 #	item winpetool		WinPE utilits and tools
 choose selected || goto tools
-iseq ${selected} back && goto main || set tool ${selected}
+iseq ${selected} main && goto main || set tool ${selected}
 iseq ${selected} winpetool && set target ${selected} && set pict 1 && goto winpe_link ||
 goto tools
 ################################
