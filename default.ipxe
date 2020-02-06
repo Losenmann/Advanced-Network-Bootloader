@@ -69,6 +69,12 @@ set url_openmv https://vorboss.dl.sourceforge.net/project/openmediavault/${url_o
 set url_ros https://download.mikrotik.com/routeros/6.46.2/mikrotik-6.46.2.iso
 set url_pclinuxos http://ftp.fau.de/pclinuxos/pclinuxos/live-cd/64bit/
 set url_zorin http://netcologne.dl.sourceforge.net/project/zorin-os/15/Zorin-OS-15.1-Core-64-bit-r2.iso
+set url_solus http://solus.fin.veatnet.de/iso/images/4.1/
+set url_chaletos http://vorboss.dl.sourceforge.net/project/chaletos/ChaletOS16.04/chaletos-16042-amd64.iso
+set url_manjaro http://dotsrc.dl.osdn.net/osdn/storage/g/m/ma/manjaro/
+set url_mint http://mirrors.evowise.com/linuxmint/stable/19.3/
+set url_antergos https://mirror.yandex.ru/mirrors/cinnarch/iso/release/antergos-minimal-19.4-x86_64.iso
+set url_deepin http://cdimage.deepin.com/releases/15.11/deepin-15.11-amd64.iso
 ######## AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
@@ -155,7 +161,7 @@ menu Linux Distribute Boot Menu
 	item main		<...
 item --gap --			--- OFFLINE Boot ---
 	item slax		Slax
-item --gap --			--- ONLINE Boot (RAM <1Gb) ---
+item --gap --			--- ONLINE Boot (RAM <0.5Gb) ---
 	item alpine		Alpine
 #	item archos		Arch Linux
 	item centos		CentOS
@@ -174,7 +180,13 @@ item --gap --			--- ONLINE Boot (RAM <1Gb) ---
 	item slackware		Slackware
 	item tinycore		Tiny Core Linux
 	item ubuntu		Ubuntu
-item --gap --			--- RAM >4Gb ---
+item --gap --			--- RAM >0.5Gb ---
+#	item deepin		Deepin
+#	item antergos		Antergos
+#	item mint		Linux Mint
+#	item manjaro		Manjaro
+#	item chaletos		ChaletOS
+#	item solus		Solus
 #	item zorin		ZorinOS
 #	item pclinuxos		PCLinuxOS
 	
