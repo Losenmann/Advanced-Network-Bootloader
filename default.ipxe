@@ -243,14 +243,14 @@ item --gap --			--- OtherOS ---
 	item chr		MikroTik Cloud Hosted Router
 	item pfs		pfSence
 choose selected || goto othos
-iseq ${selected} back && goto main ||
+iseq ${selected} main && goto main ||
 iseq ${selected} ros && set tool ${url_ros} && goto tool ||
 goto othos
 ################################ UTILITIES MENU ################################
 :tools
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}tools.png ||
 menu Boot menu Tools and Utilities
-	item back		<...
+	item main		<...
 item --gap --			--- Tools & Utilities ---
 	item ${url_avira}	Avira Rescue System
 	item ${url_drweb}	Dr.Web LiveDisk
