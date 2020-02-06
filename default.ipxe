@@ -75,6 +75,7 @@ set url_manjaro http://dotsrc.dl.osdn.net/osdn/storage/g/m/ma/manjaro/
 set url_mint http://mirrors.evowise.com/linuxmint/stable/19.3/
 set url_antergos https://mirror.yandex.ru/mirrors/cinnarch/iso/release/antergos-minimal-19.4-x86_64.iso
 set url_deepin http://cdimage.deepin.com/releases/15.11/deepin-15.11-amd64.iso
+set url_fydeos http://download.fydeos.io/FydeOS_PC_v8.21-stable.img.xz
 ######## AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
@@ -253,6 +254,7 @@ menu Boot menu Other OS
 item --gap --			--- OtherOS ---
 	item android		Android-x86
 #	item chrome		ChromiumOS
+	item fydeos		FydeOS
 #	item mac		OS X
 #	item kodi		Kodi TV-Box
 	item steam		SteamOS
