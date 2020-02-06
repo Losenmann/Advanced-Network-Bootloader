@@ -64,6 +64,7 @@ set url_slackware http://mirrors.slackware.com/slackware/slackware64-current/
 set url_coreos http://stable.release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso
 set url_freenas http://download.freenas.org/latest/x64/FreeNAS-${url_freenas}.iso
 set url_openmv https://vorboss.dl.sourceforge.net/project/openmediavault/${url_openmv}/openmediavault_${url_openmv}-amd64.iso
+set url_ros https://download.mikrotik.com/routeros/6.46.2/mikrotik-6.46.2.iso
 ######## AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
@@ -237,7 +238,12 @@ item --gap --			--- OtherOS ---
 	item steam		SteamOS
 	item xcp_ng		Hypervisor XCP-ng
 	item xen		Hypervisor Xen Server
-choose --default main selected && goto ${selected} ||
+	item ros		MikroTik RouterOS x86
+	item chr		MikroTik Cloud Hosted Router
+	item pfs		pfSence
+choose selected || goto othos
+iseq ${selected} back && goto main ||
+iseq ${selected} ros && set tool ${url_ros} && goto tool ||
 goto othos
 ################################ UTILITIES MENU ################################
 :tools
@@ -463,9 +469,9 @@ initrd ${url_clearos}boot/xen.gz || goto main
 imgargs repo=${url_xcp_ng} vga=788 initrd=initrd.img || goto main
 boot || imgfree && goto main
 ################################
-# Run Tool
+# Run ISO
 ################################ 
-:tool
+:iso
 kernel ${memdisk} ||
 initrd ${tool} ||
 imgargs memdisk iso raw ||
