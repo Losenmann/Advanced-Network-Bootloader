@@ -78,7 +78,6 @@ goto login-r
 clear username ; clear password ; set pict 1
 ################################ MAIN MENU ################################
 :main imgfree
-console --keep
 iseq ${pict} 1 && set pict 0 && console --x 1024 --y 768 -p ${gfx}main.png ||
 colour --basic 9 7 && colour --basic 9 6 && colour --rgb 0xffffff 7
 menu Welcome to SmartBoot menu
