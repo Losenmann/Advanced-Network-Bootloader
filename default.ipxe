@@ -51,6 +51,10 @@ set url_kali http://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/
 set url_debian http://ftp.acc.umu.se/debian/dists/
 set url_tinycore http://www.tinycorelinux.net/${url_tinycore}.x/x86/release/
 set url_kolibri http://builds.kolibrios.org/eng/kolibri.iso
+set url_steamos http://repo.steampowered.com/download/SteamOSDVD.iso
+set url_ros https://download.mikrotik.com/routeros/6.46.2/mikrotik-6.46.2.iso
+set url_freenas http://download.freenas.org/latest/x64/FreeNAS-11.3-RELEASE.iso
+set url_openmv https://netcologne.dl.sourceforge.net/project/openmediavault/5.0.5/openmediavault_5.0.5-amd64.iso
 #### OS checked install
 #### OS not checked start install
 #### OS ERROR
@@ -63,16 +67,12 @@ set url_parrot http://cdimage.parrotsec.org/parrot/dists/stable/main/
 set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/
 set url_freebsd http://ftp.freebsd.org/pub/FreeBSD/releases/ISO-IMAGES/
 set url_puppy http://distro.ibiblio.org/puppylinux/
-set url_alpine http://dl-cdn.alpinelinux.org/alpine/latest-stable/
+# set url_alpine http://dl-cdn.alpinelinux.org/alpine/latest-stable/
 set url_nixos https://hydra.nixos.org/job/nixos/release-19.03/nixos.netboot.x86_64-linux/latest-finished/download/netboot.ipxe
 set url_android https://osdn.net/dl/android-x86/
 set url_xcp_ng http://mirror.iextreme.org/xcp-ng/netinstall/latest/
-set url_steamos http://repo.steampowered.com/download/
 set url_slackware http://mirrors.slackware.com/slackware/slackware64-current/
 set url_coreos http://stable.release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso
-set url_freenas http://download.freenas.org/latest/x64/FreeNAS-${url_freenas}.iso
-set url_openmv https://vorboss.dl.sourceforge.net/project/openmediavault/${url_openmv}/openmediavault_${url_openmv}-amd64.iso
-set url_ros https://download.mikrotik.com/routeros/6.46.2/mikrotik-6.46.2.iso
 set url_pclinuxos http://ftp.fau.de/pclinuxos/pclinuxos/live-cd/64bit/
 set url_zorin http://netcologne.dl.sourceforge.net/project/zorin-os/15/Zorin-OS-15.1-Core-64-bit-r2.iso
 set url_solus http://solus.fin.veatnet.de/iso/images/4.1/
@@ -170,7 +170,7 @@ menu Linux Distribute Boot Menu
 item --gap --			--- OFFLINE Boot ---
 	item slax		Slax
 item --gap --			--- ONLINE Boot (RAM <0.5Gb) ---
-	item alpine		Alpine
+#	item alpine		Alpine
 	item archos		Arch Linux
 	item centos		CentOS
 	item clearos		ClearOS
@@ -264,15 +264,15 @@ item --gap --			--- OtherOS ---
 	item fydeos		FydeOS
 #	item mac		OS X
 #	item kodi		Kodi TV-Box
-	item steam		SteamOS
+	item ${url_steam}	SteamOS
 	item xcp_ng		Hypervisor XCP-ng
 #	item xen		Hypervisor Xen Server
-	item ros		MikroTik RouterOS x86
+	item ${url_ros}		MikroTik RouterOS x86
 	item chr		MikroTik Cloud Hosted Router
 	item pfs		pfSence
 choose selected || goto othos
 iseq ${selected} main && goto main ||
-iseq ${selected} ros && set tool ${url_ros} && goto tool ||
+set tool ${selected} && goto tool
 goto othos
 ################################ UTILITIES MENU ################################
 :tools
