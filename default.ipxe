@@ -17,7 +17,7 @@ set mtu 1500
 ######## VARIABLES
 set src https://raw.githubusercontent.com/Losenmann/SmartBoot/master/
 set gfx ${src}gfx/
-set images ${src}images/
+set images ${src}imnages/
 set memdisk ${src}/boot/memdisk
 set x64 Your`s CPU supports 64 commands, press 'Y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
@@ -34,6 +34,7 @@ set url_freenas 11.2-U6
 set url_openmv 4.1.22
 set vres_fedora && set version ${version}/ && inc version && goto Fedora ||
 ######## Links
+#### Tools
 set url_mem86 ${src}tools/memtest86_current.iso
 set url_mem86+ ${src}tools/memtest86+_current.iso
 set url_vcr ${src}tools/vcr.current.iso
@@ -41,12 +42,17 @@ set url_mhdd ${src}tools/mhdd.current.iso
 set url_avira http://install.avira-update.com/package/rs_avira/unix/int/rescue-system.iso
 set url_krd http://rescuedisk.s.kaspersky-labs.com/updatable/2018/krd.iso
 set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-900-cd.iso
+#### OS
+#### OS checked start install
 set url_centos http://mirror.centos.org/centos/${url_centos}/
+set url_fedora http://mirrors.kernel.org/fedora/relearootses/
+#### OS checked install
+#### OS not checked start install
+#### OS ERROR
 set url_clearos http://clearos.uberglobalmirror.com/${url_clearos}/
 set url_kolibri http://builds.kolibrios.org/eng/kolibri.iso
 set url_arch https://archlinux.org/releng/netboot/archlinux.ipxe
 set url_gentoo http://distfiles.gentoo.org/releases/${arch-y}/autobuilds/current-install-${arch-y}-minimal/install-${arch-y}-minimal-${url_gentoo}.iso
-set url_fedora http://mirrors.kernel.org/fedora/releases/
 set url_solus http://solus.fin.veatnet.de/iso/images/
 set url_opensuse http://download.opensuse.org/
 set url_slax http://ftp.sh.cvut.cz/slax/Slax-${url_slax}.x/slax-${arch-x}bit-${url_slax}.${v}.iso
@@ -165,10 +171,10 @@ item --gap --			--- OFFLINE Boot ---
 	item slax		Slax
 item --gap --			--- ONLINE Boot (RAM <0.5Gb) ---
 	item alpine		Alpine
-#	item archos		Arch Linux
+	item archos		Arch Linux
 	item centos		CentOS
-#	item clearos		ClearOS
-#	item coreos		CoreOS
+	item clearos		ClearOS
+	item coreos		CoreOS
 	item debian		Debian
 	item fedora		Fedora
 	item freebsd		FreeBSD
