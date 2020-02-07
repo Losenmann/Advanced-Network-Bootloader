@@ -46,20 +46,20 @@ set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-90
 #### OS checked start install
 set url_centos http://mirror.centos.org/centos/${url_centos}/
 set url_fedora http://mirrors.kernel.org/fedora/relearootses/
+set url_opensuse http://download.opensuse.org/
+set url_kali http://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/
+set url_debian http://ftp.acc.umu.se/debian/dists/
+set url_tinycore http://www.tinycorelinux.net/${url_tinycore}.x/x86/release/
+set url_kolibri http://builds.kolibrios.org/eng/kolibri.iso
 #### OS checked install
 #### OS not checked start install
 #### OS ERROR
 set url_clearos http://clearos.uberglobalmirror.com/${url_clearos}/
-set url_kolibri http://builds.kolibrios.org/eng/kolibri.iso
 set url_arch https://archlinux.org/releng/netboot/archlinux.ipxe
 set url_gentoo http://distfiles.gentoo.org/releases/${arch-y}/autobuilds/current-install-${arch-y}-minimal/install-${arch-y}-minimal-${url_gentoo}.iso
 set url_solus http://solus.fin.veatnet.de/iso/images/
-set url_opensuse http://download.opensuse.org/
 set url_slax http://ftp.sh.cvut.cz/slax/Slax-${url_slax}.x/slax-${arch-x}bit-${url_slax}.${v}.iso
 set url_parrot http://cdimage.parrotsec.org/parrot/dists/stable/main/
-set url_kali http://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/
-set url_debian http://ftp.acc.umu.se/debian/dists/
-set url_tinycore http://www.tinycorelinux.net/${url_tinycore}.x/x86/release/
 set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/
 set url_freebsd http://ftp.freebsd.org/pub/FreeBSD/releases/ISO-IMAGES/
 set url_puppy http://distro.ibiblio.org/puppylinux/
@@ -308,8 +308,7 @@ boot || imgfree && goto main
 # Alpine
 ################################
 :alpine
-iseq ${arch} i386 && set dir releases/x86/netboot/ || goto main
-iseq ${arch} amd64 && set dir releases/x86_64/netboot/ || goto main
+iseq ${arch} i386 && set dir releases/x86/netboot/ || iseq ${arch} amd64 && set dir releases/x86_64/netboot/ || goto main
 kernel ${url_alpine}${dir}vmlinuz-vanilla || goto main
 initrd ${url_alpine}${dir}initramfs-vanilla || goto main
 imgargs vmlinuz-vanilla alpine_repo=${url_alpine}main modules=loop,squashfs modloop=${url_alpine}${dir}/modloop-vanilla quiet nomodeset
