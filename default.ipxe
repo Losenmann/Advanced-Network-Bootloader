@@ -309,8 +309,8 @@ boot || imgfree && goto main
 ################################
 :alpine
 iseq ${arch} i386 && set dir releases/x86/netboot/ || iseq ${arch} amd64 && set dir releases/x86_64/netboot/ || goto main
-kernel ${url_alpine}${dir}vmlinuz-vanilla || goto main
-initrd ${url_alpine}${dir}initramfs-vanilla || goto main
+kernel ${url_alpine}${dir}vmlinuz-lts || goto main
+initrd ${url_alpine}${dir}initramfs-lts || goto main
 imgargs vmlinuz-vanilla alpine_repo=${url_alpine}main modules=loop,squashfs modloop=${url_alpine}${dir}/modloop-vanilla quiet nomodeset
 boot || clear dir && imgfree && goto main
 ################################
