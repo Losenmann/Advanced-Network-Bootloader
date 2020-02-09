@@ -83,6 +83,7 @@ set url_antergos https://mirror.yandex.ru/mirrors/cinnarch/iso/release/antergos-
 set url_deepin http://cdimage.deepin.com/releases/15.11/deepin-15.11-amd64.iso
 set url_fydeos http://download.fydeos.io/FydeOS_PC_v8.21-stable.img.xz
 set url_coreos http://stable.release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso
+goto clearos
 ######## AUTHORIZATION
 :login set username && set password
 colour --basic 0 7 && colour --basic 7 6
