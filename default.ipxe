@@ -346,7 +346,7 @@ boot || clear dir && imgfree && goto main
 set dhcp ip=${ip} gateway=${gateway} mask=${netmask} dns=${dns} && set dir os/x86_64/
 kernel ${url_clearos}${dir}images/pxeboot/vmlinuz || goto main
 initrd ${url_clearos}${dir}images/pxeboot/initrd.img || goto main
-imgargs vmlinuz inst.repo=${url_clearos}${dir} ip=192.168.25.58::192.168.25.1:255.255.255.0:8.8.8.8:enp0s3:none nameserver=8.8.8.8 initrd=initrd.img || goto main
+imgargs initrd=initrd.img ip=dhcp nameserver=8.8.8.8 inst.xdriver=vesa nomodeset inst.repo=${url_clearos}${dir} || goto main
 boot || clear dir && imgfree && goto main
 ################################
 # CoreOS
