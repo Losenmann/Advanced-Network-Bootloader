@@ -346,7 +346,7 @@ boot || clear dir && imgfree && goto main
 set dhcp ip=${ip} gateway=${gateway} mask=${netmask} dns=${dns} && set dir os/x86_64/
 kernel ${url_clearos}${dir}images/pxeboot/vmlinuz || goto main
 initrd ${url_clearos}${dir}images/pxeboot/initrd.img || goto main
-imgargs vmlinuz repo=${url_clearos}${dir} ip=dhcp initrd=initrd.img || goto main
+imgargs vmlinuz repo=${url_clearos}${dir} method=http://mirror.centos.org/centos/7/os/x86_64/ ip=dhcp initrd=initrd.img || goto main
 boot || clear dir && imgfree && goto main
 ################################
 # CoreOS
