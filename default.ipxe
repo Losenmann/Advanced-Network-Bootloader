@@ -122,7 +122,7 @@ initrd http://www.tinycorelinux.net/10.x/x86/tcz/wbar.tcz
 initrd http://www.tinycorelinux.net/10.x/x86/tcz/Xlibs.tcz
 initrd http://www.tinycorelinux.net/10.x/x86/tcz/Xprogs.tcz
 initrd http://www.tinycorelinux.net/10.x/x86/tcz/Xvesa.tcz
-imgargs vmlinuz loglevel=3 initrd=core.gz
+imgargs vmlinuz loglevel=3 cde initrd=core.gz
 boot
 iseq ${pict} 1 && set pict 0 && console --x 1024 --y 768 -p ${gfx}main.png ||
 colour --basic 9 7 && colour --basic 9 6 && colour --rgb 0xffffff 7
