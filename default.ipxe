@@ -98,6 +98,7 @@ clear username ; clear password ; set pict 1
 :main imgfree
 kernel http://www.tinycorelinux.net/10.x/x86/release/distribution_files/vmlinuz
 initrd http://www.tinycorelinux.net/10.x/x86/release/distribution_files/core.gz
+initrd http://192.168.25.2/iso/TinyCore-current/cde/optional/Xvesa.tcz
 imgargs vmlinuz loglevel=3 httplist=http://192.168.25.2/iso/TinyCore-current/cde/xbase.lst initrd=core.gz
 boot
 iseq ${pict} 1 && set pict 0 && console --x 1024 --y 768 -p ${gfx}main.png ||
