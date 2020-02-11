@@ -45,11 +45,13 @@ set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-90
 #### OS
 #### OS checked start install
 set url_centos http://mirror.centos.org/centos/${url_centos}/
+set url_clearos http://clearos.uberglobalmirror.com/${url_clearos}/
 set url_fedora http://mirrors.kernel.org/fedora/relearootses/
 set url_opensuse http://download.opensuse.org/
 set url_kali http://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/
 set url_debian http://ftp.acc.umu.se/debian/dists/
 set url_tinycore http://www.tinycorelinux.net/${url_tinycore}.x/x86/release/
+set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/
 set url_kolibri http://builds.kolibrios.org/eng/kolibri.iso
 set url_steamos http://repo.steampowered.com/download/SteamOSDVD.iso
 set url_ros https://download.mikrotik.com/routeros/6.46.2/mikrotik-6.46.2.iso
@@ -58,13 +60,11 @@ set url_openmv https://netcologne.dl.sourceforge.net/project/openmediavault/5.0.
 #### OS checked install
 #### OS not checked start install
 #### OS ERROR
-set url_clearos http://clearos.uberglobalmirror.com/${url_clearos}/
 set url_arch https://archlinux.org/releng/netboot/archlinux.ipxe
 set url_gentoo http://distfiles.gentoo.org/releases/${arch-y}/autobuilds/current-install-${arch-y}-minimal/install-${arch-y}-minimal-${url_gentoo}.iso
 set url_solus http://solus.fin.veatnet.de/iso/images/
 set url_slax http://ftp.sh.cvut.cz/slax/Slax-${url_slax}.x/slax-${arch-x}bit-${url_slax}.${v}.iso
 set url_parrot http://cdimage.parrotsec.org/parrot/dists/stable/main/
-set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/
 set url_freebsd http://ftp.freebsd.org/pub/FreeBSD/releases/ISO-IMAGES/
 set url_puppy http://distro.ibiblio.org/puppylinux/
 # set url_alpine http://dl-cdn.alpinelinux.org/alpine/latest-stable/
@@ -177,6 +177,7 @@ item --gap --			--- ONLINE Boot GUI ---
 	item kali		Kali Linux
 	item kolibri		KolibriOS
 	item opensuse		OpenSUSE
+	item tinycore		Tiny Core Linux
 	item ubuntu		Ubuntu
 item --gap --			--- ONLINE Boot no GUI ---
 	item alpine		Alpine
@@ -188,7 +189,6 @@ item --gap --			--- ONLINE Boot no GUI ---
 	item openmv		OpenMediaVault
 	item parrot		Parrot
 	item slackware		Slackware
-	item tinycore		Tiny Core Linux
 item --gap --			--- RAM >0.5Gb ---
 #	item deepin		Deepin
 #	item antergos		Antergos
@@ -212,18 +212,18 @@ iseq ${setos} nixos && goto ${setos} ; iseq ${setos} parrot && goto ${setos} ; i
 menu Desktop Environment or Edition
 	item back	<...
 item --gap --		--- Edition ---
-	iseq ${setos} fedora && item Everything			Fedora Everything ||
-	iseq ${setos} fedora && item Server			Fedora Server ||
-	iseq ${setos} fedora && item Workstation		Fedora Workstation ||
-	iseq ${setos} opensuse && item	distribution		OpenSUSE Leap ||
-	iseq ${setos} opensuse && item	tumbleweed		OpenSUSE Tumbleweed ||
-	iseq ${setos} tinycore && item Core			Core ||
-	iseq ${setos} tinycore && item CorePlus			CorePlus ||
-	iseq ${setos} tinycore && item TinyCore			TinyCore ||
-	iseq ${setos} ubuntu && item Desktop			Ubuntu Desktop ||
+	iseq ${setos} fedora && item Everything					Fedora Everything ||
+	iseq ${setos} fedora && item Server					Fedora Server ||
+	iseq ${setos} fedora && item Workstation				Fedora Workstation ||
+	iseq ${setos} opensuse && item	distribution				OpenSUSE Leap ||
+	iseq ${setos} opensuse && item	tumbleweed				OpenSUSE Tumbleweed ||
+	iseq ${setos} tinycore && item ${url_tinycore}Core-current.iso		Core ||
+	iseq ${setos} tinycore && item ${url_tinycore}TinyCore-current.iso	TinyCore ||
+	iseq ${setos} tinycore && item ${url_tinycore}CorePlus-current.iso	CorePlus ||
+	iseq ${setos} ubuntu && item Desktop					Ubuntu Desktop ||
 choose selected || goto desktop
 iseq ${selected} back && goto linux || set desktop ${selected}
-iseq ${setos} tinycore && goto ${setos} ; iseq ${setos} opensuse && goto ${setos} ||
+iseq ${setos} tinycore && set tool ${selected} goto iso ; iseq ${setos} opensuse && goto ${setos} ||
 ######## Linux version
 :version
 menu Version ${setos}
@@ -472,14 +472,6 @@ kernel ${images}slax/${arch}/boot/vmlinuz || goto main
 initrd ${images}slax/${arch}/boot/initrfs.img || goto main
 imgargs vmlinuz vga=normal initrd=/slax/boot/initrfs.img load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 slax.flags=${run} || goto main
 boot || clear run && imgfree && goto main
-################################
-#Tiny Core
-################################
-:tinycore
-kernel ${memdisk} || goto main
-initrd ${url_tinycore}${desktop}-current.iso || goto main
-imgargs memdisk iso raw || goto main
-boot || clear desktop && imgfree && goto main
 ################################
 # Ubuntu
 ################################
