@@ -223,7 +223,7 @@ item --gap --		--- Edition ---
 	iseq ${setos} ubuntu && item Desktop					Ubuntu Desktop ||
 choose selected || goto desktop
 iseq ${selected} back && goto linux || set desktop ${selected}
-iseq ${setos} tinycore && set tool ${selected} goto iso ; iseq ${setos} opensuse && goto ${setos} ||
+iseq ${setos} tinycore && set tool ${selected} && goto iso ; iseq ${setos} opensuse && goto ${setos} ||
 ######## Linux version
 :version
 menu Version ${setos}
