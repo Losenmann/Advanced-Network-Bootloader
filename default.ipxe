@@ -2,8 +2,8 @@
 set ver v1.3.0
 
 ######## Check if CPU supports 64-bit, PAE, VMX, SVM
-#iseq ${buildarch} arm32 && set arch arm32 ||
-#iseq ${buildarch} arm64 && set arch arm64 ||
+iseq ${buildarch} arm32 && set arch arm32 ||
+iseq ${buildarch} arm64 && set arch arm64 ||
 cpuid --ext 29 && set arch amd64 || set arch i386
 cpuid --ext 29 && set arch-y amd64 || set arch-y x86
 cpuid --ext 29 && set arch-x 64 || set arch-x 32
@@ -98,7 +98,6 @@ clear username ; clear password ; set pict 1
 :main imgfree
 kernel http://www.tinycorelinux.net/10.x/x86/release/distribution_files/vmlinuz
 initrd http://www.tinycorelinux.net/10.x/x86/release/distribution_files/core.gz
-initrd http://www.tinycorelinux.net/10.x/x86/release/distribution_files/rootfs.gz
 imgargs vmlinuz loglevel=3 cde initrd=core.gz
 boot
 iseq ${pict} 1 && set pict 0 && console --x 1024 --y 768 -p ${gfx}main.png ||
@@ -184,7 +183,6 @@ item --gap --			--- ONLINE Boot GUI ---
 	item opensuse		OpenSUSE
 	item tinycore		Tiny Core Linux
 	item ubuntu		Ubuntu
-	item testing		TestOS
 item --gap --			--- ONLINE Boot no GUI ---
 	item alpine		Alpine
 	item archos		Arch Linux
@@ -210,7 +208,6 @@ iseq ${selected} main && goto main ||
 set setos ${selected}
 ################################ LINUX DESKTOP ################################
 :desktop
-iseq ${setos} testing && goto ${setos} ||
 iseq ${setos} alpine && goto ${setos} ; iseq ${setos} archos && goto ${setos} ; iseq ${setos} centos && goto ${setos} ;
 iseq ${setos} debian && goto version ; iseq ${setos} freebsd && goto version ; iseq ${setos} kali && goto ${setos} ;
 iseq ${setos} kolibri && goto version ; iseq ${setos} openmv && goto ${setos} ; iseq ${setos} clearos && goto ${setos} ;
@@ -504,13 +501,6 @@ kernel ${memdisk} ||
 initrd ${tool} ||
 imgargs memdisk iso raw ||
 boot || clear tool && imgfree && goto main
-################################
-# Testing OS
-################################ 
-:testing
-kernel http://192.168.25.2/iso/deepin/VMLINUZ
-initrd http://192.168.25.2/iso/deepin/INITRD.LZ
-boot || goto main
 ################################
 # Information
 ################################
