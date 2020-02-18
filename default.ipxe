@@ -184,6 +184,7 @@ item --gap --			--- ONLINE Boot GUI ---
 	item opensuse		OpenSUSE
 	item tinycore		Tiny Core Linux
 	item ubuntu		Ubuntu
+	item testing		TestOS
 item --gap --			--- ONLINE Boot no GUI ---
 	item alpine		Alpine
 	item archos		Arch Linux
@@ -209,6 +210,7 @@ iseq ${selected} main && goto main ||
 set setos ${selected}
 ################################ LINUX DESKTOP ################################
 :desktop
+iseq ${setos} testing && goto ${setos} ||
 iseq ${setos} alpine && goto ${setos} ; iseq ${setos} archos && goto ${setos} ; iseq ${setos} centos && goto ${setos} ;
 iseq ${setos} debian && goto version ; iseq ${setos} freebsd && goto version ; iseq ${setos} kali && goto ${setos} ;
 iseq ${setos} kolibri && goto version ; iseq ${setos} openmv && goto ${setos} ; iseq ${setos} clearos && goto ${setos} ;
@@ -502,6 +504,13 @@ kernel ${memdisk} ||
 initrd ${tool} ||
 imgargs memdisk iso raw ||
 boot || clear tool && imgfree && goto main
+################################
+# Testing OS
+################################ 
+:testing
+kernel http://192.168.25.2/iso/deepin/VMLINUZ
+initrd http://192.168.25.2/iso/deepin/INITRD.LZ
+boot || goto main
 ################################
 # Information
 ################################
