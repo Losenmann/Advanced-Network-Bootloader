@@ -2,8 +2,8 @@
 set ver v1.3.0
 
 ######## Check if CPU supports 64-bit, PAE, VMX, SVM
-iseq ${buildarch} arm32 && set arch arm32 ||
-iseq ${buildarch} arm64 && set arch arm64 ||
+#iseq ${buildarch} arm32 && set arch arm32 ||
+#iseq ${buildarch} arm64 && set arch arm64 ||
 cpuid --ext 29 && set arch amd64 || set arch i386
 cpuid --ext 29 && set arch-y amd64 || set arch-y x86
 cpuid --ext 29 && set arch-x 64 || set arch-x 32
