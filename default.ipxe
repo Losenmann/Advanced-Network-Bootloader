@@ -1,5 +1,6 @@
 #!ipxe
 set ver v1.3.0
+prompt -k y Press 'Y' is next
 
 ######## Check if CPU supports 64-bit, PAE, VMX, SVM
 iseq ${buildarch} arm32 && set arch arm32 ||
