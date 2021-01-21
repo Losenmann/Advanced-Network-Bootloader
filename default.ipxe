@@ -139,7 +139,7 @@ item --gap --								--- Microsoft Windows(WinPE) ---
 	isset ${url_winpe} && item win2016		Windows Server 2016 || item --gap Windows Server 2016
 choose selected || goto winpe
 iseq ${selected} main && goto main || iseq ${selected} winpe_link && goto winpe_link ||
-iseq ${selected} winpe_clr && clear username && clear password && clear url_winpe && clear protocol && goto winpe ||
+iseq ${selected} winpe_clr && clear username && clear password && clear url_winpe && clear protocol && goto winpe ||1
 set startnet start_${selected}.cmd && goto win
 goto winpe
 ######## Server WinPE
