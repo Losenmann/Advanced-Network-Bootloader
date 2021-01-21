@@ -126,14 +126,14 @@ iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}win.png
 menu Windows boot menu
 	item main		<...
 item --gap Selected server: ${protocol}${url_winpe}
-item --gap --							--- Microsoft Windows(WinPE) ---
-	item winpe_link					Add Server WinPE
-	item winpe_clr					Clear Server WinPE
-	isset ${url_winpe} && item winxp		Windows XP || item --gap Windows XP
+item --gap --									--- Microsoft Windows(WinPE) ---
+	item winpe_link						Add Server WinPE
+	item winpe_clr							Clear Server WinPE
+	isset ${url_winpe} && item winxp			Windows XP || item --gap Windows XP
 	isset ${url_winpe} && item winvista		Windows Vista || item --gap Windows Vista
-	isset ${url_winpe} && item win7		Windows 7 || item --gap Windows 7
+	isset ${url_winpe} && item win7			Windows 7 || item --gap Windows 7
 	isset ${url_winpe} && item win8.1		Windows 8.1 || item --gap Windows 8.1
-	isset ${url_winpe} && item win10		Windows 10 || item --gap Windows 10
+	isset ${url_winpe} && item win10			Windows 10 || item --gap Windows 10
 	isset ${url_winpe} && item win2008		Windows Server 2008 || item --gap Windows Server 2008
 	isset ${url_winpe} && item win2012		Windows Server 2012 || item --gap Windows Server 2012
 	isset ${url_winpe} && item win2016		Windows Server 2016 || item --gap Windows Server 2016
