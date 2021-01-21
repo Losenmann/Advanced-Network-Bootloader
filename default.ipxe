@@ -84,13 +84,6 @@ set url_fydeos http://download.fydeos.io/FydeOS_PC_v8.21-stable.img.xz
 set url_coreos http://stable.release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso
 set url_freenas http://download.freenas.org/latest/x64/FreeNAS-11.3-RELEASE.iso
 set url_openmv https://netcologne.dl.sourceforge.net/project/openmediavault/5.0.5/openmediavault_5.0.5-amd64.iso
-
-#kernel ${cust_os}libreelec/KERNEL
-#initrd ${cust_os}libreelec/SYSTEM
-#imgargs KERNEL ip=dhcp portable quiet
-#boot=HTTP=${cust_os}libreelec/SYSTEM
-#boot ||
-goto pfs
 ######## AUTHORIZATION
 :login clear username ; clear password
 colour --basic 0 7 && colour --basic 7 6
@@ -111,6 +104,7 @@ item --gap --			--- System Boot ---
 	item othos		Other-OS/
 	item tools		Tools/
 	item info		Information
+	item test		TEST
 item --gap --			--- iPXE Tools ---
 	item config		Configure iPXE
 	item shell		iPXE Shell
@@ -132,9 +126,9 @@ iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}win.png
 menu Windows boot menu
 	item main		<...
 item --gap Selected server: ${protocol}${url_winpe}
-item --gap --			--- Microsoft Windows(WinPE) ---
-	item winpe_link		Add Server WinPE
-	item winpe_clr		Clear Server WinPE
+item --gap --							--- Microsoft Windows(WinPE) ---
+	item winpe_link					Add Server WinPE
+	item winpe_clr					Clear Server WinPE
 	isset ${url_winpe} && item winxp		Windows XP || item --gap Windows XP
 	isset ${url_winpe} && item winvista		Windows Vista || item --gap Windows Vista
 	isset ${url_winpe} && item win7		Windows 7 || item --gap Windows 7
@@ -172,9 +166,9 @@ goto winpe
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}linux.png ||
 menu Linux Distribute Boot Menu
 	item main		<...
-item --gap --		--- OFFLINE Boot ---
+item --gap --			--- OFFLINE Boot ---
 	item slax		Slax
-item --gap --		--- ONLINE Boot ---
+item --gap --			--- ONLINE Boot ---
 	item alpine		Alpine
 	item anarchy	Anarchy Linux
 	item archos		Arch Linux
@@ -209,17 +203,17 @@ iseq ${setos} slitaz && goto ${setos} ; iseq ${setos} puppy && goto ${setos} ; i
 menu Desktop Environment or Edition
 	item back	<...
 item --gap --		--- Edition ---
-	iseq ${setos} fedora && item Everything								Fedora Everything ||
-	iseq ${setos} fedora && item Server									Fedora Server ||
-	iseq ${setos} fedora && item Workstation							Fedora Workstation ||
-	iseq ${setos} mageia && item all.rdz								Free Software ||
-	iseq ${setos} mageia && item all-nonfree.rdz						Free + nonfree Software ||
-	iseq ${setos} opensuse && item	distribution/openSUSE-current		OpenSUSE Leap ||
-	iseq ${setos} opensuse && item	tumbleweed							OpenSUSE Tumbleweed ||
+	iseq ${setos} fedora && item Everything						Fedora Everything ||
+	iseq ${setos} fedora && item Server							Fedora Server ||
+	iseq ${setos} fedora && item Workstation						Fedora Workstation ||
+	iseq ${setos} mageia && item all.rdz						Free Software ||
+	iseq ${setos} mageia && item all-nonfree.rdz					Free + nonfree Software ||
+	iseq ${setos} opensuse && item distribution/openSUSE-current		OpenSUSE Leap ||
+	iseq ${setos} opensuse && item tumbleweed						OpenSUSE Tumbleweed ||
 	iseq ${setos} tinycore && item ${url_tinycore}Core-current.iso		Core ||
 	iseq ${setos} tinycore && item ${url_tinycore}TinyCore-current.iso	TinyCore ||
 	iseq ${setos} tinycore && item ${url_tinycore}CorePlus-current.iso	CorePlus ||
-	iseq ${setos} ubuntu && item Desktop								Ubuntu Desktop ||
+	iseq ${setos} ubuntu && item Desktop						Ubuntu Desktop ||
 choose desktop || goto desktop
 iseq ${desktop} back && goto linux ||
 iseq ${setos} mageia && goto ${setos} ; iseq ${setos} fedora && goto ${setos} ;
@@ -248,16 +242,15 @@ iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}other.p
 menu Boot menu Other OS
 	item main		<...
 item --gap --			--- OtherOS ---
-	item android		Android-x86
-#	item chrome		ChromiumOS
+	item android	Android-x86
+	item chrome		ChromiumOS
 	item fydeos		FydeOS
-#	item mac		OS X
-#	item kodi		Kodi TV-Box
+	item mac		OS X
+	item kodi		Kodi TV-Box
 	item ${url_steam}	SteamOS
 	item xcp_ng		Hypervisor XCP-ng
-#	item xen		Hypervisor Xen Server
-	item ${url_ros}		MikroTik RouterOS x86
-	item chr		MikroTik Cloud Hosted Router
+	item xen		Hypervisor Xen Server
+	item ${url_ros}	MikroTik RouterOS x86
 	item pfs		pfSense
 choose selected || goto othos
 iseq ${selected} main && goto main ||
@@ -267,21 +260,25 @@ goto othos
 :tools
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}tools.png ||
 menu Boot menu Tools and Utilities
-	item main		<...
-item --gap --			--- Tools & Utilities ---
-	item ${url_avira}	Avira Rescue System
-	item ${url_drweb}	Dr.Web LiveDisk
+	item main			<...
+item --gap --				--- Tools & Utilities ---
+	item ${url_avira}		Avira Rescue System
+	item ${url_drweb}		Dr.Web LiveDisk
 	item ${url_krd}		Kaspersky Rescue Disk	
-	item ${url_mem86}	Memtest86
+	item ${url_mem86}		Memtest86
 	item ${url_mem86+}	Memtest86+
 	item ${url_vcr}		Victoria
-	item ${url_mhdd}	MHDD
-#	item winpetool		WinPE utilits and tools
+	item ${url_mhdd}		MHDD
+	item winpetool		WinPE utilits and tools
 choose tool || goto tools
 iseq ${tool} main && goto main || goto iso
-#iseq ${selected} main && goto main || set tool ${selected}
-#iseq ${selected} winpetool && set target ${selected} && set pict 1 && goto winpe_link ||
-#goto tools
+iseq ${selected} main && goto main || set tool ${selected}
+iseq ${selected} winpetool && set target ${selected} && set pict 1 && goto winpe_link ||
+goto tools
+################################
+# TEST
+################################
+:test
 ################################
 # Windows PE
 ################################
@@ -294,13 +291,6 @@ initrd ${url_winpe}/${arch}/media/Boot/BCD BCD || goto main
 initrd ${url_winpe}/${arch}/media/Boot/boot.sdi boot.sdi || goto main
 initrd ${url_winpe}/${arch}/media/sources/boot.wim boot.wim || goto main
 boot || imgfree && goto main
-################################
-:pfs
-kernel ${memdisk} || goto main
-initrd http://atxfiles.pfsense.org/mirror/downloads/pfSense-CE-2.4.5-RELEASE-amd64.iso.gz || goto main
-imgargs memdisk iso raw
-prompt -k y Press 'Y' is next
-boot || clear tool && imgfree && goto main
 ################################
 # Alpine
 ################################
@@ -323,12 +313,6 @@ boot || imgfree && goto main
 # Android-x86
 ################################
 :android
-iseq ${arch} i386 && set dir android-x86-${version}-r2.iso || goto main
-iseq ${arch} amd64 && set dir android-x86_64-${version}-r2.iso || goto main
-kernel ${memdisk} || goto main
-initrd ${url_android}${dir} || goto main
-imgargs memdisk iso raw || goto main
-boot || clear dir && clear version && imgfree && goto main
 ################################
 # Arch Linux
 ################################
@@ -355,14 +339,6 @@ boot || imgfree && goto main
 ################################
 # ClearOS
 ################################
-#clearos
-set ipparam BOOTIF=${netX/mac} ip=dhcp net.ifnames=0
-set dhcp ip=${ip} gateway=${gateway} mask=${netmask} dns=${dns} && set dir os/x86_64/
-kernel ${url_clearos}${dir}images/pxeboot/vmlinuz || goto main
-initrd ${url_clearos}${dir}images/pxeboot/initrd.img || goto main
-imgargs vmlinuz ip=dhcp nameserver=8.8.8.8 inst.xdriver=vesa nomodeset inst.repo=${url_clearos}${dir} || goto main
-boot || imgfree && goto main
-
 :clearos
 set ipparam BOOTIF=${netX/mac} ip=dhcp net.ifnames=0
 set dhcp ip=${ip} gateway=${gateway} mask=${netmask} dns=${dns} && set dir os/x86_64/
