@@ -103,12 +103,12 @@ item --gap --			--- System Boot ---
 	item linux		Linux/
 	item othos		Other-OS/
 	item tools		Tools/
-	item info		Information
-	item test		TEST
+	item info			Information
+	item test			TEST
 item --gap --			--- iPXE Tools ---
 	item config		Configure iPXE
 	item shell		iPXE Shell
-	item exit		Exit
+	item exit			Exit
 	item reboot		Reboot
 	item power		Power Off
 choose --default out --timeout 20000 selected && goto ${selected} || goto main
@@ -124,8 +124,8 @@ goto main
 isset ${target} && prompt -k y Press 'Y' is next && set startnet start_tool.cmd && goto win ||
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}win.png ||
 menu Windows boot menu
-	item main		<...
-item --gap Selected server: ${protocol}${url_winpe}
+	item main							<...
+item --gap 	Selected server: ${protocol}${url_winpe}
 item --gap --								--- Microsoft Windows(WinPE) ---
 	item winpe_link					Add Server WinPE
 	item winpe_clr						Clear Server WinPE
@@ -150,7 +150,7 @@ item --gap --			--- Server protocol
 	item htts://	HTTPS
 	item http://	HTTP
 	item tftp		TFTP
-	item ftp://		FTP
+	item ftp://	FTP
 choose selected && set protocol ${selected} || goto winpe
 iseq ${selected} winpe && goto winpe ||
 iseq ${selected} https:// && echo HTTPS server address: && read url_winpe && goto winpe ||
@@ -165,29 +165,29 @@ goto winpe
 :linux
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}linux.png ||
 menu Linux Distribute Boot Menu
-	item main		<...
-item --gap --			--- OFFLINE Boot ---
-	item slax		Slax
-item --gap --			--- ONLINE Boot ---
+	item main			<...
+item --gap --				--- OFFLINE Boot ---
+	item slax			Slax
+item --gap --				--- ONLINE Boot ---
 	item alpine		Alpine
-	item anarchy	Anarchy Linux
+	item anarchy		Anarchy Linux
 	item archos		Arch Linux
-	item blackarch	BlackArch
+	item blackarch		BlackArch
 	item centos		CentOS
-	item clearos	ClearOS
+	item clearos		ClearOS
 	item debian		Debian
 	item devuan		Devuan
 	item fedora		Fedora
 	item ipfire		IPFire
-	item kali		Kali Linux
-	item kolibri	KolibriOS
+	item kali			Kali Linux
+	item kolibri		KolibriOS
 	item mageia		Mageia
-	item opensuse	OpenSUSE
+	item opensuse		OpenSUSE
 	item parrot		Parrot
 	item puppy		Puppy Linux
-	item slackware	Slackware
+	item slackware		Slackware
 	item slitaz		SliTaz
-	item tinycore	Tiny Core
+	item tinycore		Tiny Core
 	item ubuntu		Ubuntu
 	
 choose setos || goto linux
@@ -203,17 +203,17 @@ iseq ${setos} slitaz && goto ${setos} ; iseq ${setos} puppy && goto ${setos} ; i
 menu Desktop Environment or Edition
 	item back	<...
 item --gap --		--- Edition ---
-	iseq ${setos} fedora && item Everything						Fedora Everything ||
+	iseq ${setos} fedora && item Everything							Fedora Everything ||
 	iseq ${setos} fedora && item Server							Fedora Server ||
 	iseq ${setos} fedora && item Workstation						Fedora Workstation ||
-	iseq ${setos} mageia && item all.rdz						Free Software ||
-	iseq ${setos} mageia && item all-nonfree.rdz					Free + nonfree Software ||
+	iseq ${setos} mageia && item all.rdz							Free Software ||
+	iseq ${setos} mageia && item all-nonfree.rdz						Free + nonfree Software ||
 	iseq ${setos} opensuse && item distribution/openSUSE-current		OpenSUSE Leap ||
 	iseq ${setos} opensuse && item tumbleweed						OpenSUSE Tumbleweed ||
 	iseq ${setos} tinycore && item ${url_tinycore}Core-current.iso		Core ||
 	iseq ${setos} tinycore && item ${url_tinycore}TinyCore-current.iso	TinyCore ||
 	iseq ${setos} tinycore && item ${url_tinycore}CorePlus-current.iso	CorePlus ||
-	iseq ${setos} ubuntu && item Desktop						Ubuntu Desktop ||
+	iseq ${setos} ubuntu && item Desktop							Ubuntu Desktop ||
 choose desktop || goto desktop
 iseq ${desktop} back && goto linux ||
 iseq ${setos} mageia && goto ${setos} ; iseq ${setos} fedora && goto ${setos} ;
