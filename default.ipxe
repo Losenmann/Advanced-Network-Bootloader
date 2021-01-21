@@ -127,8 +127,8 @@ menu Windows boot menu
 	item main		<...
 item --gap Selected server: ${protocol}${url_winpe}
 item --gap --									--- Microsoft Windows(WinPE) ---
-	item winpe_link						Add Server WinPE
-	item winpe_clr							Clear Server WinPE
+	item winpe_link									Add Server WinPE
+	item winpe_clr									Clear Server WinPE
 	isset ${url_winpe} && item winxp			Windows XP || item --gap Windows XP
 	isset ${url_winpe} && item winvista		Windows Vista || item --gap Windows Vista
 	isset ${url_winpe} && item win7			Windows 7 || item --gap Windows 7
