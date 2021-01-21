@@ -1,5 +1,9 @@
 #!ipxe
-prompt -t 5000 -k y Connect to Wi-Fi? (Y/N)... && echo set SSID: && read ssid && echo set Key: && read key ||
+ifstat
+:start
+prompt -t 5000 -k y Connect to Wi-Fi? (Y/N)... || goto dhcp
+echo select network interface (1,2,3 ...) && read lan || goto start
+echo set SSID: && read net${lan}/ssid && echo set Key: && read net${lan}/key ||
 :dhcp ifconf -c dhcp || config || goto dhcp
 :menu
 chain http://boot.bo0ot.ru/default.ipxe ||
