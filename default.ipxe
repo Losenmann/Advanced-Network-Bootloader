@@ -229,10 +229,10 @@ item --gap --		${setos}
 	iseq ${setos} android && item 5.1				Android-x86 5.1 ||
 	iseq ${setos} android && item 4.4				Android-x86 4.4 ||
 	iseq ${setos} ubuntu && item disco				Ubuntu 19.04 LTS ||
-	iseq ${setos} ubuntu && item bionic				Ubuntu 18.04 LTS ||
-	iseq ${setos} ubuntu && item xenial				Ubuntu 16.04 LTS ||
-	iseq ${setos} ubuntu && item trusty				Ubuntu 14.04 LTS ||
-	iseq ${setos} ubuntu && item precise 			Ubuntu 12.04 LTS ||
+	iseq ${setos} ubuntu && item bionic			Ubuntu 18.04 LTS ||
+	iseq ${setos} ubuntu && item xenial			Ubuntu 16.04 LTS ||
+	iseq ${setos} ubuntu && item trusty			Ubuntu 14.04 LTS ||
+	iseq ${setos} ubuntu && item precise			Ubuntu 12.04 LTS ||
 choose selected || goto version
 iseq ${selected} back && goto linux || set version ${selected}
 goto ${setos}
@@ -240,18 +240,18 @@ goto ${setos}
 :othos
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}other.png ||
 menu Boot menu Other OS
-	item main		<...
-item --gap --			--- OtherOS ---
-	item android	Android-x86
+	item main			<...
+item --gap --				--- OtherOS ---
+	item android		Android-x86
 	item chrome		ChromiumOS
 	item fydeos		FydeOS
-	item mac		OS X
-	item kodi		Kodi TV-Box
+	item mac			OS X
+	item kodi			Kodi TV-Box
 	item ${url_steam}	SteamOS
 	item xcp_ng		Hypervisor XCP-ng
-	item xen		Hypervisor Xen Server
+	item xen			Hypervisor Xen Server
 	item ${url_ros}	MikroTik RouterOS x86
-	item pfs		pfSense
+	item pfs			pfSense
 choose selected || goto othos
 iseq ${selected} main && goto main ||
 set tool ${selected} && goto tool
@@ -260,16 +260,16 @@ goto othos
 :tools
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}tools.png ||
 menu Boot menu Tools and Utilities
-	item main			<...
-item --gap --				--- Tools & Utilities ---
+	item main				<...
+item --gap --					--- Tools & Utilities ---
 	item ${url_avira}		Avira Rescue System
 	item ${url_drweb}		Dr.Web LiveDisk
 	item ${url_krd}		Kaspersky Rescue Disk	
 	item ${url_mem86}		Memtest86
-	item ${url_mem86+}	Memtest86+
+	item ${url_mem86+}		Memtest86+
 	item ${url_vcr}		Victoria
 	item ${url_mhdd}		MHDD
-	item winpetool		WinPE utilits and tools
+	item winpetool			WinPE utilits and tools
 choose tool || goto tools
 iseq ${tool} main && goto main || goto iso
 iseq ${selected} main && goto main || set tool ${selected}
