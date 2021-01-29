@@ -181,7 +181,7 @@ item --gap --				--- ONLINE Boot ---
 	item alpine		Alpine
 	item anarchy		Anarchy Linux
 	item archos		Arch Linux
-	item blackarch	BlackArch
+	item blackarch		BlackArch
 	item centos		CentOS
 	item clearos		ClearOS
 	item debian		Debian
@@ -196,7 +196,7 @@ item --gap --				--- ONLINE Boot ---
 	item oracle		Oracle Linux ${v_ol}
 	item parrot		Parrot
 	item puppy		Puppy Linux
-	item slackware	Slackware
+	item slackware		Slackware
 	item slitaz		SliTaz
 	item tinycore		Tiny Core
 	item ubuntu		Ubuntu
