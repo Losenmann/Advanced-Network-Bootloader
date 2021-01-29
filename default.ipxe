@@ -174,29 +174,29 @@ goto winpe
 :linux
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}linux.png ||
 menu Linux Distribute Boot Menu
-	item main			<...
+	item main		<...
 item --gap --				--- OFFLINE Boot ---
-	item slax			Slax
+	item slax		Slax
 item --gap --				--- ONLINE Boot ---
 	item alpine		Alpine
 	item anarchy		Anarchy Linux
 	item archos		Arch Linux
-	item blackarch		BlackArch
+	item blackarch	BlackArch
 	item centos		CentOS
 	item clearos		ClearOS
 	item debian		Debian
 	item devuan		Devuan
-	item element	Elementary OS
+	item element		Elementary OS
 	item fedora		Fedora
 	item ipfire		IPFire
-	item kali			Kali Linux
+	item kali		Kali Linux
 	item kolibri		KolibriOS
 	item mageia		Mageia
 	item opensuse		OpenSUSE
 	item oracle		Oracle Linux ${v_ol}
 	item parrot		Parrot
 	item puppy		Puppy Linux
-	item slackware		Slackware
+	item slackware	Slackware
 	item slitaz		SliTaz
 	item tinycore		Tiny Core
 	item ubuntu		Ubuntu
