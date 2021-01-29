@@ -371,7 +371,7 @@ boot || imgfree && goto main
 :debian
 kernel ${url_debian}linux || goto main
 initrd ${url_debian}initrd.gz || goto main
-imgargs linux vga=788 initrd=initrd.gz
+imgargs linux vga=788
 boot || imgfree && goto main
 ################################
 # Devuan
@@ -379,7 +379,7 @@ boot || imgfree && goto main
 :devuan
 kernel ${url_devuan}linux || goto main
 initrd ${url_devuan}initrd.gz || goto main
-imgargs linux vga=788 initrd=initrd.gz
+imgargs linux vga=788
 boot || imgfree && goto main
 ################################
 # Elementary OS
@@ -395,22 +395,23 @@ boot || imgfree && goto main
 ################################
 :fedora
 set dir ${desktop}/x86_64/os/
-kernel ${url_fedora}${dir}isolinux/vmlinuz || goto main
-initrd ${url_fedora}${dir}isolinux/initrd.img || goto main
-imgargs vmlinuz repo=${url_fedora}${dir} initrd=initrd.img
+set boot ${dir}isolinux/
+kernel ${url_fedora}${boot}vmlinuz || goto main
+initrd ${url_fedora}${boot}initrd.img || goto main
+imgargs vmlinuz repo=${url_fedora}${dir}
 boot || imgfree && goto main
 ################################
 # IPFire
 ################################
 :ipfire
-boot ${url_ipfire} || goto main
+boot ${url_ipfire} || imgfree && goto main
 ################################
 # Kali
 ################################
 :kali
 kernel ${url_kali}linux || goto main
 initrd ${url_kali}initrd.gz || goto main
-imgargs linux  vga=788 initrd=initrd.gz
+imgargs linux vga=788
 boot || imgfree && goto main
 ################################
 # Mageia
@@ -425,9 +426,10 @@ boot || imgfree && goto main
 ################################
 :opensuse
 set dir ${desktop}/repo/oss/
-kernel ${url_opensuse}${dir}boot/x86_64/loader/linux || goto main
-initrd ${url_opensuse}${dir}boot/x86_64/loader/initrd || goto main
-imgargs linux vga=788 install=${url_opensuse}${dir} initrd=initrd
+set boot ${dir}boot/x86_64/loader/
+kernel ${url_opensuse}${boot}linux || goto main
+initrd ${url_opensuse}${boot}initrd || goto main
+imgargs linux vga=788 install=${url_opensuse}${dir}
 boot || imgfree && goto main
 ################################
 # Oracle Linux
@@ -443,7 +445,7 @@ boot || imgfree && goto main
 :parrot
 kernel ${url_parrot}linux || goto main
 initrd ${url_parrot}initrd.gz || goto main
-imgargs linux vga=788 initrd=initrd.gz
+imgargs linux vga=788
 boot || imgfree && goto main
 ################################
 # Puppy Linux
@@ -459,7 +461,7 @@ boot || imgfree && goto main
 :slackware
 kernel ${url_slackware}kernels/huge.s/bzImage || goto main
 initrd ${url_slackware}isolinux/initrd.img || goto main
-imgargs bzImage initrd=initrd.img load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 nomodeset SLACK_KERNEL=huge.s
+imgargs bzImage
 boot || imgfree && goto main
 ################################
 # SteamOS
@@ -467,7 +469,7 @@ boot || imgfree && goto main
 :steam
 kernel ${url_steam}linux || goto main
 initrd ${url_steam}initrd.gz || goto main
-imgargs linux vga=788 initrd=initrd.gz
+imgargs linux vga=788
 boot || imgfree && goto main
 ################################
 # SliTaz
