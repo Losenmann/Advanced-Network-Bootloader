@@ -107,14 +107,14 @@ iseq ${pict} 1 && set pict 0 && console --x 1024 --y 768 -p ${gfx}main.png ||
 colour --basic 9 7 && colour --basic 9 6 && colour --rgb 0xffffff 7
 menu Welcome to SmartBoot menu
 	item out		Logout
-item --gap --			--- System Boot ---
+item --gap --	--- System Boot ---
 	item winpe		Windows/
 	item linux		Linux/
 	item othos		Other-OS/
 	item tools		Tools/
 	item info		Information
 	item test		TEST
-item --gap --			--- iPXE Tools ---
+item --gap --	--- iPXE Tools ---
 	item config		Configure iPXE
 	item shell		iPXE Shell
 	item exit		Exit
@@ -133,14 +133,14 @@ goto main
 isset ${target} && prompt -k y Press 'Y' is next && set startnet start_tool.cmd && goto win ||
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}win.png ||
 menu Windows boot menu
-	item main							<...
-item --gap 	Selected server: ${protocol}${url_winpe}
-item --gap --								--- Microsoft Windows(WinPE) ---
+	item main					<...
+item --gap	Selected server: ${protocol}${url_winpe}
+item --gap --	--- Microsoft Windows(WinPE) ---
 	item winpe_link					Add Server WinPE
-	item winpe_clr						Clear Server WinPE
+	item winpe_clr					Clear Server WinPE
 	isset ${url_winpe} && item winxp		Windows XP || item --gap Windows XP
-	isset ${url_winpe} && item winvista	Windows Vista || item --gap Windows Vista
-	isset ${url_winpe} && item win7		Windows 7 || item --gap Windows 7
+	isset ${url_winpe} && item winvista		Windows Vista || item --gap Windows Vista
+	isset ${url_winpe} && item win7			Windows 7 || item --gap Windows 7
 	isset ${url_winpe} && item win8.1		Windows 8.1 || item --gap Windows 8.1
 	isset ${url_winpe} && item win10		Windows 10 || item --gap Windows 10
 	isset ${url_winpe} && item win2008		Windows Server 2008 || item --gap Windows Server 2008
@@ -155,11 +155,11 @@ goto winpe
 :winpe_link
 menu WinPE boot server
 	item winpe		<...
-item --gap --			--- Server protocol
-	item htts://	HTTPS
-	item http://	HTTP
+item --gap --	--- Server protocol
+	item htts://		HTTPS
+	item http://		HTTP
 	item tftp		TFTP
-	item ftp://	FTP
+	item ftp://		FTP
 choose selected && set protocol ${selected} || goto winpe
 iseq ${selected} winpe && goto winpe ||
 iseq ${selected} https:// && echo HTTPS server address: && read url_winpe && goto winpe ||
@@ -175,9 +175,9 @@ goto winpe
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}linux.png ||
 menu Linux Distribute Boot Menu
 	item main		<...
-item --gap --				--- OFFLINE Boot ---
+item --gap --	--- OFFLINE Boot ---
 	item slax		Slax
-item --gap --				--- ONLINE Boot ---
+item --gap --	--- ONLINE Boot ---
 	item alpine		Alpine
 	item anarchy		Anarchy Linux
 	item archos		Arch Linux
@@ -213,19 +213,19 @@ iseq ${setos} slitaz && goto ${setos} ; iseq ${setos} puppy && goto ${setos} ; i
 iseq ${setos} oracle && goto ${setos} ; iseq ${setos} ${url_kolibri} && goto iso ||
 ######## Linux environment
 menu Desktop Environment or Edition
-	item back	<...
-item --gap --		--- Edition ---
-	iseq ${setos} fedora && item Everything							Fedora Everything ||
-	iseq ${setos} fedora && item Server							Fedora Server ||
-	iseq ${setos} fedora && item Workstation						Fedora Workstation ||
-	iseq ${setos} mageia && item all.rdz							Free Software ||
-	iseq ${setos} mageia && item all-nonfree.rdz						Free + nonfree Software ||
+	item back								<...
+item --gap --	--- Edition ---
+	iseq ${setos} fedora && item Everything					Fedora Everything ||
+	iseq ${setos} fedora && item Server					Fedora Server ||
+	iseq ${setos} fedora && item Workstation				Fedora Workstation ||
+	iseq ${setos} mageia && item all.rdz					Free Software ||
+	iseq ${setos} mageia && item all-nonfree.rdz				Free + nonfree Software ||
 	iseq ${setos} opensuse && item distribution/openSUSE-current		OpenSUSE Leap ||
-	iseq ${setos} opensuse && item tumbleweed						OpenSUSE Tumbleweed ||
+	iseq ${setos} opensuse && item tumbleweed				OpenSUSE Tumbleweed ||
 	iseq ${setos} tinycore && item ${url_tinycore}Core-current.iso		Core ||
 	iseq ${setos} tinycore && item ${url_tinycore}TinyCore-current.iso	TinyCore ||
 	iseq ${setos} tinycore && item ${url_tinycore}CorePlus-current.iso	CorePlus ||
-	iseq ${setos} ubuntu && item Desktop							Ubuntu Desktop ||
+	iseq ${setos} ubuntu && item Desktop					Ubuntu Desktop ||
 choose desktop || goto desktop
 iseq ${desktop} back && goto linux ||
 iseq ${setos} mageia && goto ${setos} ; iseq ${setos} fedora && goto ${setos} ;
@@ -233,18 +233,18 @@ iseq ${setos} tinycore && set tool ${desktop} && goto iso ; iseq ${setos} opensu
 ######## Linux version
 :version
 menu Version ${setos}
-	item back	<...
-item --gap --		${setos}
-	iseq ${setos} android && item 8.1				Android-x86 8.1 ||
-	iseq ${setos} android && item 7.1				Android-x86 7.1 ||
-	iseq ${setos} android && item 6.0				Android-x86 6.0 ||
-	iseq ${setos} android && item 5.1				Android-x86 5.1 ||
-	iseq ${setos} android && item 4.4				Android-x86 4.4 ||
-	iseq ${setos} ubuntu && item disco				Ubuntu 19.04 LTS ||
-	iseq ${setos} ubuntu && item bionic			Ubuntu 18.04 LTS ||
-	iseq ${setos} ubuntu && item xenial			Ubuntu 16.04 LTS ||
-	iseq ${setos} ubuntu && item trusty			Ubuntu 14.04 LTS ||
-	iseq ${setos} ubuntu && item precise			Ubuntu 12.04 LTS ||
+	item back					<...
+item --gap -- ${setos}
+	iseq ${setos} android && item 8.1		Android-x86 8.1 ||
+	iseq ${setos} android && item 7.1		Android-x86 7.1 ||
+	iseq ${setos} android && item 6.0		Android-x86 6.0 ||
+	iseq ${setos} android && item 5.1		Android-x86 5.1 ||
+	iseq ${setos} android && item 4.4		Android-x86 4.4 ||
+	iseq ${setos} ubuntu && item disco		Ubuntu 19.04 LTS ||
+	iseq ${setos} ubuntu && item bionic		Ubuntu 18.04 LTS ||
+	iseq ${setos} ubuntu && item xenial		Ubuntu 16.04 LTS ||
+	iseq ${setos} ubuntu && item trusty		Ubuntu 14.04 LTS ||
+	iseq ${setos} ubuntu && item precise		Ubuntu 12.04 LTS ||
 choose selected || goto version
 iseq ${selected} back && goto linux || set version ${selected}
 goto ${setos}
@@ -252,18 +252,18 @@ goto ${setos}
 :othos
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}other.png ||
 menu Boot menu Other OS
-	item main			<...
-item --gap --				--- OtherOS ---
+	item main		<...
+item --gap --	--- OtherOS ---
 	item android		Android-x86
 	item chrome		ChromiumOS
 	item fydeos		FydeOS
-	item mac			OS X
-	item kodi			Kodi TV-Box
-	item steam			SteamOS
+	item mac		OS X
+	item kodi		Kodi TV-Box
+	item steam		SteamOS
 	item xcp_ng		Hypervisor XCP-ng
-	item xen			Hypervisor Xen Server
-	item ${url_ros}	MikroTik RouterOS x86
-	item pfs			pfSense
+	item xen		Hypervisor Xen Server
+	item ${url_ros}		MikroTik RouterOS x86
+	item pfs		pfSense
 choose selected || goto othos
 iseq ${selected} main && goto main || iseq ${selected} steam && goto steam ||
 set tool ${selected} && goto tool
@@ -272,16 +272,16 @@ goto othos
 :tools
 iseq ${pict} 0 && set pict 1 && console --x 1024 --y 768 --picture ${gfx}tools.png ||
 menu Boot menu Tools and Utilities
-	item main				<...
-item --gap --					--- Tools & Utilities ---
-	item ${url_avira}		Avira Rescue System
-	item ${url_drweb}		Dr.Web LiveDisk
+	item main		<...
+item --gap --	--- Tools & Utilities ---
+	item ${url_avira}	Avira Rescue System
+	item ${url_drweb}	Dr.Web LiveDisk
 	item ${url_krd}		Kaspersky Rescue Disk	
-	item ${url_mem86}		Memtest86
-	item ${url_mem86+}		Memtest86+
+	item ${url_mem86}	Memtest86
+	item ${url_mem86+}	Memtest86+
 	item ${url_vcr}		Victoria
-	item ${url_mhdd}		MHDD
-	item winpetool			WinPE utilits and tools
+	item ${url_mhdd}	MHDD
+	item winpetool		WinPE utilits and tools
 choose tool || goto tools
 iseq ${tool} main && goto main || goto iso
 iseq ${selected} main && goto main || set tool ${selected}
