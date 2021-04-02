@@ -1,5 +1,5 @@
 #!ipxe
-set ver v1.5.2
+set ver v1.5.3
 
 ######## Check if CPU supports 64-bit, PAE, VMX, SVM
 iseq ${buildarch} arm32 && set arch arm32 ||
@@ -62,7 +62,7 @@ set url_tinycore http://www.tinycorelinux.net/${url_tinycore}.x/x86/release/
 set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/
 set url_kolibri http://builds.kolibrios.org/eng/kolibri.iso
 set url_steamos http://repo.steampowered.com/download/SteamOSDVD.iso
-set url_ros https://download.mikrotik.com/routeros/
+set url_ros http://download.mikrotik.com/routeros/
 set url_slackware http://mirror.yandex.ru/slackware/slackware64-current/
 set url_mageia http://mirrors.kernel.org/mageia/distrib/7.1/x86_64/isolinux/x86_64/
 set url_debian http://ftp.acc.umu.se/debian/dists/stable/main/installer-${arch}/current/images/netboot/gtk/debian-installer/${arch}/
