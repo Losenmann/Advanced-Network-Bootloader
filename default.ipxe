@@ -438,7 +438,7 @@ boot || imgfree && goto main
 :oracle
 kernel ${url_oracle}vmlinuz || goto main
 initrd ${url_oracle}initrd.img || goto main
-imgargs vmlinuz inst.repo=${url_oracle}install.img root=live:${url_oracle}install.img
+imgargs ol8.3-vmlinuz inst.repo=${url_oracle}install.img root=live:${url_oracle}install.img
 boot || imgfree && goto main
 ################################
 # Parrot
