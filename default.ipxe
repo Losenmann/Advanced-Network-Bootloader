@@ -470,7 +470,7 @@ boot ${url_slitaz} || goto main
 :ubuntu
 kernel ${url_ubuntu}${dir}linux || goto main
 initrd ${url_ubuntu}${dir}initrd.gz || goto main
-imgargs vga=788 linux initrd=initrd.gz
+imgargs linux initrd=initrd.gz
 boot || imgfree && goto main
 ################################
 # XCP-ng
