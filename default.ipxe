@@ -48,7 +48,7 @@ set url_android ${cust_os}android/
 set url_anarchy ${cust_os}anarchy/
 set url_ablackarch ${cust_os}blackarch/
 set url_puppy ${release}v1.5-beta.1/
-set url_element ${cust_os}element/
+set url_element ${release}v1.5-beta.1/
 set url_manjaro ${cust_os}manjaro/
 set url_oracle ${release}v1.5-beta.1/
 set url_oracle_repo https://yum.oracle.com/repo/OracleLinux/OL${v_ol}/baseos/latest/x86_64/
@@ -386,10 +386,10 @@ boot || imgfree && goto main
 # Elementary OS
 ################################
 :element
-set dir ${url_element}filesystem.squashfs
-kernel ${url_element}vmlinuz || goto main
-initrd ${url_element}initrd || goto main
-imgargs vmlinuz ip=dhcp boot=casper maybe-ubiquity netboot=http fetch=${dir}
+set dir ${url_element}elemnt5.1.7-filesystem.squashfs
+kernel ${url_element}elemnt5.1.7-vmlinuz || goto main
+initrd ${url_element}elemnt5.1.7-initrd || goto main
+imgargs elemnt5.1.7-vmlinuz ip=dhcp boot=casper maybe-ubiquity netboot=http fetch=${dir}
 boot || imgfree && goto main
 ################################
 # Fedora
