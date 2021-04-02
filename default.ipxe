@@ -1,5 +1,5 @@
 #!ipxe
-set ver v1.5.0
+set ver v1.5.1
 
 ######## Check if CPU supports 64-bit, PAE, VMX, SVM
 iseq ${buildarch} arm32 && set arch arm32 ||
@@ -26,13 +26,14 @@ set memdisk ${src}boot/memdisk
 set x64 Your`s CPU supports 64 commands, press 'Y' to install 64bits...
 set err Error, your`s CPU not support 64-bit commands
 ######## Delete data from variables
-set url_winpe && set protocol
-######## Variables Links 
+clear url_winpe && clear protocol
+######## Variables version 
 set url_centos 8
 set url_clearos 7
 set url_tinycore 11
 set url_fedora 33
 set url_steam brewmaster
+set ros 6.48.1
 set v_ol 8
 ######## Links
 #### Tools
@@ -61,7 +62,7 @@ set url_tinycore http://www.tinycorelinux.net/${url_tinycore}.x/x86/release/
 set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/
 set url_kolibri http://builds.kolibrios.org/eng/kolibri.iso
 set url_steamos http://repo.steampowered.com/download/SteamOSDVD.iso
-set url_ros https://download.mikrotik.com/routeros/6.46.2/mikrotik-6.46.2.iso
+set url_ros https://download.mikrotik.com/routeros/
 set url_slackware http://mirror.yandex.ru/slackware/slackware64-current/
 set url_mageia http://mirrors.kernel.org/mageia/distrib/7.1/x86_64/isolinux/x86_64/
 set url_debian http://ftp.acc.umu.se/debian/dists/stable/main/installer-${arch}/current/images/netboot/gtk/debian-installer/${arch}/
@@ -73,27 +74,6 @@ set url_ipfire http://boot.ipfire.org/releases/ipfire-boot/latest/ipxe.kpxe
 set url_slitaz http://mirror.slitaz.org/pxe/ipxe/slitaz.ipxe
 set url_arch https://archlinux.org/releng/netboot/archlinux.ipxe
 set url_talos https://github.com/talos-systems/talos/releases/latest/download/
-#### OS ERROR
-set url_kodi https://releases.libreelec.tv/LibreELEC-Generic.x86_64-9.2.6.img.gz
-set url_gentoo http://distfiles.gentoo.org/releases/${arch-y}/autobuilds/current-install-${arch-y}-minimal/install-${arch-y}-minimal-${url_gentoo}.iso
-set url_solus http://solus.fin.veatnet.de/iso/images/
-set url_freebsd http://ftp.freebsd.org/pub/FreeBSD/releases/ISO-IMAGES/
-set url_nixos https://hydra.nixos.org/job/nixos/release-19.03/nixos.netboot.x86_64-linux/latest-finished/download/netboot.ipxe
-set url_android https://osdn.net/dl/android-x86/
-set url_xcp_ng http://mirror.iextreme.org/xcp-ng/netinstall/latest/
-set url_coreos http://stable.release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso
-set url_pclinuxos http://ftp.fau.de/pclinuxos/pclinuxos/live-cd/64bit/
-set url_zorin http://netcologne.dl.sourceforge.net/project/zorin-os/15/Zorin-OS-15.1-Core-64-bit-r2.iso
-set url_solus http://solus.fin.veatnet.de/iso/images/4.1/
-set url_chaletos http://vorboss.dl.sourceforge.net/project/chaletos/ChaletOS16.04/chaletos-16042-amd64.iso
-set url_manjaro http://dotsrc.dl.osdn.net/osdn/storage/g/m/ma/manjaro/
-set url_mint http://mirrors.evowise.com/linuxmint/stable/19.3/
-set url_antergos https://mirror.yandex.ru/mirrors/cinnarch/iso/release/antergos-minimal-19.4-x86_64.iso
-set url_deepin http://cdimage.deepin.com/releases/15.11/deepin-15.11-amd64.iso
-set url_fydeos http://download.fydeos.io/FydeOS_PC_v8.21-stable.img.xz
-set url_coreos http://stable.release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso
-set url_freenas http://download.freenas.org/latest/x64/FreeNAS-11.3-RELEASE.iso
-set url_openmv https://netcologne.dl.sourceforge.net/project/openmediavault/5.0.5/openmediavault_5.0.5-amd64.iso
 ######## AUTHORIZATION
 :login clear username ; clear password
 colour --basic 0 7 && colour --basic 7 6
@@ -236,6 +216,8 @@ iseq ${setos} tinycore && set tool ${desktop} && goto iso ; iseq ${setos} opensu
 menu Version ${setos}
 	item back					<...
 item --gap -- ${setos}
+	iseq ${setoth} ros && item ${ros}		Current ${ros} ||
+	iseq ${setoth} ros && item usr_ros		User version ||
 	iseq ${setos} android && item 8.1		Android-x86 8.1 ||
 	iseq ${setos} android && item 7.1		Android-x86 7.1 ||
 	iseq ${setos} android && item 6.0		Android-x86 6.0 ||
@@ -248,6 +230,7 @@ item --gap -- ${setos}
 	iseq ${setos} ubuntu && item precise		Ubuntu 12.04 LTS ||
 choose selected || goto version
 iseq ${selected} back && goto linux || set version ${selected}
+iseq ${selected} usr_ros && echo Specify the version(6.48.1 or 7.1beta5) && read ros && set url_ros ${url_ros}${ros}/mikrotik-${ros}.iso && set tool ${url_ros} && goto iso ||
 goto ${setos}
 ################################ OTHER-OS MENU ################################
 :othos
@@ -263,11 +246,12 @@ item --gap --	--- OtherOS ---
 	item steam		SteamOS
 	item xcp_ng		Hypervisor XCP-ng
 	item xen		Hypervisor Xen Server
-	item ${url_ros}		MikroTik RouterOS x86
+	item ros 		MikroTik RouterOS x86
 	item pfs		pfSense
-choose selected || goto othos
-iseq ${selected} main && goto main || iseq ${selected} steam && goto steam ||
-set tool ${selected} && goto tool
+choose setoth || goto othos
+iseq ${setoth} ros && goto version ||
+iseq ${setoth} main && goto main || iseq ${setoth} steam && goto steam ||
+set tool ${setoth} && goto tool
 goto othos
 ################################ UTILITIES MENU ################################
 :tools
