@@ -17,7 +17,7 @@ isset ${vmx} || isset ${svm} && set hw_virt yes ||
 ntp 0.pool.ntp.org ||
 set mtu 1500
 ######## VARIABLES
-set src http://boot.inrate.xyz/
+set src https://raw.githubusercontent.com/Losenmann/inboot/master/
 set gfx ${src}gfx/
 set cust_os ${src}os/
 set images ${src}imnages/
