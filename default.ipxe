@@ -47,11 +47,11 @@ set url_drweb http://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-90
 set url_android ${cust_os}android/
 set url_anarchy ${cust_os}anarchy/
 set url_ablackarch ${cust_os}blackarch/
-set url_puppy ${cust_os}puppy/
+set url_puppy ${release}v1.5-beta.1/
 set url_element ${cust_os}element/
 set url_manjaro ${cust_os}manjaro/
 set url_oracle ${release}v1.5-beta.1/
-#set url_oracle_repo https://yum.oracle.com/repo/OracleLinux/OL${v_ol}/baseos/latest/x86_64/
+set url_oracle_repo https://yum.oracle.com/repo/OracleLinux/OL${v_ol}/baseos/latest/x86_64/
 set url_alpine http://mirror.yandex.ru/mirrors/alpine/latest-stable/
 set url_centos http://mirror.centos.org/centos/${url_centos}/BaseOS/x86_64/os/
 set url_clearos http://mirror1-frankfurt.clearos.com/clearos/${url_clearos}/
@@ -438,7 +438,7 @@ boot || imgfree && goto main
 :oracle
 kernel ${url_oracle}ol8.3-vmlinuz || goto main
 initrd ${url_oracle}ol8.3-initrd.img || goto main
-imgargs ol8.3-vmlinuz inst.repo=${url_oracle}ol8.3-install.img root=live:${url_oracle}ol8.3-install.img
+imgargs ol8.3-vmlinuz inst.repo=${url_oracle_repo} root=live:${url_oracle}ol8.3-install.img
 boot || imgfree && goto main
 ################################
 # Parrot
@@ -452,9 +452,9 @@ boot || imgfree && goto main
 # Puppy Linux
 ################################
 :puppy
-kernel ${url_puppy}vmlinuz || goto main
-initrd ${url_puppy}initrd.gz || goto main
-imgargs initrd.gz
+kernel ${url_puppy}pup9.5-vmlinuz || goto main
+initrd ${url_puppy}pup9.5-initrd.gz || goto main
+imgargs pup9.5-initrd.gz
 boot || imgfree && goto main
 ################################
 # Slackware
