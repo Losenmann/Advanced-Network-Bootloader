@@ -230,6 +230,7 @@ item --gap -- ${setos}
 	iseq ${setos} ubuntu && item precise		Ubuntu 12.04 LTS ||
 choose selected || goto version
 iseq ${selected} back && goto linux || set version ${selected}
+iseq ${selected} ${ros} && set url_ros ${url_ros}${ros}/mikrotik-${ros}.iso && set tool ${url_ros} && goto iso ||
 iseq ${selected} usr_ros && echo Specify the version(6.48.1 or 7.1beta5) && read ros && set url_ros ${url_ros}${ros}/mikrotik-${ros}.iso && set tool ${url_ros} && goto iso ||
 goto ${setos}
 ################################ OTHER-OS MENU ################################
@@ -249,7 +250,7 @@ item --gap --	--- OtherOS ---
 	item ros 		MikroTik RouterOS x86
 	item pfs		pfSense
 choose setoth || goto othos
-iseq ${setoth} ros && goto version ||
+iseq ${setoth} ros && goto version && set setos RouteOS x86 ||
 iseq ${setoth} main && goto main || iseq ${setoth} steam && goto steam ||
 set tool ${setoth} && goto tool
 goto othos
