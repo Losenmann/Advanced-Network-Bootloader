@@ -483,7 +483,7 @@ boot || imgfree && goto main
 # XCP-ng
 ################################
 :xcp_ng
-kernel ${url_xcp_ng}boot/pxelinux/mboot.c32
+kernel ${url_xcp_ng}boot/pxelinux/mboot.c32 || goto main
 kernel ${url_xcp_ng}boot/vmlinuz || goto main
 initrd ${url_xcp_ng}boot/xen.gz || goto main
 initrd ${url_xcp_ng}install.img || goto main
