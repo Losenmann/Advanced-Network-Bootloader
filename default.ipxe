@@ -1,5 +1,5 @@
 #!ipxe
-set ver v1.5.7
+set ver v1.5.8
 
 ######## Check if CPU supports 64-bit, PAE, VMX, SVM
 iseq ${buildarch} arm32 && set arch arm32 ||
@@ -283,7 +283,7 @@ goto tools
 ################################
 :test
 kernel https://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/vmlinuz
-initrd https://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/xen.gz
+#initrd https://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/xen.gz
 imgargs vmlinuz dom0_max_vcpus=1-2 dom0_mem=max:752M com1=115200,8n1 console=com1,vga xencons=hvc console=hvc0 console=tty0
 boot || imgfree && goto main
 ################################
@@ -485,7 +485,8 @@ boot || imgfree && goto main
 :xcp_ng
 kernel ${url_xcp_ng}boot/vmlinuz || goto main
 initrd ${url_xcp_ng}boot/xen.gz || goto main
-imgargs repo=${url_xcp_ng} vga=788 initrd=initrd.img
+initrd ${url_xcp_ng}install.img || goto main
+imgargs vmlinuz dom0_max_vcpus=1-2 dom0_mem=max:752M com1=115200,8n1 console=com1,vga xencons=hvc console=hvc0 console=tty0
 boot || imgfree && goto main
 ################################
 # Run ISO
