@@ -487,7 +487,7 @@ kernel ${url_xcp_ng}boot/pxelinux/mboot.c32 || goto main
 kernel ${url_xcp_ng}boot/vmlinuz || goto main
 initrd ${url_xcp_ng}boot/xen.gz || goto main
 initrd ${url_xcp_ng}install.img || goto main
-imgargs mboot.c32 xen.gz dom0_max_vcpus=1-2 dom0_mem=max:752M com1=115200,8n1 console=com1,vga xencons=hvc console=hvc0 console=tty0
+imgargs mboot.c32 xen dom0_max_vcpus=1-2 dom0_mem=max:752M com1=115200,8n1 console=com1,vga xencons=hvc console=hvc0 console=tty0
 boot || imgfree && goto main
 ################################
 # Run ISO
