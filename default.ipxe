@@ -1,5 +1,5 @@
 #!ipxe
-set ver v1.5.4
+set ver v1.5.5
 
 ######## Check if CPU supports 64-bit, PAE, VMX, SVM
 iseq ${buildarch} arm32 && set arch arm32 ||
@@ -74,6 +74,7 @@ set url_ipfire http://boot.ipfire.org/releases/ipfire-boot/latest/ipxe.kpxe
 set url_slitaz http://mirror.slitaz.org/pxe/ipxe/slitaz.ipxe
 set url_arch https://archlinux.org/releng/netboot/archlinux.ipxe
 set url_talos https://github.com/talos-systems/talos/releases/latest/download/
+set url_xcp_ng https://mirror.iextreme.org/xcp-ng/netinstall/latest/
 ######## AUTHORIZATION
 :login clear username ; clear password
 colour --basic 0 7 && colour --basic 7 6
@@ -207,6 +208,7 @@ item --gap --	--- Edition ---
 	iseq ${setos} tinycore && item ${url_tinycore}TinyCore-current.iso	TinyCore ||
 	iseq ${setos} tinycore && item ${url_tinycore}CorePlus-current.iso	CorePlus ||
 	iseq ${setos} ubuntu && item Desktop					Ubuntu Desktop ||
+	iseq ${setos} ubuntu && item Server					Ubuntu Server ||
 choose desktop || goto desktop
 iseq ${desktop} back && goto linux ||
 iseq ${setos} mageia && goto ${setos} ; iseq ${setos} fedora && goto ${setos} ;
@@ -216,7 +218,7 @@ iseq ${setos} tinycore && set tool ${desktop} && goto iso ; iseq ${setos} opensu
 menu Version ${setos}
 	item back					<...
 item --gap -- ${setos}
-	iseq ${setoth} ros && item ${ros}		Current ${ros} ||
+	iseq ${setoth} ros && item ${ros}		Current Stabile ${ros} ||
 	iseq ${setoth} ros && item usr_ros		User version ||
 	iseq ${setos} android && item 8.1		Android-x86 8.1 ||
 	iseq ${setos} android && item 7.1		Android-x86 7.1 ||
@@ -230,7 +232,7 @@ item --gap -- ${setos}
 	iseq ${setos} ubuntu && item precise		Ubuntu 12.04 LTS ||
 choose version || goto version
 iseq ${version} back && goto linux ||
-iseq ${setos} ubuntu && set dir ${version}/main/installer-${arch}/current/images/netboot/ubuntu-installer/${arch}/ && goto ${setos} ||
+iseq ${setos} ubuntu && goto ${setos} ||
 # !!!!! Error HTTPS !!!!!
 iseq ${version} ${ros} && set tool ${url_ros}${ros}/mikrotik-${ros}.iso && goto iso ||
 iseq ${version} usr_ros && echo Specify the version(6.48.1 or 7.1beta5) && read ros && set url_ros ${url_ros}${ros}/mikrotik-${ros}.iso && set tool ${url_ros} && goto iso ||
@@ -468,6 +470,7 @@ boot ${url_slitaz} || goto main
 # Ubuntu
 ################################
 :ubuntu
+set dir ${version}/main/installer-${arch}/current/images/netboot/ubuntu-installer/${arch}/
 kernel ${url_ubuntu}${dir}linux || goto main
 initrd ${url_ubuntu}${dir}initrd.gz || goto main
 imgargs linux initrd=initrd.gz
@@ -477,7 +480,7 @@ boot || imgfree && goto main
 ################################
 :xcp_ng
 kernel ${url_xcp_ng}boot/vmlinuz || goto main
-initrd ${url_clearos}boot/xen.gz || goto main
+initrd ${url_xcp_ng}boot/xen.gz || goto main
 imgargs repo=${url_xcp_ng} vga=788 initrd=initrd.img
 boot || imgfree && goto main
 ################################
