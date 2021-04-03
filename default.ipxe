@@ -282,6 +282,9 @@ goto tools
 # TEST
 ################################
 :test
+kernel https://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/isolinux/mboot.c32
+initrd https://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/xen.gz
+imgargs xen.gz dom0_max_vcpus=1-16 dom0_mem=max:2048M com1=115200,8n1 console=com1,vga --- /boot/vmlinuz netinstall console=hvc0 console=tty0 --- /install.img
 boot || imgfree && goto main
 ################################
 # Windows PE
