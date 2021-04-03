@@ -1,5 +1,5 @@
 #!ipxe
-set ver v1.5.5
+set ver v1.5.6
 
 ######## Check if CPU supports 64-bit, PAE, VMX, SVM
 iseq ${buildarch} arm32 && set arch arm32 ||
@@ -74,7 +74,7 @@ set url_ipfire http://boot.ipfire.org/releases/ipfire-boot/latest/ipxe.kpxe
 set url_slitaz http://mirror.slitaz.org/pxe/ipxe/slitaz.ipxe
 set url_arch https://archlinux.org/releng/netboot/archlinux.ipxe
 set url_talos https://github.com/talos-systems/talos/releases/latest/download/
-set url_xcp_ng https://mirror.iextreme.org/xcp-ng/netinstall/latest/
+set url_xcp_ng http://mirror.iextreme.org/xcp-ng/netinstall/latest/
 ######## AUTHORIZATION
 :login clear username ; clear password
 colour --basic 0 7 && colour --basic 7 6
@@ -256,6 +256,7 @@ item --gap --	--- OtherOS ---
 choose setoth || goto othos
 iseq ${setoth} ros && set setos RouteOS x86 && goto version ||
 iseq ${setoth} main && goto main || iseq ${setoth} steam && goto steam ||
+iseq ${setoth} xcp_ng && goto ${setoth}
 set tool ${setoth} && goto tool
 goto othos
 ################################ UTILITIES MENU ################################
