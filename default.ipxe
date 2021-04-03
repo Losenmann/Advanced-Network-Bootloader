@@ -1,5 +1,5 @@
 #!ipxe
-set ver v1.5.6
+set ver v1.5.7
 
 ######## Check if CPU supports 64-bit, PAE, VMX, SVM
 iseq ${buildarch} arm32 && set arch arm32 ||
@@ -282,9 +282,9 @@ goto tools
 # TEST
 ################################
 :test
-kernel https://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/isolinux/mboot.c32
+kernel https://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/vmlinuz
 initrd https://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/xen.gz
-imgargs xen.gz dom0_max_vcpus=1-16 dom0_mem=max:2048M com1=115200,8n1 console=com1,vga --- /boot/vmlinuz netinstall console=hvc0 console=tty0 --- /install.img
+imgargs vmlinuz dom0_max_vcpus=1-2 dom0_mem=max:752M com1=115200,8n1 console=com1,vga xencons=hvc console=hvc0 console=tty0
 boot || imgfree && goto main
 ################################
 # Windows PE
