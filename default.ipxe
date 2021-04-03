@@ -484,8 +484,8 @@ boot || imgfree && goto main
 ################################
 :xcp_ng
 #kernel ${url_xcp_ng}boot/pxelinux/mboot.c32 || goto main
-kernel ${url_xcp_ng}boot/vmlinuz || goto main
-initrd ${src}src/xen || goto main
+kernel ${src}src/xen || goto main
+initrd ${url_xcp_ng}boot/vmlinuz || goto main
 initrd ${url_xcp_ng}install.img || goto main
 imgargs vmlinuz dom0_max_vcpus=1-2 dom0_mem=max:752M com1=115200,8n1 console=com1,vga xencons=hvc console=hvc0 console=tty0
 boot || imgfree && goto main
