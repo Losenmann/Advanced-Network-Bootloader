@@ -282,7 +282,7 @@ goto tools
 # TEST
 ################################
 :test
-boot ${url_xcp_ng}boot/pxelinux/mboot.c32 http://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:2048M com1=115200,8n1 console=com1,vga --- http://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/vmlinuz netinstall console=hvc0 console=tty0 --- http://mirror.iextreme.org/xcp-ng/netinstall/latest/install.img || goto main
+boot ${url_xcp_ng}boot/pxelinux/mboot.c32 https://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:2048M com1=115200,8n1 console=com1,vga --- https://mirror.iextreme.org/xcp-ng/netinstall/latest/boot/vmlinuz netinstall console=hvc0 console=tty0 --- https://mirror.iextreme.org/xcp-ng/netinstall/latest/install.img || goto main
 #initrd ${url_xcp_ng}boot/xen.gz || goto main
 #initrd ${url_xcp_ng}boot/vmlinuz || goto main
 #initrd ${url_xcp_ng}install.img || goto main
