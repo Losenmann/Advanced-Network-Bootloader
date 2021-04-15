@@ -54,7 +54,7 @@ set url_manjaro ${cust_os}manjaro/
 set url_oracle ${release}v1.5-beta.1/
 set url_oracle_repo https://yum.oracle.com/repo/OracleLinux/OL${v_ol}/baseos/latest/x86_64/
 set url_alpine http://mirror.yandex.ru/mirrors/alpine/latest-stable/
-set url_centos http://mirror.centos.org/centos/${url_centos}/BaseOS/x86_64/os/
+set url_centos centos/${url_centos}/BaseOS/x86_64/os/
 set url_clearos http://mirror1-frankfurt.clearos.com/clearos/${url_clearos}/
 set url_fedora http://mirrors.kernel.org/fedora/releases/${url_fedora}/
 set url_opensuse http://download.opensuse.org/
@@ -63,9 +63,9 @@ set url_ubuntu http://archive.ubuntu.com/ubuntu/dists/
 set url_kolibri http://builds.kolibrios.org/eng/kolibri.iso
 set url_steamos http://repo.steampowered.com/download/SteamOSDVD.iso
 set url_ros http://download.mikrotik.com/routeros/
-set url_slackware http://mirror.yandex.ru/slackware/slackware64-current/
-set url_mageia http://mirrors.kernel.org/mageia/distrib/7.1/x86_64/isolinux/x86_64/
-set url_debian http://ftp.acc.umu.se/debian/dists/stable/main/installer-${arch}/current/images/netboot/gtk/debian-installer/${arch}/
+set url_slackware slackware/slackware64-current/
+set url_mageia mageia/distrib/7.1/x86_64/isolinux/x86_64/
+set url_debian debian/dists/stable/main/installer-${arch}/current/images/netboot/gtk/debian-installer/${arch}/
 set url_parrot http://cdimage.parrotsec.org/parrot/dists/stable/main/installer-${arch}/current/images/netboot/gtk/debian-installer/${arch}/
 set url_devuan https://pkgmaster.devuan.org/devuan/dists/beowulf/main/installer-${arch}/current/images/netboot/gtk/debian-installer/${arch}/
 set url_kali http://ftp.acc.umu.se/mirror/kali.org/kali/dists/kali-rolling/main/installer-${arch}/current/images/netboot/gtk/debian-installer/${arch}/
@@ -89,7 +89,7 @@ menu Select Mirror
 	item out		Logout
 item --gap --	--- System Boot ---
 	item http://mirror.yandex.ru/		Yandex Mirror
-	item test				TEST
+	item http://mirrors.kernel.org/		Mirror Kernel
 choose mirror || goto main
 echo ${mirror}
 prompt -k y Press 'Y' is next || goto a1
