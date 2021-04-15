@@ -83,6 +83,16 @@ console --x 1024 --y 768 -p ${gfx}auth.png
 iseq ${username} root && iseq ${password} kernel && goto login-ok || clear username ; clear password ;
 :login-ok
 clear username ; clear password ; set pict 1
+######## Select Mirror
+:a1
+menu Select Mirror
+	item out		Logout
+item --gap --	--- System Boot ---
+	item http://mirror.yandex.ru/		Yandex Mirror
+	item test				TEST
+choose mirror || goto main
+echo ${mirror}
+prompt -k y Press 'Y' is next || goto a1
 ################################ MAIN MENU ################################
 :main imgfree
 iseq ${pict} 1 && set pict 0 && console --x 1024 --y 768 -p ${gfx}main.png ||
